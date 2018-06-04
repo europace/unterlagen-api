@@ -272,6 +272,7 @@ paths:
         - "API"
       tags:
       - Dokumente
+      - Klassifizierung
 
   /dokumente/{id}/klassifizierung/{klassifizierungsId}:
     get:
@@ -308,7 +309,7 @@ paths:
         - "API"
       tags:
       - Dokumente
-
+      - Klassifizierung
 
 securityDefinitions:
   oauth2:
@@ -347,7 +348,8 @@ definitions:
         description: Größe des Inhalts des Dokuments in Bytes.
       previewImage:
         type: string
-        description: Vorschau-Image des Dokuments.
+        format: uri
+        description: Vorschau-Image des Dokuments. (Evtl. auch als Rel in _links)
       vorgangsNummern:
         type: array
         description: Vorgängen denen das Dokument zugeordnet ist.
