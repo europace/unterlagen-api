@@ -25,7 +25,7 @@ paths:
         required: true
         name: content
         type: file
-        description: Inhalt der Dokuments.
+        description: Inhalt des Dokuments.
       - in: formData
         required: false
         name: name
