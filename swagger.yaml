@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.2"
+  version: "0.3"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -47,6 +47,7 @@ paths:
         type: string
         description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
       - in: formData
+        # Macht nicht so viel Sinn, da die Unterlagen dem Antrag zugeordnet werden müssen.
         required: false
         name: antragssNummer
         type: string
@@ -187,11 +188,6 @@ paths:
           description: Vorgangsnummer um nur Dokumente eines bestimmten Vorgangs zu erhalten.
           required: false
           type: string
-        - name: antragsNummer
-          in: query
-          description: Antragsnummer um nur Dokumente eines bestimmten Antrags zu erhalten.
-          required: false
-          type: string
       responses:
         200:
           description: Eine Liste von Dokumenten
@@ -311,6 +307,56 @@ paths:
       - Dokumente
       - Klassifizierung
 
+  /dokumente/{id}/klassifizierung/{klassifizierungsId}/unterlage/{unterlagenNummer}:
+    put:
+      summary: Korrigiere Klassifizierungsbereich
+      description: |
+        Eine bestehende Klassifizierung laden.
+      operationId: updateKlassifizierungsBereich
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: klassifizierungsId
+        in: path
+        description: Unique identifier get Klassifizierung.
+        required: true
+        type: string
+      - name: unterlagenNummer
+        in: path
+        description: Nummer des zu aktualisierenden Bereiches.
+        required: true
+        type: integer
+        format: int32
+      - in: body
+        name: bereich
+        description: Die aktualisierte Unterlage.
+        schema:
+          $ref: "#/definitions/Unterlage"
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: Bereich erfolgreich korrigiert
+          schema:
+            $ref: '#/definitions/Klassifizierung'
+        404:
+          description: Klassifizierung nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+      - Klassifizierung
+
 securityDefinitions:
   oauth2:
     type: oauth2
@@ -321,6 +367,8 @@ securityDefinitions:
 
 definitions:
   Dokument:
+    description: |
+      Ein Dokument ist eine hochgeladene Datei und kann eus einer oder mehreren - z.b. gescannten - Unterlagen bestehen.
     type: object
     properties:
       id:
@@ -355,11 +403,6 @@ definitions:
         description: Vorgängen denen das Dokument zugeordnet ist.
         items:
           type: string
-      antragsNummern:
-        type: array
-        description: Anträgen denen das Dokument zugeordnet ist.
-        items:
-          type: string
       _links:
         type: array
         items:
@@ -368,7 +411,7 @@ definitions:
   Klassifizierung:
     type: object
     description: |
-      Enthält alle Klassifizierungsinformationen eines einzelnen Dokuments als Liste.
+      Enthält alle klassifizierten Unterlagen eines Dokuments als Liste.
     properties:
       id:
         type: string
@@ -386,28 +429,36 @@ definitions:
             format: int32
             description: |
               Progress Wert in Prozent 0 - 100
-      klassifizierungen:
+      unterlagen:
         type: array
         items:
-          $ref: "#/definitions/Klassifizierungsbereich"
+          $ref: "#/definitions/Unterlage"
       _links:
         type: array
         items:
           $ref: "#/definitions/Link"
 
-  Klassifizierungsbereich:
+  Unterlage:
     type: object
     description: |
       Enthält die Klassifizierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
     properties:
+      bereichsNummer:
+        description: Fortlaufende Nummer der Unterlage
+        type: integer
+        format: int32
       klasse:
-        description: Gefundene Dokumentenklasse im Dokument
+        description: Gefundene Unterlagenklasse im Dokument
         type: string
         enum:
         - "GRUNDBUCH_AUSZUG"
         - "PERSONALAUSWEIS"
         - "LOHNABRECHNUNG"
         # TBD Weitere Enums
+      zuordnung:
+        type: array
+        items:
+          $ref: "#/definitions/Zuordnung"
       seiteVon:
         type: integer
         format: int32
@@ -416,6 +467,23 @@ definitions:
         type: integer
         format: int32
         description: Seite in dem die Klassifizierung endet
+
+  Zuordnung:
+    type: object
+    description: |
+      Zuordnung einer Unterlage zu einem Antrag.
+    properties:
+      name:
+        description: Name der Unterlagenzuordnung 'Gehaltsnachweis' oder 'Legitimation'
+        type: string # Vielleicht auch ENUM?
+      antragsNummer:
+        description: Antragsnummer, an dem die Zuordnung die Anforderung erfüllt.
+        type: string
+      referenzId:
+        description: |
+          Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
+          diese Zuordnung bezieht.
+        type: string
 
   Link:
     type: string
