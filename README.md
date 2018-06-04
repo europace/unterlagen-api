@@ -3,7 +3,13 @@ API rund um Plattformdokumente
 
 ### API Docs
 
-https://dokumente-api-2.api-docs.io/0.2
+https://dokumente-api-3.api-docs.io/0.3
+
+### Client generieren
+
+`
+./generate-client.sh
+`
 
 ### Use-Cases
 
