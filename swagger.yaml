@@ -255,12 +255,12 @@ paths:
         required: true
         type: string
       responses:
-        200:
-          description: Ein Dokument
+        200: # TBD Evtl Redirect auf GET
+          description: Eine Klassifizierung eines Dokuments
           schema:
-            $ref: '#/definitions/Dokument'
+            $ref: '#/definitions/Klassifizierung'
         404:
-          description: Dokument nicht gefunden
+          description: Klassifizierung nicht gefunden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -272,7 +272,42 @@ paths:
         - "API"
       tags:
       - Dokumente
-# get TBD (Async)
+
+  /dokumente/{id}/klassifizierung/{klassifizierungsId}:
+    post:
+      summary: Hole Klassifizierung
+      description: |
+        Eine bestehende Klassifizierung laden.
+      operationId: getKlassifizierung
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: klassifizierungsId
+        in: path
+        description: Unique identifier get Klassifizierung.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Eine Klassifizierung eines Dokuments
+          schema:
+            $ref: '#/definitions/Klassifizierung'
+        404:
+          description: Klassifizierung nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
 
 
 securityDefinitions:
@@ -331,8 +366,24 @@ definitions:
   Klassifizierung:
     type: object
     description: |
-      Enthält alle Klassifizierungsinformationen eines einzelnen Dokuements als Liste.
+      Enthält alle Klassifizierungsinformationen eines einzelnen Dokuments als Liste.
     properties:
+      id:
+        type: string
+        description: Unique Identifier der Klassifizierung
+      status:
+        type: object
+        properties:
+          state:
+            type: string
+            enum:
+            - 'IN_PROGRESS'
+            - 'FINISH'
+          progress:
+            type: integer
+            format: int32
+            description: |
+              Progress Wert in Prozent 0 - 100
       klassifizierungen:
         type: array
         items:
