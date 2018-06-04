@@ -1,6 +1,10 @@
 # dokumente-api
 API rund um Plattformdokumente
 
+### API Docs
+
+https://dokumente-api.api-docs.io/0.1
+
 ### Use-Cases
 
 Nachfolgende Fragen sollen durch die Dokumente API beantwortet werden:
