@@ -324,27 +324,9 @@ definitions:
         items:
           type: string
       _links:
-        schema:
         type: array
         items:
-        - self:
-          type: string
-          format: uri
-          description: self relation
-        - content:
-          type: string
-          format: uri
-          description: URL an der die Datei heruntergeladen werden kann
-        - startKlassifizierung:
-          type: string
-          format: uri
-          description: POST URL an der die Klassifizierung gestartet werden kann
-        - klassifizierung:
-          type: string
-          format: uri
-          description: URL an der die Klassifizierungsergebnisse gelesen werden können.
-          interface:
-            $ref: '#/definitions/Klassifizierung'
+          $ref: "#/definitions/Link"
 
   Klassifizierung:
     type: object
@@ -358,16 +340,7 @@ definitions:
       _links:
         type: array
         items:
-        - self:
-          type: string
-          format: uri
-          description: self relation
-        - dokument:
-          type: string
-          format: uri
-          description: URL des Dokuments.
-          interface:
-            $ref: '#/definitions/Dokument'
+          $ref: "#/definitions/Link"
 
   Klassifizierungsbereich:
     type: object
@@ -390,6 +363,11 @@ definitions:
         type: integer
         format: int32
         description: Seite in dem die Klassifizierung endet
+
+  Link:
+    type: string
+    format: uri
+    description: A HAL Ref
 
   Error:
     type: object
