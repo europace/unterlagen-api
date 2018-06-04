@@ -1,0 +1,402 @@
+# this is the description of the Europace Dokumente API
+swagger: '2.0'
+info:
+  title: Dokumente API
+  description: API rund um Plattformdokumente
+  version: "0.1"
+host: "dokumente.api.europace.de"
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /dokument:
+    post:
+      summary: Dokument hochladen
+      description: |
+        An diesen Endpunkt kann ein Dokument samt Metadaten per Form-Data hochgeladen werden.
+      operationId: upload
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          required: true
+          name: content
+          type: file
+          description: Inhalt der Dokuments.
+        - in: formData
+          required: false
+          name: name
+          type: string
+          description: Anzeigename, kann verändert werden.
+        - in: formData
+          required: false
+          name: dateiName
+          type: string
+          description: Name der Originaldatei.
+        - in: formData
+          required: false
+          name: beschreibung
+          type: string
+          description: Optionale weitere Beschreibung zum Dokument.
+        - in: formData
+          required: false
+          name: vorgangsNummer
+          type: string
+          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+        - in: formData
+          required: false
+          name: antragssNummer
+          type: string
+          description: Antragsnummer, dem das Dokument zugeordnet werden soll.
+      responses:
+        201:
+          description: Dokument erfolgreich hochgeladen
+          schema:
+            $ref: '#/definitions/Dokument'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+
+  /dokument/{id}:
+    get:
+      summary: Dokument runterladen
+      description: |
+        An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
+      operationId: download
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: file
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+    put:
+      summary: Dokument aktualisieren
+      description: |
+        An diesen Endpunkt kann der Inhalt eines Dokuments aktualisiert werden.
+        Ist die Aktion erfolgreich, erhält man als Antwort die Metadaten.
+      operationId: update
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
+        - in: formData
+          required: true
+          name: content
+          type: file
+          description: Inhalt der Dokuments.
+        - in: formData
+          required: false
+          name: name
+          type: string
+          description: Anzeigename, kann verändert werden.
+        - in: formData
+          required: false
+          name: dateiName
+          type: string
+          description: Name der Originaldatei.
+        - in: formData
+          required: false
+          name: beschreibung
+          type: string
+          description: Optionale weitere Beschreibung zum Dokument.
+        - in: formData
+          required: false
+          name: vorgangsNummer
+          type: string
+          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+        - in: formData
+          required: false
+          name: antragssNummer
+          type: string
+          description: Antragsnummer, dem das Dokument zugeordnet werden soll.
+      responses:
+        200:
+          description: Dokument erfolgreich aktualisiert
+          schema:
+            $ref: '#/definitions/Dokument'
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+    delete:
+      summary: Dokument löschen
+      description: |
+        An diesen Endpunkt kann das Dokument gelöscht werden.
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Dokument erfolgreich gelöscht
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+
+  /dokumente:
+    get:
+      summary: Alle Dokumente
+      description: |
+        Dieser Endpunkt liefert alle Dokumente, auf die ich Zugriff habe. Da dies viele Dokumente sein können,
+        lässt sich die Menge über Filter reduzieren.
+      operationId: getDokumente
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer um nur Dokumente eines bestimmten Vorgangs zu erhalten.
+          required: false
+          type: string
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer um nur Dokumente eines bestimmten Antrags zu erhalten.
+          required: false
+          type: string
+      responses:
+        200:
+          description: Eine Liste von Dokumenten
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Dokument'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+  /dokumente/{id}:
+    get:
+      summary: Ein Dokument
+      description: |
+        Ein Dokument mit angegebener dokumentId.
+      operationId: getDokument
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Ein Dokument
+          schema:
+            $ref: '#/definitions/Dokument'
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+  /dokumente/{id}/klassifizierung:
+    post:
+      summary: Starte Klassifizierung
+      description: |
+        Erzeugt eine neue Klassifizierung des Dokuments.
+      operationId: startKlassifizierung
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Ein Dokument
+          schema:
+            $ref: '#/definitions/Dokument'
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+
+
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    tokenUrl: "https://api.europace.de/login"
+    flow: password
+    scopes:
+      API: Authorisation Scope für die gesamte API.
+
+definitions:
+  Dokument:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier des Dokuments.
+      name:
+        type: string
+        description: Anzeigename, kann verändert werden.
+      dateiName:
+        type: string
+        description: Name der original hochgeladenen Datei.
+      beschreibung:
+        type: string
+        description: Optionale weitere Beschreibung zur Datei.
+      uploadDatum:
+        type: string
+        format: date-time
+        description: Gibt das Datum an, an dem Das Dokument hochgeladen wurde, sich also der Inhalt geändert hat.
+      type:
+        type: string
+        description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+      size:
+        type: integer
+        format: int64
+        description: Größe des Inhalts des Dokuments in Bytes.
+      previewImage:
+        type: string
+        description: Vorschau-Image des Dokuments.
+      vorgangsNummern:
+        type: array
+        description: Vorgängen denen das Dokument zugeordnet ist.
+        items:
+          type: string
+      antragsNummern:
+        type: array
+        description: Anträgen denen das Dokument zugeordnet ist.
+        items:
+          type: string
+      _links:
+        type: array
+        items:
+        - self:
+          type: string
+          format: uri
+          description: self relation
+        - content:
+          type: string
+          format: uri
+          description: URL an der die Datei heruntergeladen werden kann
+        - startKlassifizierung:
+          type: string
+          format: uri
+          description: POST URL an der die Klassifizierung gestartet werden kann
+        - klassifizierung:
+          type: string
+          format: uri
+          description: URL an der die Klassifizierungsergebnisse gelesen werden können.
+          interface:
+            $ref: '#/definitions/Klassifizierung'
+
+  Klassifizierung:
+    type: object
+    properties:
+      klassifizierungen:
+        type: array
+        items:
+        - klassifizierung:
+          type: object
+          properties:
+            klasse:
+              description: Gefundene Dokumentenklasse im Dokument
+              type: string
+              enum:
+              - "GRUNDBUCH_AUSZUG"
+              - "PERSONALAUSWEIS"
+              - "LOHNABRECHNUNG"
+            seiteVon:
+              type: integer
+              format: int32
+              description: Seite in dem die Klassifizierung beginnt
+            seiteBis:
+              type: integer
+              format: int32
+              description: Seite in dem die Klassifizierung endet
+      _links:
+        type: array
+        items:
+        - self:
+          type: string
+          format: uri
+          description: self relation
+        - dokument:
+          type: string
+          format: uri
+          description: URL des Dokuments.
+          interface:
+            $ref: '#/definitions/Dokument'
+
+
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+      statusCode:
+        type: integer
+        format: int32
+      statusMessage:
+        type: string
+      timestamp:
+        type: string
+        format: date-time
+      traceId:
+        type: string
+    title: Error
