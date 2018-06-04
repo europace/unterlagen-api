@@ -3,7 +3,7 @@ API rund um Plattformdokumente
 
 ### API Docs
 
-https://dokumente-api.api-docs.io/0.2
+https://dokumente-api-2.api-docs.io/0.2
 
 ### Use-Cases
 
