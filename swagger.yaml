@@ -19,38 +19,38 @@ paths:
         An diesen Endpunkt kann ein Dokument samt Metadaten per Form-Data hochgeladen werden.
       operationId: upload
       consumes:
-        - multipart/form-data
+      - multipart/form-data
       parameters:
-        - in: formData
-          required: true
-          name: content
-          type: file
-          description: Inhalt der Dokuments.
-        - in: formData
-          required: false
-          name: name
-          type: string
-          description: Anzeigename, kann verändert werden.
-        - in: formData
-          required: false
-          name: dateiName
-          type: string
-          description: Name der Originaldatei.
-        - in: formData
-          required: false
-          name: beschreibung
-          type: string
-          description: Optionale weitere Beschreibung zum Dokument.
-        - in: formData
-          required: false
-          name: vorgangsNummer
-          type: string
-          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
-        - in: formData
-          required: false
-          name: antragssNummer
-          type: string
-          description: Antragsnummer, dem das Dokument zugeordnet werden soll.
+      - in: formData
+        required: true
+        name: content
+        type: file
+        description: Inhalt der Dokuments.
+      - in: formData
+        required: false
+        name: name
+        type: string
+        description: Anzeigename, kann verändert werden.
+      - in: formData
+        required: false
+        name: dateiName
+        type: string
+        description: Name der Originaldatei.
+      - in: formData
+        required: false
+        name: beschreibung
+        type: string
+        description: Optionale weitere Beschreibung zum Dokument.
+      - in: formData
+        required: false
+        name: vorgangsNummer
+        type: string
+        description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+      - in: formData
+        required: false
+        name: antragssNummer
+        type: string
+        description: Antragsnummer, dem das Dokument zugeordnet werden soll.
       responses:
         201:
           description: Dokument erfolgreich hochgeladen
@@ -272,7 +272,7 @@ paths:
         - "API"
       tags:
       - Dokumente
-
+# get TBD (Async)
 
 
 securityDefinitions:
@@ -324,6 +324,7 @@ definitions:
         items:
           type: string
       _links:
+        schema:
         type: array
         items:
         - self:
@@ -347,28 +348,13 @@ definitions:
 
   Klassifizierung:
     type: object
+    description: |
+      Enthält alle Klassifizierungsinformationen eines einzelnen Dokuements als Liste.
     properties:
       klassifizierungen:
         type: array
         items:
-        - klassifizierung:
-          type: object
-          properties:
-            klasse:
-              description: Gefundene Dokumentenklasse im Dokument
-              type: string
-              enum:
-              - "GRUNDBUCH_AUSZUG"
-              - "PERSONALAUSWEIS"
-              - "LOHNABRECHNUNG"
-            seiteVon:
-              type: integer
-              format: int32
-              description: Seite in dem die Klassifizierung beginnt
-            seiteBis:
-              type: integer
-              format: int32
-              description: Seite in dem die Klassifizierung endet
+          $ref: "#/definitions/Klassifizierungsbereich"
       _links:
         type: array
         items:
@@ -383,6 +369,27 @@ definitions:
           interface:
             $ref: '#/definitions/Dokument'
 
+  Klassifizierungsbereich:
+    type: object
+    description: |
+      Enthält die Klassifizierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
+    properties:
+      klasse:
+        description: Gefundene Dokumentenklasse im Dokument
+        type: string
+        enum:
+        - "GRUNDBUCH_AUSZUG"
+        - "PERSONALAUSWEIS"
+        - "LOHNABRECHNUNG"
+        # TBD Weitere Enums
+      seiteVon:
+        type: integer
+        format: int32
+        description: Seite in dem die Klassifizierung beginnt
+      seiteBis:
+        type: integer
+        format: int32
+        description: Seite in dem die Klassifizierung endet
 
   Error:
     type: object
