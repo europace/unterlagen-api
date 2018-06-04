@@ -274,8 +274,8 @@ paths:
       - Dokumente
 
   /dokumente/{id}/klassifizierung/{klassifizierungsId}:
-    post:
-      summary: Hole Klassifizierung
+    get:
+      summary: Lade Klassifizierung
       description: |
         Eine bestehende Klassifizierung laden.
       operationId: getKlassifizierung
