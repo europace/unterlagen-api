@@ -49,7 +49,7 @@ paths:
       - in: formData
         # Macht nicht so viel Sinn, da die Unterlagen dem Antrag zugeordnet werden müssen.
         required: false
-        name: antragssNummer
+        name: antragsNummer
         type: string
         description: Antragsnummer, dem das Dokument zugeordnet werden soll.
       responses:
@@ -94,6 +94,8 @@ paths:
       - oauth2:
         - "API"
     put:
+    # TODO: Kommt hier nach X Minuten noch ein erneutes Klassifizierungs-Ergebnis zurück, welches dann (dem User gegebenüber wie per Magic) wiedergespiegelt werden soll?
+    # TODO: D.h. würde die UI hier wieder in den Polling Modus gehen oder wäre diese Anfrage als Fire & Forget zu verstehen?
       summary: Dokument aktualisieren
       description: |
         An diesen Endpunkt kann der Inhalt eines Dokuments aktualisiert werden.
@@ -134,7 +136,7 @@ paths:
           description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
         - in: formData
           required: false
-          name: antragssNummer
+          name: antragsNummer
           type: string
           description: Antragsnummer, dem das Dokument zugeordnet werden soll.
       responses:
@@ -345,10 +347,11 @@ paths:
       - Klassifizierung
 
   /dokumente/{id}/klassifizierungen/{klassifizierungsId}/unterlagen/{unterlagenNummer}:
+  # TODO: Stößt dieser Request ein ernuete SmartCat-Klassifizierung an oder dient er lediglich zum Trainieren des Modells für soätere Klassifizierungs-Anfragen?
     put:
       summary: Korrigiere Klassifizierungsbereich
       description: |
-        Eine bestehende Klassifizierung laden.
+        Korrigiere Klassifizierung der Unterlagen der angegebenen Klassifizierung, um SmartCat Feedback zu liefern.
       operationId: updateKlassifizierungsBereich
       parameters:
       - name: id
@@ -358,7 +361,7 @@ paths:
         type: string
       - name: klassifizierungsId
         in: path
-        description: Unique identifier get Klassifizierung.
+        description: Unique identifier des zu korrigierenden Klassifizierung-Vorgangs.
         required: true
         type: string
       - name: unterlagenNummer
@@ -460,7 +463,7 @@ definitions:
             type: string
             enum:
             - 'IN_PROGRESS'
-            - 'FINISH'
+            - 'FINISHED'
           progress:
             type: integer
             format: int32
@@ -492,6 +495,8 @@ definitions:
         - "PERSONALAUSWEIS"
         - "LOHNABRECHNUNG"
         # TBD Weitere Enums
+      # TODO Herausstellen, wie klasse und zuordnung (hierbei insbesondere zuordnung.name) in Zusammenhang stehen
+      # TODO Ist dies die Zuordnung Unterlage zu Unterlagenanforderungen?
       zuordnung:
         type: array
         items:
