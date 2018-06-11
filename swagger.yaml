@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.3"
+  version: "0.3.1"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -12,7 +12,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /dokument:
+  /dokumente:
     post:
       summary: Dokument hochladen
       description: |
@@ -65,9 +65,9 @@ paths:
       - oauth2:
         - "API"
 
-  /dokument/{id}:
+  /dokumente/{id}:
     get:
-      summary: Dokument runterladen
+      summary: Ein Dokument runterladen
       description: |
         An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
       operationId: download
@@ -177,7 +177,7 @@ paths:
       - oauth2:
         - "API"
 
-  /dokumente:
+  /dokumente/metadaten:
     get:
       summary: Alle Dokumente
       description: |
@@ -207,7 +207,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}:
+  /dokumente/{id}/metadaten:
     get:
       summary: Ein Dokument
       description: |
@@ -240,7 +240,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/klassifizierung:
+  /dokumente/{id}/klassifizierungen:
     post:
       summary: Starte Klassifizierung
       description: |
@@ -271,10 +271,47 @@ paths:
       tags:
       - Dokumente
       - Klassifizierung
-
-  /dokumente/{id}/klassifizierung/{klassifizierungsId}:
     get:
-      summary: Lade Klassifizierung
+      summary: Lade alle Klassifizierungen eines Dokuments
+      description: |
+        Alle bestehende nKlassifizierungen eines Dokuments laden.
+      operationId: getKlassifizierungen
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: klassifizierungsId
+        in: path
+        description: Unique identifier get Klassifizierung.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Alle Klassifizierungene eines Dokuments
+          schema:
+            $ref: '#/definitions/Klassifizierung'
+        404:
+          description: Klassifizierungen nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+      - Klassifizierung
+
+
+
+  /dokumente/{id}/klassifizierungen/{klassifizierungsId}:
+    get:
+      summary: Lade eine Klassifizierung
       description: |
         Eine bestehende Klassifizierung laden.
       operationId: getKlassifizierung
@@ -309,7 +346,7 @@ paths:
       - Dokumente
       - Klassifizierung
 
-  /dokumente/{id}/klassifizierung/{klassifizierungsId}/unterlage/{unterlagenNummer}:
+  /dokumente/{id}/klassifizierungen/{klassifizierungsId}/unterlagen/{unterlagenNummer}:
   # TODO: Stößt dieser Request ein ernuete SmartCat-Klassifizierung an oder dient er lediglich zum Trainieren des Modells für soätere Klassifizierungs-Anfragen?
     put:
       summary: Korrigiere Klassifizierungsbereich
@@ -451,7 +488,7 @@ definitions:
         type: integer
         format: int32
       klasse:
-        description: Gefundene Unterlagenklasse im Dokument
+        description: Unterlagenklasse eines Dokuments
         type: string
         enum:
         - "GRUNDBUCH_AUSZUG"
@@ -481,6 +518,13 @@ definitions:
       name:
         description: Name der Unterlagenzuordnung 'Gehaltsnachweis' oder 'Legitimation'
         type: string # Vielleicht auch ENUM?
+      typ:
+        description: |
+          Art der Zuordnung. Automatisch durch ein Erkennungstool, oder manuell.
+        type: string
+        enum:
+          - 'AUTOMATISCHE_ERKENNUNG'
+          - 'MANUELLE_ERKENNUNG'
       antragsNummer:
         description: Antragsnummer, an dem die Zuordnung die Anforderung erfüllt.
         type: string

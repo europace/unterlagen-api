@@ -1,5 +1,2 @@
 .idea
-
-swagger-codegen-cli.jar
-
-client
+*.iml

@@ -1,15 +1,9 @@
-# dokumente-api
+# ep-dokumente-api
 API rund um Plattformdokumente
 
 ### API Docs
 
 https://dokumente-api-3.api-docs.io/0.3
-
-### Client generieren
-
-`
-./generate-client.sh
-`
 
 ### Use-Cases
 
