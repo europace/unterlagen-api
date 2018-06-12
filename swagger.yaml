@@ -129,8 +129,6 @@ paths:
       description: |
         Update der Dokument Metadaten.
       operationId: updateDokument
-      consumes:
-      - application/json
       parameters:
       - in: path
         name: id
@@ -138,7 +136,7 @@ paths:
         required: true
         type: string
       requestBody:
-        description: Dokument als JSON
+        description: Dokument als JSON oder Attribute als Formparameter
         required: true
         content:
           application/json:
