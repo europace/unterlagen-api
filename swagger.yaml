@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.3.1"
+  version: "0.4"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -11,13 +11,14 @@ schemes:
 basePath: /v1
 produces:
   - application/json
+
 paths:
   /dokumente:
     post:
-      summary: Dokument hochladen
+      summary: Dokument erstellen
       description: |
         An diesen Endpunkt kann ein Dokument samt Metadaten per Form-Data hochgeladen werden.
-      operationId: upload
+      operationId: uploadDokument
       consumes:
       - multipart/form-data
       parameters:
@@ -28,30 +29,25 @@ paths:
         description: Inhalt des Dokuments.
       - in: formData
         required: false
-        name: name
+        name: anzeigename
         type: string
-        description: Anzeigename, kann verändert werden.
+        description: Name zur Anzeige auf der Oberfläche.
       - in: formData
         required: false
-        name: dateiName
+        name: filename
         type: string
-        description: Name der Originaldatei.
+        description: Name der Datei.
       - in: formData
         required: false
-        name: beschreibung
-        type: string
-        description: Optionale weitere Beschreibung zum Dokument.
+        name: erstellungsdatum
+        type: String
+        format: date-time
+        description: Datum an welchem das Dokument erstellt wurde.
       - in: formData
         required: false
         name: vorgangsNummer
         type: string
         description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
-      - in: formData
-        # Macht nicht so viel Sinn, da die Unterlagen dem Antrag zugeordnet werden müssen.
-        required: false
-        name: antragsNummer
-        type: string
-        description: Antragsnummer, dem das Dokument zugeordnet werden soll.
       responses:
         201:
           description: Dokument erfolgreich hochgeladen
@@ -64,120 +60,8 @@ paths:
       security:
       - oauth2:
         - "API"
-
-  /dokumente/{id}:
-    get:
-      summary: Ein Dokument runterladen
-      description: |
-        An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
-      operationId: download
-      parameters:
-      - name: id
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      responses:
-        200:
-          description: OK
-          schema:
-            type: file
-        404:
-          description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-    put:
-    # TODO: Kommt hier nach X Minuten noch ein erneutes Klassifizierungs-Ergebnis zurück, welches dann (dem User gegebenüber wie per Magic) wiedergespiegelt werden soll?
-    # TODO: D.h. würde die UI hier wieder in den Polling Modus gehen oder wäre diese Anfrage als Fire & Forget zu verstehen?
-      summary: Dokument aktualisieren
-      description: |
-        An diesen Endpunkt kann der Inhalt eines Dokuments aktualisiert werden.
-        Ist die Aktion erfolgreich, erhält man als Antwort die Metadaten.
-      operationId: update
-      consumes:
-        - multipart/form-data
-      parameters:
-        - name: id
-          in: path
-          description: Unique identifier des Dokuments.
-          required: true
-          type: string
-        - in: formData
-          required: true
-          name: content
-          type: file
-          description: Inhalt der Dokuments.
-        - in: formData
-          required: false
-          name: name
-          type: string
-          description: Anzeigename, kann verändert werden.
-        - in: formData
-          required: false
-          name: dateiName
-          type: string
-          description: Name der Originaldatei.
-        - in: formData
-          required: false
-          name: beschreibung
-          type: string
-          description: Optionale weitere Beschreibung zum Dokument.
-        - in: formData
-          required: false
-          name: vorgangsNummer
-          type: string
-          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
-        - in: formData
-          required: false
-          name: antragsNummer
-          type: string
-          description: Antragsnummer, dem das Dokument zugeordnet werden soll.
-      responses:
-        200:
-          description: Dokument erfolgreich aktualisiert
-          schema:
-            $ref: '#/definitions/Dokument'
-        404:
-          description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-    delete:
-      summary: Dokument löschen
-      description: |
-        An diesen Endpunkt kann das Dokument gelöscht werden.
-      operationId: delete
-      parameters:
-      - name: id
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      responses:
-        200:
-          description: Dokument erfolgreich gelöscht
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-
-  /dokumente/metadaten:
+      tags:
+      - Dokumente
     get:
       summary: Alle Dokumente
       description: |
@@ -190,6 +74,7 @@ paths:
           description: Vorgangsnummer um nur Dokumente eines bestimmten Vorgangs zu erhalten.
           required: false
           type: string
+      # Hier ggf. Parameter Hochgeladenes Dokument
       responses:
         200:
           description: Eine Liste von Dokumenten
@@ -207,7 +92,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/metadaten:
+  /dokumente/{id}:
     get:
       summary: Ein Dokument
       description: |
@@ -239,13 +124,65 @@ paths:
         - "API"
       tags:
       - Dokumente
-
-  /dokumente/{id}/klassifizierungen:
-    post:
-      summary: Starte Klassifizierung
+    put:
+      summary: Dokument aktualisieren
       description: |
-        Erzeugt eine neue Klassifizierung des Dokuments.
-      operationId: startKlassifizierung
+        Update der Dokument Metadaten.
+      operationId: updateDokument
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      requestBody:
+        description: Dokument als JSON
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: '#/definitions/Dokument'
+          multipart/form-data:
+            schema:
+              properties:
+                anzeigename:
+                  required: false
+                  type: string
+                  description: Name zur Anzeige auf der Oberfläche.
+                filename:
+                  required: false
+                  type: string
+                  description: Name der Datei.
+                erstellungsdatum:
+                  required: false
+                  type: String
+                  format: date-time
+                  description: Datum an welchem das Dokument erstellt wurde.
+                vorgangsNummer:
+                  required: false
+                  type: string
+                  description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+      responses:
+        200:
+          description: Metadaten des Dokuments erfolgreich aktualisiert
+          schema:
+            $ref: '#/definitions/Dokument'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+    delete:
+      summary: Dokument löschen
+      description: |
+        An diesen Endpunkt kann das Dokument gelöscht werden.
+      operationId: deleteDokument
       parameters:
       - name: id
         in: path
@@ -253,12 +190,37 @@ paths:
         required: true
         type: string
       responses:
-        200: # TBD Evtl Redirect auf GET
-          description: Eine Klassifizierung eines Dokuments
+        200:
+          description: Dokument erfolgreich gelöscht
+        default:
+          description: Unerwarteter Fehler
           schema:
-            $ref: '#/definitions/Klassifizierung'
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+  /dokumente/{id}/content:
+    get:
+      summary: Ein Dokument runterladen
+      description: |
+        An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
+      operationId: getContent
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: file
         404:
-          description: Klassifizierung nicht gefunden
+          description: Dokument nicht gefunden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -270,28 +232,28 @@ paths:
         - "API"
       tags:
       - Dokumente
-      - Klassifizierung
+
+  /dokumente/{id}/klassifizierung:
     get:
       summary: Lade alle Klassifizierungen eines Dokuments
       description: |
-        Alle bestehende nKlassifizierungen eines Dokuments laden.
-      operationId: getKlassifizierungen
+        Die Klassifizierungen eines Dokuments laden.
+      operationId: getKlassifizierung
       parameters:
       - name: id
         in: path
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: klassifizierungsId
-        in: path
-        description: Unique identifier get Klassifizierung.
-        required: true
-        type: string
       responses:
         200:
-          description: Alle Klassifizierungene eines Dokuments
+          description: Eine Klassifizierung eines Dokuments
           schema:
             $ref: '#/definitions/Klassifizierung'
+        204:
+          description: Die Klassifizierung ist noch nicht abgeschlossen.
+          schema:
+            $ref: '#/definitions/KlassifizierungsStatus'
         404:
           description: Klassifizierungen nicht gefunden
           schema:
@@ -305,63 +267,18 @@ paths:
         - "API"
       tags:
       - Dokumente
-      - Klassifizierung
 
-
-
-  /dokumente/{id}/klassifizierungen/{klassifizierungsId}:
-    get:
-      summary: Lade eine Klassifizierung
-      description: |
-        Eine bestehende Klassifizierung laden.
-      operationId: getKlassifizierung
-      parameters:
-      - name: id
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      - name: klassifizierungsId
-        in: path
-        description: Unique identifier get Klassifizierung.
-        required: true
-        type: string
-      responses:
-        200:
-          description: Eine Klassifizierung eines Dokuments
-          schema:
-            $ref: '#/definitions/Klassifizierung'
-        404:
-          description: Klassifizierung nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-      tags:
-      - Dokumente
-      - Klassifizierung
-
-  /dokumente/{id}/klassifizierungen/{klassifizierungsId}/unterlagen/{unterlagenNummer}:
+  /dokumente/{id}/klassifizierung/unterlagen/{unterlagenNummer}:
   # TODO: Stößt dieser Request ein ernuete SmartCat-Klassifizierung an oder dient er lediglich zum Trainieren des Modells für soätere Klassifizierungs-Anfragen?
     put:
       summary: Korrigiere Klassifizierungsbereich
       description: |
         Korrigiere Klassifizierung der Unterlagen der angegebenen Klassifizierung, um SmartCat Feedback zu liefern.
-      operationId: updateKlassifizierungsBereich
+      operationId: updateKlassifizierung
       parameters:
       - name: id
         in: path
         description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      - name: klassifizierungsId
-        in: path
-        description: Unique identifier des zu korrigierenden Klassifizierung-Vorgangs.
         required: true
         type: string
       - name: unterlagenNummer
@@ -395,7 +312,6 @@ paths:
         - "API"
       tags:
       - Dokumente
-      - Klassifizierung
 
 securityDefinitions:
   oauth2:
@@ -414,16 +330,13 @@ definitions:
       id:
         type: string
         description: Unique identifier des Dokuments.
-      name:
+      anzeigename:
         type: string
         description: Anzeigename, kann verändert werden.
-      dateiName:
+      filename:
         type: string
         description: Name der original hochgeladenen Datei.
-      beschreibung:
-        type: string
-        description: Optionale weitere Beschreibung zur Datei.
-      uploadDatum:
+      erstellungsdatum:
         type: string
         format: date-time
         description: Gibt das Datum an, an dem Das Dokument hochgeladen wurde, sich also der Inhalt geändert hat.
@@ -434,41 +347,36 @@ definitions:
         type: integer
         format: int64
         description: Größe des Inhalts des Dokuments in Bytes.
-      previewImage:
+      vorgangsNummer:
         type: string
-        format: uri
-        description: Vorschau-Image des Dokuments. (Evtl. auch als Rel in _links)
-      vorgangsNummern:
-        type: array
-        description: Vorgängen denen das Dokument zugeordnet ist.
-        items:
-          type: string
+        description: Vorgang dem das Dokument zugeordnet ist.
       _links:
         type: array
         items:
           $ref: "#/definitions/Link"
+
+  KlassifizierungsStatus:
+      type: object
+      description: |
+        Wenn die Klassifizierung noch läuft, kann der Status der Klassifizierung erfragt werden.
+      properties:
+        status:
+          type: string
+          enum:
+          - 'IN_PROGRESS'
+          - 'FINISHED'
+        progress:
+          type: integer
+          format: int32
+          description: |
+            Progress Wert in Prozent 0 - 100
+
 
   Klassifizierung:
     type: object
     description: |
       Enthält alle klassifizierten Unterlagen eines Dokuments als Liste.
     properties:
-      id:
-        type: string
-        description: Unique Identifier der Klassifizierung
-      status:
-        type: object
-        properties:
-          state:
-            type: string
-            enum:
-            - 'IN_PROGRESS'
-            - 'FINISHED'
-          progress:
-            type: integer
-            format: int32
-            description: |
-              Progress Wert in Prozent 0 - 100
       unterlagen:
         type: array
         items:
