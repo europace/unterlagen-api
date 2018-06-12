@@ -1,2 +1,4 @@
 .idea
 *.iml
+generate-client.sh
+client/
