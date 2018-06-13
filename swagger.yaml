@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.4"
+  version: "0.4.1"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -40,7 +40,7 @@ paths:
       - in: formData
         required: false
         name: erstellungsdatum
-        type: String
+        type: string
         format: date-time
         description: Datum an welchem das Dokument erstellt wurde.
       - in: formData
@@ -155,7 +155,7 @@ paths:
                   description: Name der Datei.
                 erstellungsdatum:
                   required: false
-                  type: String
+                  type: string
                   format: date-time
                   description: Datum an welchem das Dokument erstellt wurde.
                 vorgangsNummer:
