@@ -350,6 +350,7 @@ definitions:
         description: Vorgang dem das Dokument zugeordnet ist.
       _links:
         type: array
+        description: Enthält die URL zu den Preview Images
         items:
           $ref: "#/definitions/Link"
 
