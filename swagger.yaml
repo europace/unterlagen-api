@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.5"
+  version: "0.5.1"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -349,10 +349,17 @@ definitions:
         type: string
         description: Vorgang dem das Dokument zugeordnet ist.
       _links:
-        type: array
-        description: Enthält die URL zu den Preview Images
-        items:
-          $ref: "#/definitions/Link"
+        type: object
+        properties:
+          self:
+            $ref: "#/definitions/Relation"
+            description: Self relation
+          preview:
+            $ref: "#/definitions/Relation"
+            description: Base URL für die Preview Images
+          klassifizierung:
+            $ref: "#/definitions/Relation"
+            description: URL zur Klassifizierung
 
   KlassifizierungsStatus:
       type: object
@@ -381,9 +388,11 @@ definitions:
         items:
           $ref: "#/definitions/Unterlage"
       _links:
-        type: array
-        items:
-          $ref: "#/definitions/Link"
+        type: object
+        properties:
+          self:
+            $ref: "#/definitions/Relation"
+            description: Self relation
 
   Unterlage:
     type: object
@@ -441,7 +450,7 @@ definitions:
           diese Zuordnung bezieht.
         type: string
 
-  Link:
+  Relation:
     type: object
     properties:
       href:
