@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.5.1"
+  version: "0.6"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -129,39 +129,20 @@ paths:
       description: |
         Update der Dokument Metadaten.
       operationId: updateDokument
+      consumes:
+        - application/json
+        - multipart/form-data
       parameters:
-      - in: path
-        name: id
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      requestBody:
-        description: Dokument als JSON oder Attribute als Formparameter
-        required: true
-        content:
-          application/json:
-            schema:
+        - in: path
+          name: id
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
+        - in: body
+          name: dokument
+          description: Dokument als JSON oder Attribute als Formparameter
+          schema:
             $ref: '#/definitions/Dokument'
-          multipart/form-data:
-            schema:
-              properties:
-                anzeigename:
-                  required: false
-                  type: string
-                  description: Name zur Anzeige auf der Oberfläche.
-                filename:
-                  required: false
-                  type: string
-                  description: Name der Datei.
-                erstellungsdatum:
-                  required: false
-                  type: string
-                  format: date-time
-                  description: Datum an welchem das Dokument erstellt wurde.
-                vorgangsNummer:
-                  required: false
-                  type: string
-                  description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
       responses:
         200:
           description: Metadaten des Dokuments erfolgreich aktualisiert
@@ -231,12 +212,12 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/klassifizierung:
+  /dokumente/{id}/kategorisierung:
     get:
-      summary: Lade alle Klassifizierungen eines Dokuments
+      summary: Lade die Kategorisierung eines Dokuments
       description: |
-        Die Klassifizierungen eines Dokuments laden.
-      operationId: getKlassifizierung
+        Die Kategorisierung eines Dokuments laden.
+      operationId: getKategorisierung
       parameters:
       - name: id
         in: path
@@ -245,15 +226,15 @@ paths:
         type: string
       responses:
         200:
-          description: Eine Klassifizierung eines Dokuments
+          description: Eine Kategorisierung eines Dokuments
           schema:
-            $ref: '#/definitions/Klassifizierung'
+            $ref: '#/definitions/Kategorisierung'
         204:
-          description: Die Klassifizierung ist noch nicht abgeschlossen.
+          description: Die Kategorisierung ist noch nicht abgeschlossen.
           schema:
-            $ref: '#/definitions/KlassifizierungsStatus'
+            $ref: '#/definitions/KategorisierungsStatus'
         404:
-          description: Klassifizierungen nicht gefunden
+          description: Kategorisierungen nicht gefunden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -266,13 +247,13 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/klassifizierung/unterlagen/{unterlagenNummer}:
-  # TODO: Stößt dieser Request ein ernuete SmartCat-Klassifizierung an oder dient er lediglich zum Trainieren des Modells für soätere Klassifizierungs-Anfragen?
+  /dokumente/{id}/kategorisierung/unterlagen/{unterlagenNummer}:
+  # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
     put:
-      summary: Korrigiere Klassifizierungsbereich
+      summary: Korrigiere Kategorisierungsbereich
       description: |
-        Korrigiere Klassifizierung der Unterlagen der angegebenen Klassifizierung, um SmartCat Feedback zu liefern.
-      operationId: updateKlassifizierung
+        Korrigiere Kategorisierung der Unterlagen der angegebenen Kategorisierung, um SmartCat Feedback zu liefern.
+      operationId: updateKategorisierung
       parameters:
       - name: id
         in: path
@@ -296,9 +277,9 @@ paths:
         200:
           description: Bereich erfolgreich korrigiert
           schema:
-            $ref: '#/definitions/Klassifizierung'
+            $ref: '#/definitions/Kategorisierung'
         404:
-          description: Klassifizierung nicht gefunden
+          description: Kategorisierung nicht gefunden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -357,14 +338,14 @@ definitions:
           preview:
             $ref: "#/definitions/Relation"
             description: Base URL für die Preview Images
-          klassifizierung:
+          kategorisierung:
             $ref: "#/definitions/Relation"
-            description: URL zur Klassifizierung
+            description: URL zur Kategorisierung
 
-  KlassifizierungsStatus:
+  KategorisierungsStatus:
       type: object
       description: |
-        Wenn die Klassifizierung noch läuft, kann der Status der Klassifizierung erfragt werden.
+        Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung erfragt werden.
       properties:
         status:
           type: string
@@ -378,10 +359,10 @@ definitions:
             Progress Wert in Prozent 0 - 100
 
 
-  Klassifizierung:
+  Kategorisierung:
     type: object
     description: |
-      Enthält alle klassifizierten Unterlagen eines Dokuments als Liste.
+      Enthält alle kategorisierten Unterlagen eines Dokuments als Liste.
     properties:
       unterlagen:
         type: array
@@ -397,43 +378,34 @@ definitions:
   Unterlage:
     type: object
     description: |
-      Enthält die Klassifizierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
+      Enthält die Kategorisierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
     properties:
-      bereichsNummer:
-        description: Fortlaufende Nummer der Unterlage
-        type: integer
-        format: int32
-      klasse:
-        description: Unterlagenklasse eines Dokuments
-        type: string
-        enum:
-        - "GRUNDBUCH_AUSZUG"
-        - "PERSONALAUSWEIS"
-        - "LOHNABRECHNUNG"
-        # TBD Weitere Enums
-      # TODO Herausstellen, wie klasse und zuordnung (hierbei insbesondere zuordnung.name) in Zusammenhang stehen
-      # TODO Ist dies die Zuordnung Unterlage zu Unterlagenanforderungen?
+      kategorie:
+        description: |
+          Kategorien des Dokuments nach Relevanz sortiert.
+          Das erste Element beinhaltet die höchste Relevanz.
+        type: array
+        items:
+          type: string
+          example: Personalausweis
       zuordnung:
         type: array
         items:
-          $ref: "#/definitions/Zuordnung"
-      seiteVon:
+          $ref: "#/definitions/Bezug"
+      seite:
         type: integer
         format: int32
-        description: Seite in dem die Klassifizierung beginnt
-      seiteBis:
-        type: integer
-        format: int32
-        description: Seite in dem die Klassifizierung endet
+        description: Seite im Dokument
 
-  Zuordnung:
+  Bezug:
     type: object
     description: |
-      Zuordnung einer Unterlage zu einem Antrag.
+      Zuordnung einer Unterlage zu einem Antrag und dem entsprechenden Business-Object.
     properties:
       name:
-        description: Name der Unterlagenzuordnung 'Gehaltsnachweis' oder 'Legitimation'
-        type: string # Vielleicht auch ENUM?
+        description: Name der Unterlagenzuordnung
+        example: Gehaltsnachweis, Legitimation
+        type: string
       typ:
         description: |
           Art der Zuordnung. Automatisch durch ein Erkennungstool, oder manuell.
