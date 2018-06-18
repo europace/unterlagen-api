@@ -3,7 +3,27 @@ API rund um Plattformdokumente
 
 ### API Docs
 
-https://dokumente-api-7.api-docs.io/0.5.1
+https://dokumente-api-10.api-docs.io/0.6
+
+### JAVA Client generieren
+
+```
+java -jar swagger-codegen-cli-2.3.1.jar generate \
+-i https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/swagger.yaml \
+-l java -c codegen-config-file.json -o generated
+```
+
+##### Beispiel _codegen-config-file.json_: 
+
+```
+{
+  "artifactId": "${CLIENT_ARTIFACT_NAME}",
+  "groupId": "${GROUP_ID}",
+  "library": "retrofit2",
+  "artifactVersion": "${ARTIFACT_VERSION}",
+  "dateLibrary": "java8"
+}
+``` 
 
 ### Use-Cases
 
