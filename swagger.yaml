@@ -396,7 +396,7 @@ definitions:
         items:
           type: string
           example: Personalausweis
-      zuordnung:
+      bezug:
         type: array
         items:
           $ref: "#/definitions/Bezug"
