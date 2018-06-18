@@ -341,6 +341,9 @@ definitions:
           kategorisierung:
             $ref: "#/definitions/Relation"
             description: URL zur Kategorisierung
+          download:
+            $ref: "#/definitions/Relation"
+            description: URL zum Runterladen des Dokuments
 
   KategorisierungsStatus:
       type: object
