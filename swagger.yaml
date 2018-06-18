@@ -358,12 +358,17 @@ definitions:
           description: |
             Progress Wert in Prozent 0 - 100
 
-
   Kategorisierung:
     type: object
     description: |
       Enthält alle kategorisierten Unterlagen eines Dokuments als Liste.
     properties:
+      kategorien:
+        description: |
+          Alle möglichen Kategorien, die eine Unterlage enthalten kann.
+        type: array
+        items:
+          type: string
       unterlagen:
         type: array
         items:
