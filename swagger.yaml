@@ -41,8 +41,7 @@ paths:
         required: false
         name: erstellungsdatum
         type: string
-        format: date-time
-        description: Datum an welchem das Dokument erstellt wurde.
+        description: Datum an welchem das Dokument erstellt wurde als ISO8601DateFormat.
       - in: formData
         required: false
         name: vorgangsNummer
