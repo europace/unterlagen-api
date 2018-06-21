@@ -99,3 +99,32 @@ GET /dokumente?antrag={antragsNummer}
 GET /dokumente?seit={datum}
 
 ```
+
+#### Abruf Unterlagen Produktanbieter
+
+```
+GET /dokumente/unterlagen?antragsNummer=AB1234/1/2
+
+[
+  {
+    "id": "08154711XYZ",
+    "anzeigename": "Unterlage X",
+    "filename": "unterlage_x.pdf",
+    "erstellungsdatum": "2020.01.01T12:30:00",
+    "type": "application/pdf",
+    "vorgangsNummer": "AB1234",
+    "antragsNummer": "AB1234/1/2",
+    "_links": {
+      "self": {
+        "href":"/dokumente/unterlagen/{id}"
+       },  
+      "download": {
+        "href":"/dokumente/unterlagen/{id}/download"
+       }  
+    },
+    ...
+]
+
+
+
+```
