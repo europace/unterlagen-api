@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.6"
+  version: "0.7"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -41,8 +41,7 @@ paths:
         required: false
         name: erstellungsdatum
         type: string
-        format: date-time
-        description: Datum an welchem das Dokument erstellt wurde.
+        description: Datum an welchem das Dokument erstellt wurde als ISO8601DateFormat.
       - in: formData
         required: false
         name: vorgangsNummer
@@ -280,6 +279,54 @@ paths:
             $ref: '#/definitions/Kategorisierung'
         404:
           description: Kategorisierung nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+  /dokumente/{id}/preview:
+    get:
+      summary: Vorschaubild
+      description: |
+        Der Endpunkt liefert das Vorschaubild einer Seite eines Dokuments.
+      operationId: getPreview
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: page
+        in: query
+        description: anzuzeigende Seite, 1-basiert
+        required: true
+        type: integer
+        format: int32
+      - name: size
+        in: query
+        description: Bildgröße: small oder large
+        default: small
+        type: string
+        enum:
+        - 'small'
+        - 'large'
+      responses:
+        200:
+          description: Vorschaubild in JPEG
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        404:
+          description: Dokument nicht gefunden
           schema:
             $ref: '#/definitions/Error'
         default:
