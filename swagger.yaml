@@ -311,12 +311,12 @@ paths:
         format: int32
       - name: size
         in: query
-        description: Bildgröße: small oder large
-        default: small
+        description: "Bildgröße: small oder large"
+        default: 'small'
         type: string
         enum:
-        - 'small'
-        - 'large'
+          - 'small'
+          - 'large'
       responses:
         200:
           description: Vorschaubild in JPEG
