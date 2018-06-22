@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.7"
+  version: "0.8"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -297,6 +297,8 @@ paths:
       description: |
         Der Endpunkt liefert das Vorschaubild einer Seite eines Dokuments.
       operationId: getPreview
+      produces:
+        - image/jpeg
       parameters:
       - name: id
         in: path
@@ -320,11 +322,9 @@ paths:
       responses:
         200:
           description: Vorschaubild in JPEG
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
+          schema:
+            type:
+              file
         404:
           description: Dokument nicht gefunden
           schema:
