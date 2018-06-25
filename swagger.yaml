@@ -246,12 +246,12 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/kategorisierung/unterlagen/{unterlagenNummer}:
+  /dokumente/{id}/kategorisierung/unterlagen/{seite}:
   # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
     put:
-      summary: Korrigiere Kategorisierungsbereich
+      summary: Korrigiere kategorisierte Seite
       description: |
-        Korrigiere Kategorisierung der Unterlagen der angegebenen Kategorisierung, um SmartCat Feedback zu liefern.
+        Korrigiere Seite der Unterlage der angegebenen Kategorisierung, um SmartCat Feedback zu liefern.
       operationId: updateKategorisierung
       parameters:
       - name: id
@@ -259,9 +259,9 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: unterlagenNummer
+      - name: seite
         in: path
-        description: Nummer des zu aktualisierenden Bereiches.
+        description: Seite des zu aktualisierenden Bereiches im Dokument, 1-basiert.
         required: true
         type: integer
         format: int32
@@ -451,7 +451,7 @@ definitions:
       seite:
         type: integer
         format: int32
-        description: Seite im Dokument
+        description: Seite im Dokument, 1-basiert.
 
   Bezug:
     type: object
