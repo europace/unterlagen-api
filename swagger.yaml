@@ -249,7 +249,7 @@ paths:
   /dokumente/{id}/kategorisierung/unterlagen/{seite}:
   # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
     put:
-      summary: Korrigiere kategorisierte Seite
+      summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
       description: |
         Korrigiere Seite der Unterlage der angegebenen Kategorisierung, um SmartCat Feedback zu liefern.
       operationId: updateKategorisierung
@@ -266,7 +266,7 @@ paths:
         type: integer
         format: int32
       - in: body
-        name: bereich
+        name: unterlage
         description: Die aktualisierte Unterlage.
         schema:
           $ref: "#/definitions/Unterlage"
@@ -274,7 +274,7 @@ paths:
         - application/json
       responses:
         200:
-          description: Bereich erfolgreich korrigiert
+          description: Unterlage erfolgreich korrigiert
           schema:
             $ref: '#/definitions/Kategorisierung'
         404:
