@@ -1,6 +1,7 @@
 {
-  "filename":"Personalausweis_Max_Mustermann.pdf",
+  "id": "08154711XYZ",
   "anzeigename": "Personalausweis - Max Mustermann",
+  "filename":"Personalausweis_Max_Mustermann.pdf",
   "erstellungsdatum": "2018-06-30T12:12:12",
   "type": "application/pdf",
   "antragsNummer": "AB1234/1/2",
@@ -13,12 +14,12 @@
   },
   "_links": {
     "self": {
-      "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/FREIGABE_ID",
+      "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/08154711XYZ",
       "method": "GET",
       "type": ["application/json", "application/pdf"]
     },
-    "status": {
-      "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/FREIGABE_ID/status",
+    "abrufstatus": {
+      "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/08154711XYZ/abrufstatus",
       "method": "POST",
       "type": "application/json"
     }

@@ -100,29 +100,39 @@ GET /dokumente?seit={datum}
 
 ```
 
-#### Abruf Unterlagen Produktanbieter
+#### Abruf Unterlagen durch den Produktanbieter
 
 ```
-GET /dokumente/unterlagen?antragsNummer=AB1234/1/2
+GET /dokumente/unterlagen?antragsNummer=AB1234/1/2&freigegebenVor=...&freigegebenNach=...
 
 [
   {
     "id": "08154711XYZ",
-    "anzeigename": "Unterlage X",
-    "filename": "unterlage_x.pdf",
-    "erstellungsdatum": "2020.01.01T12:30:00",
+    "anzeigename": "Personalausweis - Max Mustermann",
+    "filename":"Personalausweis_Max_Mustermann.pdf",
+    "erstellungsdatum": "2018-06-30T12:12:12",
     "type": "application/pdf",
-    "vorgangsNummer": "AB1234",
     "antragsNummer": "AB1234/1/2",
+    "kategorie": "Personalausweis",
+    "bezung" : {
+      "antragsteller": {
+        "name" : "Max Mustermann",
+        "id": "AS1_ID"
+      }
+    },
     "_links": {
       "self": {
-        "href":"/dokumente/unterlagen/{id}"
-       },  
-      "download": {
-        "href":"/dokumente/unterlagen/{id}/download"
-       }  
-    },
-    ...
+        "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/08154711XYZ",
+        "method": "GET",
+        "type": ["application/json", "application/pdf"]
+      },
+      "abrufstatus": {
+        "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/08154711XYZ/abrufstatus",
+        "method": "POST",
+        "type": "application/json"
+      }
+    }
+  },    ...
 ]
 
 
