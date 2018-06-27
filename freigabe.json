@@ -1,0 +1,26 @@
+{
+  "filename":"Personalausweis_Max_Mustermann.pdf",
+  "anzeigename": "Personalausweis - Max Mustermann",
+  "erstellungsdatum": "2018-06-30T12:12:12",
+  "type": "application/pdf",
+  "antragsNummer": "AB1234/1/2",
+  "kategorie": "Personalausweis",
+  "bezung" : {
+    "antragsteller": {
+      "name" : "Max Mustermann",
+      "id": "AS1_ID"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/FREIGABE_ID",
+      "method": "GET",
+      "type": ["application/json", "application/pdf"]
+    },
+    "status": {
+      "href": "http://ep-doc-doctor.services.mtp.rz-hypoport.local/dokumente-freigaben/FREIGABE_ID/status",
+      "method": "POST",
+      "type": "application/json"
+    }
+  }
+}
