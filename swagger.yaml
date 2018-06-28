@@ -459,7 +459,15 @@ definitions:
     description: |
       Zuordnung einer Unterlage zu einem Antrag und dem entsprechenden Business-Object.
     properties:
-      name:
+      typ:
+        description:
+        type: string
+        enum:
+        - 'ANTRAGSTELLER'
+        - 'IMMOBILIE'
+        - 'VORHABEN'
+        - 'HAUSHALT'
+      anzeigename:
         description: Name des Bezugsobjektes
         example: Max Mustermann
         type: string
@@ -469,6 +477,49 @@ definitions:
           diese Zuordnung bezieht.
         type: string
 
+  FreigegebeneUnterlage:
+    type: object
+    description: |
+      Mehrseitige vom Vertrieb fuer den Produktanbieter freigegebene Unterlage.
+      Die Unterlage besitzt eine Kategorie und bezieht sich auf ein Bezugsobjekt.
+    properties:
+      id:
+        type: string
+        description: Unique identifier der freigegebenen Unterlage.
+      anzeigename:
+        type: string
+        description: Anzeigename.
+      filename:
+        type: string
+        description: Name der Datei.
+      freigabedatum:
+        type: string
+        format: date-time
+        description: Gibt das Datum an, an dem die Unterlage freigegeben wurde.
+      type:
+        type: string
+        description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+      kategorie:
+        description: Kategorie.
+        type: string
+      bezug:
+        $ref: "#/definitions/Bezug"
+      _links:
+        type: object
+        properties:
+          download:
+            $ref: "#/definitions/Relation"
+            description: URL zum Runterladen der freigegebenen Unterlage.
+
+  Freigabe:
+    type: object
+    description: |
+      Liste freigegebener Unterlagen.
+    properties:
+      freigegebeneUnterlagen:
+        type: array
+        items:
+          $ref: "#/definitions/FreigegebeneUnterlage"
 
   Relation:
     type: object

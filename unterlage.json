@@ -6,11 +6,10 @@
   "type": "application/pdf",
   "antragsNummer": "AB1234/1/2",
   "kategorie": "Personalausweis",
-  "bezung" : {
-    "antragsteller": {
-      "name" : "Max Mustermann",
-      "id": "AS1_ID"
-    }
+  "bezug" : {
+    "typ": "ANTRAGSTELLER",
+    "anzeigename" : "Max Mustermann",
+    "referenzId": "AS1_ID"
   },
   "_links": {
     "self": {
