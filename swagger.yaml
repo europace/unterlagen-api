@@ -340,6 +340,156 @@ paths:
       tags:
       - Dokumente
 
+  /dokumente/freigegebene-unterlagen:
+    get:
+      summary: Alle freigegebenen Unterlagen
+      description: |
+        Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
+      operationId: getFreigegebeneUnterlagen
+      parameters:
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer.
+          required: true
+          type: string
+        - name: von
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: bis
+          in: query
+          required: false
+          type: string
+          format: date-time
+
+      responses:
+        200:
+          description: Eine Liste von freigegebenen Unterlagen.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FreigegebeneUnterlage'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+      - Freigegebene Unterlage
+
+  /dokumente/freigegebene-unterlagen/{id}:
+    get:
+      summary: Eine freigegebene Unterlage
+      description: |
+        Dieser Endpunkt liefert eine freigegebene Unterlage.
+      operationId: getFreigegebeneUnterlage
+      parameters:
+        - name: id
+          in: path
+          description: Id der freigegebenen Unterlage
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: Eine freigegebene Unterlage.
+          schema:
+            $ref: '#/definitions/FreigegebeneUnterlage'
+        404:
+          description: Freigegebene Unterlage not found.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+      - Freigegebene Unterlage
+
+  /dokumente/freigegebene-unterlagen/{id}/status:
+    get:
+      summary: Freigabestatus auslesen
+      description: |
+        Dieser Endpunkt liefert den Abrufstatus einer freigegebene Unterlage.
+      operationId: getFreigegebeneUnterlageStatus
+      parameters:
+        - name: id
+          in: path
+          description: Id der freigegebenen Unterlage
+          required: true
+          type: string
+        - name: abrufstatus
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Abrufstatus'
+      responses:
+        200:
+          description: Eine freigegebene Unterlage.
+          schema:
+            $ref: '#/definitions/FreigegebeneUnterlage'
+        404:
+          description: Freigegebene Unterlage not found.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+      - Freigegebene Unterlage
+      - Freigabestatus
+    post:
+      summary: Freigabestatus setzen
+      description: |
+        Dieser Endpunkt setzt den Abrufstatus einer freigegebenen Unterlage.
+      operationId: setFreigegebeneUnterlageStatus
+      parameters:
+        - name: id
+          in: path
+          description: Id der freigegebenen Unterlage
+          required: true
+          type: string
+        - name: abrufstatus
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Abrufstatus'
+      responses:
+        200:
+          description: Eine freigegebene Unterlage.
+          schema:
+            $ref: '#/definitions/FreigegebeneUnterlage'
+        404:
+          description: Freigegebene Unterlage not found.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+      - Freigegebene Unterlage
+      - Freigabestatus
+
+
+
 securityDefinitions:
   oauth2:
     type: oauth2
@@ -502,14 +652,35 @@ definitions:
       kategorie:
         description: Kategorie.
         type: string
+      abrufstatus:
+        $ref: "#/definitions/Abrufstatus"
       bezug:
         $ref: "#/definitions/Bezug"
       _links:
         type: object
         properties:
-          download:
+          self:
+            description: Self Relation
             $ref: "#/definitions/Relation"
+          download:
             description: URL zum Runterladen der freigegebenen Unterlage.
+            $ref: "#/definitions/Relation"
+          abrufstatus:
+            description: URL zum Setzen des Abrufstatus
+            $ref: "#/definitions/Relation"
+
+
+  Abrufstatus:
+    type: object
+    properties:
+      status:
+        type: string
+        enum:
+        - SUCCESS
+        - FAIL
+        required: true
+      message:
+        type: string
 
   Freigabe:
     type: object
