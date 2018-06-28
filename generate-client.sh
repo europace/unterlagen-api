@@ -96,7 +96,7 @@ info "genriere client"
 info $(pwd)
 info "JAVA_HOME=$JAVA_HOME"
 info "java -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}"
-$JAVA_HOME/bin/java -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}
+"$JAVA_HOME/bin/java" -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}
 
 if [ $? -ne 0 ]; then exit "swagger codegen"; fi
 
