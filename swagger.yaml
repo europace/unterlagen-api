@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.8.1"
+  version: "0.9"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -436,6 +436,9 @@ definitions:
     description: |
       Enthält die Kategorisierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
     properties:
+      antragsNummer:
+        description: Antragsnummer, der die Unterlage zugeordnet ist .
+        type: string
       kategorie:
         description: |
           Kategorien des Dokuments nach Relevanz sortiert.
@@ -445,9 +448,7 @@ definitions:
           type: string
           example: Personalausweis
       bezug:
-        type: array
-        items:
-          $ref: "#/definitions/Bezug"
+        $ref: "#/definitions/Bezug"
       seite:
         type: integer
         format: int32
@@ -459,24 +460,15 @@ definitions:
       Zuordnung einer Unterlage zu einem Antrag und dem entsprechenden Business-Object.
     properties:
       name:
-        description: Name der Unterlagenzuordnung
-        example: Gehaltsnachweis, Legitimation
-        type: string
-      typ:
-        description: |
-          Art der Zuordnung. Automatisch durch ein Erkennungstool, oder manuell.
-        type: string
-        enum:
-          - 'AUTOMATISCHE_ERKENNUNG'
-          - 'MANUELLE_ERKENNUNG'
-      antragsNummer:
-        description: Antragsnummer, an dem die Zuordnung die Anforderung erfüllt.
+        description: Name des Bezugsobjektes
+        example: Max Mustermann
         type: string
       referenzId:
         description: |
           Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
           diese Zuordnung bezieht.
         type: string
+
 
   Relation:
     type: object

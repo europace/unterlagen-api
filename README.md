@@ -114,7 +114,7 @@ GET /dokumente/unterlagen?antragsNummer=AB1234/1/2&freigegebenVor=...&freigegebe
     "type": "application/pdf",
     "antragsNummer": "AB1234/1/2",
     "kategorie": "Personalausweis",
-    "bezung" : {
+    "bezug" : {
       "antragsteller": {
         "name" : "Max Mustermann",
         "id": "AS1_ID"
