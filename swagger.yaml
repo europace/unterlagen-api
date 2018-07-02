@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.9"
+  version: "0.10"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -246,7 +246,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/kategorisierung/unterlagen/{seite}:
+  /dokumente/{id}/kategorisierung/unterlagen:
   # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
     put:
       summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
@@ -259,17 +259,13 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: seite
-        in: path
-        description: Seite des zu aktualisierenden Bereiches im Dokument, 1-basiert.
-        required: true
-        type: integer
-        format: int32
-      - in: body
-        name: unterlage
-        description: Die aktualisierte Unterlage.
+      - name: unterlagen
+        in: body
+        description: Die aktualisierten Unterlage.
         schema:
-          $ref: "#/definitions/Unterlage"
+          type: array
+          items:
+            $ref: "#/definitions/Unterlage"
       consumes:
         - application/json
       responses:
