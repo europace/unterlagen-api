@@ -281,7 +281,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/kategorisierung/unterlagen/{seite}:
+  /dokumente/{id}/kategorisierung/unterlagen:
   # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
     put:
       summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
@@ -294,17 +294,13 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: seite
-        in: path
-        description: Seite des zu aktualisierenden Bereiches im Dokument, 1-basiert.
-        required: true
-        type: integer
-        format: int32
-      - in: body
-        name: unterlage
-        description: Die aktualisierte Unterlage.
+      - name: unterlagen
+        in: body
+        description: Die aktualisierten Unterlage.
         schema:
-          $ref: "#/definitions/Unterlage"
+          type: array
+          items:
+            $ref: "#/definitions/Unterlage"
       consumes:
         - application/json
       responses:
@@ -770,7 +766,7 @@ definitions:
          description: |
            Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
            diese Zuordnung bezieht.
-           
+
   UnterlagenFreigabe:
     type: object
     description: |
@@ -785,7 +781,7 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/UnterlagenReferenz"
-  
+
   UnterlagenReferenz:
     type: object
     description: |
