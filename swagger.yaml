@@ -350,7 +350,7 @@ paths:
         - name: antragsNummer
           in: query
           description: Antragsnummer.
-          required: true
+          required: false
           type: string
         - name: von
           in: query
