@@ -623,6 +623,9 @@ definitions:
       id:
         type: string
         description: Unique identifier der freigegebenen Unterlage.
+      antragsNummer:
+        type: string
+        description: Antragsnummer
       anzeigename:
         type: string
         description: Anzeigename.
