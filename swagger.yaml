@@ -344,25 +344,24 @@ paths:
     get:
       summary: Alle freigegebenen Unterlagen
       description: |
-        Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
+         Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
       operationId: getFreigegebeneUnterlagen
       parameters:
-        - name: antragsNummer
-          in: query
-          description: Antragsnummer.
-          required: false
-          type: string
-        - name: von
-          in: query
-          required: false
-          type: string
-          format: date-time
-        - name: bis
-          in: query
-          required: false
-          type: string
-          format: date-time
-
+      - name: antragsNummer
+        in: query
+        description: Antragsnummer.
+        required: false
+        type: string
+      - name: von
+        in: query
+        required: false
+        type: string
+        format: date-time
+      - name: bis
+        in: query
+        required: false
+        type: string
+        format: date-time
       responses:
         200:
           description: Eine Liste von freigegebenen Unterlagen.
@@ -374,11 +373,11 @@ paths:
           description: Unerwarteter Fehler
           schema:
             $ref: '#/definitions/Error'
-    security:
-    - oauth2:
-      - "API"
-    tags:
-    - Freigegebene Unterlage
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigegebene Unterlage
 
   /dokumente/freigegebene-unterlagen/{id}:
     get:
@@ -471,11 +470,11 @@ paths:
           description: Unerwarteter Fehler
           schema:
             $ref: '#/definitions/Error'
-    security:
-    - oauth2:
-      - "API"
-    tags:
-    - Freigegebene Unterlage Status
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigegebene Unterlage Status
 
 securityDefinitions:
   oauth2:
@@ -597,22 +596,22 @@ definitions:
       Zuordnung einer Unterlage zu einem Antrag und dem entsprechenden Business-Object.
     properties:
       typ:
-        description:
         type: string
-        enum:
-        - 'ANTRAGSTELLER'
-        - 'IMMOBILIE'
-        - 'VORHABEN'
-        - 'HAUSHALT'
-      anzeigename:
-        description: Name des Bezugsobjektes
-        example: Max Mustermann
-        type: string
-      referenzId:
         description: |
-          Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
-          diese Zuordnung bezieht.
-        type: string
+        enum:
+          - 'ANTRAGSTELLER'
+          - 'IMMOBILIE'
+          - 'VORHABEN'
+          - 'HAUSHALT'
+      anzeigename:
+         description: Name des Bezugsobjektes
+         example: Max Mustermann
+         type: string
+      referenzId:
+         type: string
+         description: |
+           Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
+           diese Zuordnung bezieht.
 
   FreigegebeneUnterlage:
     type: object
@@ -668,7 +667,6 @@ definitions:
         enum:
         - SUCCESS
         - FAIL
-        required: true
       message:
         type: string
 
