@@ -211,7 +211,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/kategorisierung:
+  /dokumente/{id}/starte-kategorisierung:
     post:
       summary: starte Kategorisierung eines Dokuments
       description: |
@@ -223,12 +223,12 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: kategorisierungsMetadaten
+      - name: kategorisierungsMetadatenList
         in: body
         description: Alle Metadaten nach den SmartCat im Dokument suchen soll.
         required: true
         schema:
-          $ref: '#/definitions/KategorisierungsReferenzen'
+          $ref: '#/definitions/KategorisierungsMetadatenList'
       responses:
         200:
           description: Eine Kategorisierung eines Dokuments starten
@@ -245,6 +245,8 @@ paths:
         - "API"
       tags:
       - Dokumente
+
+  /dokumente/{id}/kategorisierung:
     get:
       summary: Lade die Kategorisierung eines Dokuments
       description: |
@@ -562,19 +564,19 @@ definitions:
             $ref: "#/definitions/Relation"
             description: URL zum Runterladen des Dokuments
 
-  KategorisierungsReferenzen:
+  KategorisierungsMetadatenList:
       type: object
       description: |
-        Alle Metadaten nach den SmartCat im Dokument suchen soll.
+        Alle Metadaten nach denen SmartCat im Dokument suchen soll.
       properties:
         antragsNummer:
           type: string
-        referenzen:
+        metadaten:
           type: array
           items:
-           $ref: "#/definitions/KategorisierungsReferenz"
+           $ref: "#/definitions/KategorisierungsMetadaten"
 
-  KategorisierungsReferenz:
+  KategorisierungsMetadaten:
       type: object
       description: |
         Beinhaltet die Informationen des Antragstellers oder der Immobilie.
