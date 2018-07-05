@@ -211,6 +211,41 @@ paths:
       tags:
       - Dokumente
 
+  /dokumente/{id}/starte-kategorisierung:
+    post:
+      summary: starte Kategorisierung eines Dokuments
+      description: |
+        Die Kategorisierung eines Dokuments laden.
+      operationId: starteKategorisierung
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: kategorisierungsMetadatenList
+        in: body
+        description: Alle Metadaten nach den SmartCat im Dokument suchen soll.
+        required: true
+        schema:
+          $ref: '#/definitions/KategorisierungsMetadatenList'
+      responses:
+        200:
+          description: Eine Kategorisierung eines Dokuments starten
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
   /dokumente/{id}/kategorisierung:
     get:
       summary: Lade die Kategorisierung eines Dokuments
@@ -528,6 +563,59 @@ definitions:
           download:
             $ref: "#/definitions/Relation"
             description: URL zum Runterladen des Dokuments
+
+  KategorisierungsMetadatenList:
+      type: object
+      description: |
+        Alle Metadaten nach denen SmartCat im Dokument suchen soll.
+      properties:
+        antragsNummer:
+          type: string
+        metadaten:
+          type: array
+          items:
+           $ref: "#/definitions/KategorisierungsMetadaten"
+
+  KategorisierungsMetadaten:
+      type: object
+      description: |
+        Beinhaltet die Informationen des Antragstellers oder der Immobilie.
+      properties:
+        typ:
+         enum:
+          - 'ANTRAGSTELLER'
+          - 'IMMOBILIE'
+        id:
+          type: string
+          description: |
+            Das ist die Referenz Id der Immobilie oder des Antragstellers.
+        values:
+           type: array
+           items:
+             type: object
+             properties:
+              vorname:
+                type: string
+              nachname:
+                type: string
+              titel:
+                type: string
+              geburtsdatum:
+                type: string
+              plz:
+                type: string
+              stadt:
+                type: string
+              iban:
+                type: string
+              bic:
+                type: string
+              einkommenBrutto:
+                type: string
+              einkommenNetto:
+                type: string
+              steuerId:
+                type: string
 
   KategorisierungsStatus:
       type: object

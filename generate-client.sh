@@ -91,12 +91,18 @@ get_swagger_config > codegen-config-file.json
 
 rm -rf "${OUTPUT_DIR}/*"
 
+if [ -z ${JAVA_HOME+x} ]; then
+  JAVA_CMD='java'
+else
+  info "using JAVA_HOME=$JAVA_HOME"
+  JAVA_CMD="$JAVA_HOME/bin/java"
+fi
+
 # generate client
 info "genriere client"
 info $(pwd)
-info "JAVA_HOME=$JAVA_HOME"
-info "java -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}"
-"$JAVA_HOME/bin/java" -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}
+info "${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}"
+${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}
 
 if [ $? -ne 0 ]; then exit "swagger codegen"; fi
 
