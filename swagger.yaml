@@ -563,6 +563,9 @@ definitions:
           download:
             $ref: "#/definitions/Relation"
             description: URL zum Runterladen des Dokuments
+          publicDownload:
+            $ref: "#/definitions/Relation"
+            description: public URL zum Runterladen des Dokuments (temporärer Workaro)
 
   KategorisierungsMetadatenList:
       type: object
