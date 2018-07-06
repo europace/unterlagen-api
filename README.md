@@ -100,7 +100,7 @@ GET /dokumente?seit={datum}
 
 ```
 
-#### Abruf Unterlagen durch den Produktanbieter
+#### Abruf von freigegebenen Unterlagen durch den Produktanbieter
 
 ```
 GET /dokumente/unterlagen?antragsNummer=AB1234/1/2&freigegebenVor=...&freigegebenNach=...

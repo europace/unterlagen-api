@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.10"
+  version: "0.12.1"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -211,6 +211,41 @@ paths:
       tags:
       - Dokumente
 
+  /dokumente/{id}/starte-kategorisierung:
+    post:
+      summary: starte Kategorisierung eines Dokuments
+      description: |
+        Die Kategorisierung eines Dokuments laden.
+      operationId: starteKategorisierung
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: kategorisierungsMetadatenList
+        in: body
+        description: Alle Metadaten nach den SmartCat im Dokument suchen soll.
+        required: true
+        schema:
+          $ref: '#/definitions/KategorisierungsMetadatenList'
+      responses:
+        200:
+          description: Eine Kategorisierung eines Dokuments starten
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
   /dokumente/{id}/kategorisierung:
     get:
       summary: Lade die Kategorisierung eines Dokuments
@@ -336,6 +371,142 @@ paths:
       tags:
       - Dokumente
 
+  /dokumente/freigegebene-unterlagen:
+    get:
+      summary: Alle freigegebenen Unterlagen
+      description: |
+         Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
+      operationId: getFreigegebeneUnterlagen
+      parameters:
+      - name: antragsNummer
+        in: query
+        description: Antragsnummer.
+        required: false
+        type: string
+      - name: von
+        in: query
+        required: false
+        type: string
+        format: date-time
+      - name: bis
+        in: query
+        required: false
+        type: string
+        format: date-time
+      responses:
+        200:
+          description: Eine Liste von freigegebenen Unterlagen.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FreigegebeneUnterlage'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigegebene Unterlage
+
+  /dokumente/freigegebene-unterlagen/{id}:
+    get:
+      summary: Eine freigegebene Unterlage
+      description: |
+        Dieser Endpunkt liefert eine freigegebene Unterlage.
+      operationId: getFreigegebeneUnterlage
+      parameters:
+        - name: id
+          in: path
+          description: Id der freigegebenen Unterlage
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: Eine freigegebene Unterlage.
+          schema:
+            $ref: '#/definitions/FreigegebeneUnterlage'
+        404:
+          description: Freigegebene Unterlage not found.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigegebene Unterlage
+
+  /dokumente/freigegebene-unterlagen/{id}/status:
+    get:
+      summary: Freigabestatus auslesen
+      description: |
+        Dieser Endpunkt liefert den Abrufstatus einer freigegebene Unterlage.
+      operationId: getFreigegebeneUnterlageStatus
+      parameters:
+        - name: id
+          in: path
+          description: Id der freigegebenen Unterlage
+          required: true
+          type: string
+        - name: abrufstatus
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Abrufstatus'
+      responses:
+        200:
+          description: Eine freigegebene Unterlage.
+          schema:
+            $ref: '#/definitions/FreigegebeneUnterlage'
+        404:
+          description: Freigegebene Unterlage not found.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Freigabestatus setzen
+      description: |
+        Dieser Endpunkt setzt den Abrufstatus einer freigegebenen Unterlage.
+      operationId: setFreigegebeneUnterlageStatus
+      parameters:
+        - name: id
+          in: path
+          description: Id der freigegebenen Unterlage
+          required: true
+          type: string
+        - name: abrufstatus
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Abrufstatus'
+      responses:
+        200:
+          description: Eine freigegebene Unterlage.
+          schema:
+            $ref: '#/definitions/FreigegebeneUnterlage'
+        404:
+          description: Freigegebene Unterlage not found.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigegebene Unterlage Status
+
 securityDefinitions:
   oauth2:
     type: oauth2
@@ -388,6 +559,62 @@ definitions:
           download:
             $ref: "#/definitions/Relation"
             description: URL zum Runterladen des Dokuments
+          publicDownload:
+            $ref: "#/definitions/Relation"
+            description: public URL zum Runterladen des Dokuments (temporärer Workaro)
+
+  KategorisierungsMetadatenList:
+      type: object
+      description: |
+        Alle Metadaten nach denen SmartCat im Dokument suchen soll.
+      properties:
+        antragsNummer:
+          type: string
+        metadaten:
+          type: array
+          items:
+           $ref: "#/definitions/KategorisierungsMetadaten"
+
+  KategorisierungsMetadaten:
+      type: object
+      description: |
+        Beinhaltet die Informationen des Antragstellers oder der Immobilie.
+      properties:
+        typ:
+         enum:
+          - 'ANTRAGSTELLER'
+          - 'IMMOBILIE'
+        id:
+          type: string
+          description: |
+            Das ist die Referenz Id der Immobilie oder des Antragstellers.
+        values:
+           type: array
+           items:
+             type: object
+             properties:
+              vorname:
+                type: string
+              nachname:
+                type: string
+              titel:
+                type: string
+              geburtsdatum:
+                type: string
+              plz:
+                type: string
+              stadt:
+                type: string
+              iban:
+                type: string
+              bic:
+                type: string
+              einkommenBrutto:
+                type: string
+              einkommenNetto:
+                type: string
+              steuerId:
+                type: string
 
   KategorisierungsStatus:
       type: object
@@ -455,16 +682,90 @@ definitions:
     description: |
       Zuordnung einer Unterlage zu einem Antrag und dem entsprechenden Business-Object.
     properties:
-      name:
-        description: Name des Bezugsobjektes
-        example: Max Mustermann
+      typ:
         type: string
-      referenzId:
         description: |
-          Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
-          diese Zuordnung bezieht.
+        enum:
+          - 'ANTRAGSTELLER'
+          - 'IMMOBILIE'
+          - 'VORHABEN'
+          - 'HAUSHALT'
+      anzeigename:
+         description: Name des Bezugsobjektes
+         example: Max Mustermann
+         type: string
+      referenzId:
+         type: string
+         description: |
+           Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
+           diese Zuordnung bezieht.
+
+  FreigegebeneUnterlage:
+    type: object
+    description: |
+      Mehrseitige vom Vertrieb fuer den Produktanbieter freigegebene Unterlage.
+      Die Unterlage besitzt eine Kategorie und bezieht sich auf ein Bezugsobjekt.
+    properties:
+      id:
+        type: string
+        description: Unique identifier der freigegebenen Unterlage.
+      antragsNummer:
+        type: string
+        description: Antragsnummer
+      anzeigename:
+        type: string
+        description: Anzeigename.
+      filename:
+        type: string
+        description: Name der Datei.
+      freigabedatum:
+        type: string
+        format: date-time
+        description: Gibt das Datum an, an dem die Unterlage freigegeben wurde.
+      type:
+        type: string
+        description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+      kategorie:
+        description: Kategorie.
+        type: string
+      abrufstatus:
+        $ref: "#/definitions/Abrufstatus"
+      bezug:
+        $ref: "#/definitions/Bezug"
+      _links:
+        type: object
+        properties:
+          self:
+            description: Self Relation
+            $ref: "#/definitions/Relation"
+          download:
+            description: URL zum Runterladen der freigegebenen Unterlage.
+            $ref: "#/definitions/Relation"
+          abrufstatus:
+            description: URL zum Setzen des Abrufstatus
+            $ref: "#/definitions/Relation"
+
+
+  Abrufstatus:
+    type: object
+    properties:
+      status:
+        type: string
+        enum:
+        - SUCCESS
+        - FAIL
+      message:
         type: string
 
+  Freigabe:
+    type: object
+    description: |
+      Liste freigegebener Unterlagen.
+    properties:
+      freigegebeneUnterlagen:
+        type: array
+        items:
+          $ref: "#/definitions/FreigegebeneUnterlage"
 
   Relation:
     type: object
