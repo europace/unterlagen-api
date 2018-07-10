@@ -371,7 +371,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/unterlagen-freigeben:
+  /dokumente/freigegebene-unterlagen:
     post:
       summary: Unterlagen freigeben
       description: |
@@ -410,7 +410,6 @@ paths:
       tags:
       - Freigegebene Unterlage
 
-  /dokumente/freigegebene-unterlagen:
     get:
       summary: Alle freigegebenen Unterlagen
       description: |
@@ -780,20 +779,17 @@ definitions:
       seiten:
         type: array
         items:
-          $ref: "#/definitions/UnterlagenReferenz"
-
-  UnterlagenReferenz:
-    type: object
-    description: |
-      Verweis auf eine Unterlage.
-    properties:
-      dokumentId:
-        type: string
-        description: ID des referenzierten Dokuments.
-      seite:
-        type: integer
-        format: int32
-        description: Seite im Dokument, 1-basiert.
+          type: object
+          description: |
+            Verweis auf eine Unterlage.
+          properties:
+            dokumentId:
+              type: string
+              description: ID des referenzierten Dokuments.
+            seite:
+              type: integer
+              format: int32
+              description: Seite im Dokument, 1-basiert.
 
   FreigegebeneUnterlage:
     type: object
