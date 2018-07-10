@@ -571,7 +571,6 @@ definitions:
           type: string
           description: |
             Wählt das Modell, mit dem SmartCat das dokument katgorisieren soll.
-          required: true
           enum:
            - 'BAUFI'
            - 'RATE'
