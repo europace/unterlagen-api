@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.12.1"
+  version: "0.13"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -211,9 +211,9 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/starte-kategorisierung:
+  /dokumente/{id}/kategorisierung:
     post:
-      summary: starte Kategorisierung eines Dokuments
+      summary: Starte Kategorisierung eines Dokuments
       description: |
         Die Kategorisierung eines Dokuments laden.
       operationId: starteKategorisierung
@@ -223,12 +223,12 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: kategorisierungsMetadatenList
+      - name: kategorisierungsAnfrage
         in: body
-        description: Alle Metadaten nach den SmartCat im Dokument suchen soll.
+        description: Alle zur Kategorisierung durch SmartCat notwendigen Informationen.
         required: true
         schema:
-          $ref: '#/definitions/KategorisierungsMetadatenList'
+          $ref: '#/definitions/KategorisierungsAnfrage'
       responses:
         200:
           description: Eine Kategorisierung eines Dokuments starten
@@ -246,7 +246,6 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/kategorisierung:
     get:
       summary: Lade die Kategorisierung eines Dokuments
       description: |
@@ -563,58 +562,49 @@ definitions:
             $ref: "#/definitions/Relation"
             description: public URL zum Runterladen des Dokuments (temporärer Workaro)
 
-  KategorisierungsMetadatenList:
+  KategorisierungsAnfrage:
       type: object
       description: |
         Alle Metadaten nach denen SmartCat im Dokument suchen soll.
       properties:
-        antragsNummer:
-          type: string
-        metadaten:
-          type: array
-          items:
-           $ref: "#/definitions/KategorisierungsMetadaten"
-
-  KategorisierungsMetadaten:
-      type: object
-      description: |
-        Beinhaltet die Informationen des Antragstellers oder der Immobilie.
-      properties:
-        typ:
-         enum:
-          - 'ANTRAGSTELLER'
-          - 'IMMOBILIE'
-        id:
+        kategorisierungsModell:
           type: string
           description: |
-            Das ist die Referenz Id der Immobilie oder des Antragstellers.
-        values:
-           type: array
-           items:
-             type: object
-             properties:
-              vorname:
-                type: string
-              nachname:
-                type: string
-              titel:
-                type: string
-              geburtsdatum:
-                type: string
-              plz:
-                type: string
-              stadt:
-                type: string
-              iban:
-                type: string
-              bic:
-                type: string
-              einkommenBrutto:
-                type: string
-              einkommenNetto:
-                type: string
-              steuerId:
-                type: string
+            Wählt das Modell, mit dem SmartCat das dokument katgorisieren soll.
+          required: true
+          enum:
+           - 'BAUFI'
+           - 'RATE'
+        bezuege:
+          type: array
+          items:
+            type: object
+            properties:
+              bezug:
+                $ref: "#/definitions/Bezug"
+              bezugsDetails:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      enum:
+                      - 'VORNAME'
+                      - 'NACHNAME'
+                      - 'TITEL'
+                      - 'GEBURTSDATUM'
+                      - 'PLZ'
+                      - 'STADT'
+                      - 'STRASSE'
+                      - 'HAUSNUMMER'
+                      - 'IBAN'
+                      - 'BIC'
+                      - 'EINKOMMENBRUTTO'
+                      - 'EINKOMMENNETTO'
+                      - 'STEUERID'
+                    value:
+                      type: string
 
   KategorisierungsStatus:
       type: object
