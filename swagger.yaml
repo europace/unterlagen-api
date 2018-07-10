@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.12.1"
+  version: "0.13"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -375,6 +375,45 @@ paths:
       tags:
       - Dokumente
 
+  /dokumente/unterlagen-freigeben:
+    post:
+      summary: Unterlagen freigeben
+      description: |
+         Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen.
+      operationId: erzeugeFreigegebeneUnterlagen
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: freigabe
+          description: Freizugebende Unterlagen für einen Antrag und ProduktAnbieter.
+          required: true
+          schema:
+            type: object
+            properties:
+              produktAnbieter:
+                type: string
+              antragsNummer:
+                type: string
+              unterlagen:
+                type: array
+                items:
+                  $ref: '#/definitions/UnterlagenFreigabe'
+      responses:
+        201:
+          description: Keine Rückgabe-Objekte.
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigegebene Unterlage
+
   /dokumente/freigegebene-unterlagen:
     get:
       summary: Alle freigegebenen Unterlagen
@@ -703,6 +742,34 @@ definitions:
          description: |
            Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
            diese Zuordnung bezieht.
+           
+  UnterlagenFreigabe:
+    type: object
+    description: |
+      Freizugebende Unterlagen nach Kategorie und Bezug gruppiert.
+    properties:
+      kategorie:
+        type: string
+        description: Kategorie
+      bezug:
+        $ref: "#/definitions/Bezug"
+      seiten:
+        type: array
+        items:
+          $ref: "#/definitions/UnterlagenReferenz"
+  
+  UnterlagenReferenz:
+    type: object
+    description: |
+      Verweis auf eine Unterlage.
+    properties:
+      dokumentId:
+        type: string
+        description: ID des referenzierten Dokuments.
+      seite:
+        type: integer
+        format: int32
+        description: Seite im Dokument, 1-basiert.
 
   FreigegebeneUnterlage:
     type: object
@@ -732,8 +799,9 @@ definitions:
       kategorie:
         description: Kategorie.
         type: string
-      abrufstatus:
-        $ref: "#/definitions/Abrufstatus"
+      produktAnbieter:
+        type: string
+        description: ID des ProduktAnbieters.
       bezug:
         $ref: "#/definitions/Bezug"
       _links:
@@ -746,7 +814,7 @@ definitions:
             description: URL zum Runterladen der freigegebenen Unterlage.
             $ref: "#/definitions/Relation"
           abrufstatus:
-            description: URL zum Setzen des Abrufstatus
+            description: URL zum Abfragen und Setzen des Abrufstatus
             $ref: "#/definitions/Relation"
 
 
