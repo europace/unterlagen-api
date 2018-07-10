@@ -485,6 +485,37 @@ paths:
       tags:
       - Freigegebene Unterlage
 
+  /dokumente/freigegebene-unterlagen/{id}/content:
+    get:
+      summary: Eine freigegebene Unterlage runterladen
+      description: |
+        An diesen Endpunkt kann der Inhalt einer freigegebenen Unterlage heruntergeladen werden.
+      operationId: getFreigegebeneUnterlageContent
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier der freigegebenen Unterlage.
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: file
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
   /dokumente/freigegebene-unterlagen/{id}/status:
     get:
       summary: Freigabestatus auslesen
