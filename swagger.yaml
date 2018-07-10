@@ -213,7 +213,7 @@ paths:
 
   /dokumente/{id}/kategorisierung:
     post:
-      summary: starte Kategorisierung eines Dokuments
+      summary: Starte Kategorisierung eines Dokuments
       description: |
         Die Kategorisierung eines Dokuments laden.
       operationId: starteKategorisierung
@@ -223,12 +223,12 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: kategorisierungsMetadatenList
+      - name: kategorisierungsAnfrage
         in: body
-        description: Alle Metadaten nach den SmartCat im Dokument suchen soll.
+        description: Alle zur Kategorisierung durch SmartCat notwendigen Informationen.
         required: true
         schema:
-          $ref: '#/definitions/KategorisierungsMetadatenList'
+          $ref: '#/definitions/KategorisierungsAnfrage'
       responses:
         200:
           description: Eine Kategorisierung eines Dokuments starten
@@ -245,6 +245,7 @@ paths:
         - "API"
       tags:
       - Dokumente
+
     get:
       summary: Lade die Kategorisierung eines Dokuments
       description: |
@@ -267,6 +268,47 @@ paths:
             $ref: '#/definitions/KategorisierungsStatus'
         404:
           description: Kategorisierungen nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+  /dokumente/{id}/kategorisierung/unterlagen:
+  # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
+    put:
+      summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
+      description: |
+        Korrigiere Seite der Unterlage der angegebenen Kategorisierung, um SmartCat Feedback zu liefern.
+      operationId: updateKategorisierung
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: unterlagen
+        in: body
+        description: Die aktualisierten Unterlage.
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Unterlage"
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: Unterlage erfolgreich korrigiert
+          schema:
+            $ref: '#/definitions/Kategorisierung'
+        404:
+          description: Kategorisierung nicht gefunden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -585,58 +627,48 @@ definitions:
             $ref: "#/definitions/Relation"
             description: URL zum Runterladen des Dokuments
 
-  KategorisierungsMetadatenList:
+  KategorisierungsAnfrage:
       type: object
       description: |
         Alle Metadaten nach denen SmartCat im Dokument suchen soll.
       properties:
-        antragsNummer:
-          type: string
-        metadaten:
-          type: array
-          items:
-           $ref: "#/definitions/KategorisierungsMetadaten"
-
-  KategorisierungsMetadaten:
-      type: object
-      description: |
-        Beinhaltet die Informationen des Antragstellers oder der Immobilie.
-      properties:
-        typ:
-         enum:
-          - 'ANTRAGSTELLER'
-          - 'IMMOBILIE'
-        id:
+        kategorisierungsModell:
           type: string
           description: |
-            Das ist die Referenz Id der Immobilie oder des Antragstellers.
-        values:
-           type: array
-           items:
-             type: object
-             properties:
-              vorname:
-                type: string
-              nachname:
-                type: string
-              titel:
-                type: string
-              geburtsdatum:
-                type: string
-              plz:
-                type: string
-              stadt:
-                type: string
-              iban:
-                type: string
-              bic:
-                type: string
-              einkommenBrutto:
-                type: string
-              einkommenNetto:
-                type: string
-              steuerId:
-                type: string
+            Wählt das Modell, mit dem SmartCat das dokument katgorisieren soll.
+          enum:
+           - 'BAUFI'
+           - 'RATE'
+        bezuege:
+          type: array
+          items:
+            type: object
+            properties:
+              bezug:
+                $ref: "#/definitions/Bezug"
+              bezugsDetails:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      enum:
+                      - 'VORNAME'
+                      - 'NACHNAME'
+                      - 'TITEL'
+                      - 'GEBURTSDATUM'
+                      - 'PLZ'
+                      - 'STADT'
+                      - 'STRASSE'
+                      - 'HAUSNUMMER'
+                      - 'IBAN'
+                      - 'BIC'
+                      - 'EINKOMMENBRUTTO'
+                      - 'EINKOMMENNETTO'
+                      - 'STEUERID'
+                    value:
+                      type: string
 
   KategorisierungsStatus:
       type: object
@@ -778,6 +810,8 @@ definitions:
       produktAnbieter:
         type: string
         description: ID des ProduktAnbieters.
+      abrufstatus:
+        $ref: "#/definitions/Abrufstatus"
       bezug:
         $ref: "#/definitions/Bezug"
       _links:
