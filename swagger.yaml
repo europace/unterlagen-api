@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.1"
+  version: "0.14.2"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -591,6 +591,9 @@ definitions:
       id:
         type: string
         description: Unique identifier des Dokuments.
+      schluessel:
+        type: string
+        description: Öffentlicher Schlüssel der Dokumentenverwaltung.
       anzeigename:
         type: string
         description: Anzeigename, kann verändert werden.
