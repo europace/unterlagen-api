@@ -388,10 +388,12 @@ paths:
           schema:
             type: object
             properties:
-              produktAnbieter:
+              empfaengerId:
+                $ref: '#/definitions/PartnerID'
+                description: Empfänger dieser Freigabe (Produktanbieter oder Kreditsachbearbeiter)
+              referenzNummer:
                 type: string
-              antragsNummer:
-                type: string
+                description: Wird beim Abruf von Freigaben mit zurückgeliefert und dient dem Abrufer zur Zuordnung
               unterlagen:
                 type: array
                 items:
@@ -414,9 +416,9 @@ paths:
          Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
       operationId: getFreigegebeneUnterlagen
       parameters:
-      - name: antragsNummer
+      - name: referenzNummer
         in: query
-        description: Antragsnummer.
+        description: Die bei der Freigaben übergebene Referenznummer
         required: false
         type: string
       - name: von
@@ -788,9 +790,9 @@ definitions:
       id:
         type: string
         description: Unique identifier der freigegebenen Unterlage.
-      antragsNummer:
+      referenzNummer:
         type: string
-        description: Antragsnummer
+        description: Die bei der Freigaben übergebene Referenznummer
       anzeigename:
         type: string
         description: Anzeigename.
@@ -801,19 +803,22 @@ definitions:
         type: string
         format: date-time
         description: Gibt das Datum an, an dem die Unterlage freigegeben wurde.
-      type:
+      mediatype:
         type: string
         description: Media-Type nach https://tools.ietf.org/html/rfc6838.
       kategorie:
         description: Kategorie.
         type: string
-      produktAnbieter:
-        type: string
-        description: ID des ProduktAnbieters.
-      abrufstatus:
-        $ref: "#/definitions/Abrufstatus"
       bezug:
         $ref: "#/definitions/Bezug"
+      empfaengerId:
+        $ref: "#/definitions/PartnerId"
+        description: ProduktAnbieter oder Kreditsachbearbeiter
+      freigebenderId:
+        $ref: "#/definitions/PartnerId"
+        description: freigebender Vermittler
+      abrufstatus:
+        $ref: "#/definitions/Abrufstatus"
       _links:
         type: object
         properties:
@@ -848,6 +853,12 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/FreigegebeneUnterlage"
+
+  PartnerId:
+    type: string
+    description: |
+      Id eines Partners auf der Europace-Plattform. Identifiziert eine Plakette im Partnermanagement.
+    example: ABC45
 
   Relation:
     type: object
