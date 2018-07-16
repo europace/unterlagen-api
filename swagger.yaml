@@ -388,8 +388,8 @@ paths:
           schema:
             type: object
             properties:
-              empfaengerId:
-                $ref: '#/definitions/PartnerID'
+              empfaenger:
+                $ref: '#/definitions/Partner'
                 description: Empfänger dieser Freigabe (Produktanbieter oder Kreditsachbearbeiter)
               antragsNummer:
                 type: string
@@ -791,6 +791,7 @@ definitions:
         description: Unique identifier der freigegebenen Unterlage.
       antragsNummer:
         type: string
+        description: Antragsnummer
       anzeigename:
         type: string
         description: Anzeigename.
@@ -801,7 +802,7 @@ definitions:
         type: string
         format: date-time
         description: Gibt das Datum an, an dem die Unterlage freigegeben wurde.
-      mediatype:
+      mediaType:
         type: string
         description: Media-Type nach https://tools.ietf.org/html/rfc6838.
       kategorie:
@@ -809,11 +810,11 @@ definitions:
         type: string
       bezug:
         $ref: "#/definitions/Bezug"
-      empfaengerId:
-        $ref: "#/definitions/PartnerId"
+      empfaenger:
+        $ref: "#/definitions/Partner"
         description: ProduktAnbieter oder Kreditsachbearbeiter
-      freigebenderId:
-        $ref: "#/definitions/PartnerId"
+      freigebender:
+        $ref: "#/definitions/Partner"
         description: freigebender Vermittler
       abrufstatus:
         $ref: "#/definitions/Abrufstatus"
@@ -852,11 +853,13 @@ definitions:
         items:
           $ref: "#/definitions/FreigegebeneUnterlage"
 
-  PartnerId:
-    type: string
-    description: |
-      Id eines Partners auf der Europace-Plattform. Identifiziert eine Plakette im Partnermanagement.
-    example: ABC45
+  Partner:
+    type: object
+    properties:
+      partnerId:
+        type: string
+        description: Id eines Partners auf der Europace-Plattform. Identifiziert eine Plakette im Partnermanagement.
+        example: ABC45
 
   Relation:
     type: object
