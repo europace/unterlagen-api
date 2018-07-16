@@ -391,9 +391,8 @@ paths:
               empfaengerId:
                 $ref: '#/definitions/PartnerID'
                 description: Empfänger dieser Freigabe (Produktanbieter oder Kreditsachbearbeiter)
-              referenzNummer:
+              antragsNummer:
                 type: string
-                description: Wird beim Abruf von Freigaben mit zurückgeliefert und dient dem Abrufer zur Zuordnung
               unterlagen:
                 type: array
                 items:
@@ -416,9 +415,9 @@ paths:
          Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
       operationId: getFreigegebeneUnterlagen
       parameters:
-      - name: referenzNummer
+      - name: antragsNummer
         in: query
-        description: Die bei der Freigaben übergebene Referenznummer
+        description: Antragsnummer.
         required: false
         type: string
       - name: von
@@ -790,9 +789,8 @@ definitions:
       id:
         type: string
         description: Unique identifier der freigegebenen Unterlage.
-      referenzNummer:
+      antragsNummer:
         type: string
-        description: Die bei der Freigaben übergebene Referenznummer
       anzeigename:
         type: string
         description: Anzeigename.
