@@ -397,6 +397,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/UnterlagenFreigabe'
+        - in: query
+          name: callbackUrl
+          description: Wenn angegeben, erfolgt ein POST-Request der Freigabe an diese URL.
+          required: false
+          type: string
+          format: uri
       responses:
         201:
           description: Keine Rückgabe-Objekte.
