@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.3"
+  version: "0.14.4"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -619,6 +619,11 @@ definitions:
       vorgangsNummer:
         type: string
         description: Vorgang dem das Dokument zugeordnet ist.
+      kategorisierungsStatus:
+        type: object
+        description: |
+          Status der Kategorisierung des Dokuments.
+        $ref: "#/definitions/KategorisierungsStatus"
       _links:
         type: object
         properties:
@@ -683,11 +688,14 @@ definitions:
       description: |
         Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung erfragt werden.
       properties:
+        properties:
         status:
           type: string
           enum:
-          - 'IN_PROGRESS'
-          - 'FINISHED'
+           - 'NEW'
+           - 'IN_PROGRESS'
+           - 'DONE'
+           - 'ERROR'
         progress:
           type: integer
           format: int32
