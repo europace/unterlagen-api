@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.4"
+  version: "0.14.5"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -388,9 +388,6 @@ paths:
           schema:
             type: object
             properties:
-              empfaenger:
-                $ref: '#/definitions/Partner'
-                description: Empfänger dieser Freigabe (Produktanbieter oder Kreditsachbearbeiter)
               antragsNummer:
                 type: string
               callbackUrl:
@@ -404,43 +401,6 @@ paths:
       responses:
         201:
           description: Keine Rückgabe-Objekte.
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-      tags:
-      - Freigegebene Unterlage
-    get:
-      summary: Alle freigegebenen Unterlagen
-      description: |
-         Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
-      operationId: getFreigegebeneUnterlagen
-      parameters:
-      - name: antragsNummer
-        in: query
-        description: Antragsnummer.
-        required: false
-        type: string
-      - name: von
-        in: query
-        required: false
-        type: string
-        format: date-time
-      - name: bis
-        in: query
-        required: false
-        type: string
-        format: date-time
-      responses:
-        200:
-          description: Eine Liste von freigegebenen Unterlagen.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/FreigegebeneUnterlage'
         default:
           description: Unerwarteter Fehler
           schema:
