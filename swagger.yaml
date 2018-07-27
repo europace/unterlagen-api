@@ -388,9 +388,6 @@ paths:
           schema:
             type: object
             properties:
-              empfaenger:
-                $ref: '#/definitions/Partner'
-                description: Empfänger dieser Freigabe (Produktanbieter oder Kreditsachbearbeiter)
               antragsNummer:
                 type: string
               callbackUrl:
@@ -422,7 +419,7 @@ paths:
       - name: antragsNummer
         in: query
         description: Antragsnummer.
-        required: false
+        required: true
         type: string
       - name: von
         in: query
