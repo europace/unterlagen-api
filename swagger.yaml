@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.5"
+  version: "0.14.6"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -822,9 +822,6 @@ definitions:
         type: string
       bezug:
         $ref: "#/definitions/Bezug"
-      empfaenger:
-        $ref: "#/definitions/Partner"
-        description: ProduktAnbieter oder Kreditsachbearbeiter
       freigebender:
         $ref: "#/definitions/Partner"
         description: freigebender Vermittler
