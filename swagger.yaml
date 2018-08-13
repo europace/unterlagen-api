@@ -685,7 +685,6 @@ definitions:
       description: |
         Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung erfragt werden.
       properties:
-        properties:
         status:
           type: string
           enum:
