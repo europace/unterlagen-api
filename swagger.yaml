@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.6"
+  version: "0.14.7"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -635,7 +635,10 @@ definitions:
             description: URL zur Kategorisierung
           download:
             $ref: "#/definitions/Relation"
-            description: URL zum Runterladen des Dokuments
+            description: URL zum Runterladen des Dokuments (intern)
+          publicDownload:
+            $ref: "#/definitions/Relation"
+            description: URL zum Runterladen des Dokuments (öffentlich)
 
   KategorisierungsAnfrage:
       type: object
