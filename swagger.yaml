@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.7"
+  version: "0.14.8"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -523,16 +523,11 @@ paths:
           description: Id der freigegebenen Unterlage
           required: true
           type: string
-        - name: abrufstatus
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Abrufstatus'
       responses:
         200:
-          description: Eine freigegebene Unterlage.
+          description: Status der freigegebenen Unterlage.
           schema:
-            $ref: '#/definitions/FreigegebeneUnterlage'
+            $ref: '#/definitions/Abrufstatus'
         404:
           description: Freigegebene Unterlage not found.
           schema:
@@ -558,10 +553,8 @@ paths:
           schema:
             $ref: '#/definitions/Abrufstatus'
       responses:
-        200:
-          description: Eine freigegebene Unterlage.
-          schema:
-            $ref: '#/definitions/FreigegebeneUnterlage'
+        201:
+          description: Keine Rückgabe-Objekte.
         404:
           description: Freigegebene Unterlage not found.
           schema:
