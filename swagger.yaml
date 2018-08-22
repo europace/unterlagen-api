@@ -39,11 +39,6 @@ paths:
         description: Name der Datei.
       - in: formData
         required: false
-        name: erstellungsdatum
-        type: string
-        description: Datum an welchem das Dokument erstellt wurde als ISO8601DateFormat.
-      - in: formData
-        required: false
         name: vorgangsNummer
         type: string
         description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
