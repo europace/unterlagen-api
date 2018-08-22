@@ -716,9 +716,6 @@ definitions:
     description: |
       Enthält die Kategorisierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
     properties:
-      antragsNummer:
-        description: Antragsnummer, der die Unterlage zugeordnet ist .
-        type: string
       kategorie:
         description: |
           Kategorien des Dokuments nach Relevanz sortiert.
