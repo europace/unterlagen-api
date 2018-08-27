@@ -564,6 +564,19 @@ paths:
       tags:
       - Freigegebene Unterlage Status
 
+  /dokumente/kategorie-gruppen:
+    get:
+      summary: Liste aller Kategoriegruppen
+      description: Liste aller Kategoriegruppen.
+      operationId: getKategorieGruppen
+      responses:
+        200:
+          description: Liste aller Kategoriegruppen
+          schema:
+            type: array
+            items:
+            $ref: '#/definitions/KategorieGruppe'
+
 securityDefinitions:
   oauth2:
     type: oauth2
@@ -710,6 +723,21 @@ definitions:
           self:
             $ref: "#/definitions/Relation"
             description: Self relation
+
+  KategorieGruppe:
+    type: object
+    description: |
+      Gruppe von Kategorien.
+    properties:
+      gruppe:
+        description: Name der Kategoriegruppe.
+        type: string
+      kategorien:
+        description: |
+          Alle Kategorien einer Kategoriegruppe.
+        type: array
+        items:
+          type: string
 
   Unterlage:
     type: object
