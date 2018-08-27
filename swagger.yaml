@@ -575,7 +575,16 @@ paths:
           schema:
             type: array
             items:
-            $ref: '#/definitions/KategorieGruppe'
+              $ref: '#/definitions/KategorieGruppe'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Kategoriegruppen
 
 securityDefinitions:
   oauth2:
