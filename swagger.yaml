@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.8"
+  version: "0.14.14"
 host: "dokumente.api.europace.de"
 schemes:
   - https
@@ -395,7 +395,11 @@ paths:
                   $ref: '#/definitions/UnterlagenFreigabe'
       responses:
         201:
-          description: Keine Rückgabe-Objekte.
+          description: Die Liste der freigegebenen Unterlagen.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FreigegebeneUnterlage'
         default:
           description: Unerwarteter Fehler
           schema:
@@ -822,6 +826,9 @@ definitions:
             $ref: "#/definitions/Relation"
           download:
             description: URL zum Runterladen der freigegebenen Unterlage.
+            $ref: "#/definitions/Relation"
+          publicDownload:
+            description: URL zum Runterladen des freigegebenen Unterlage (öffentlich)
             $ref: "#/definitions/Relation"
           abrufstatus:
             description: URL zum Abfragen und Setzen des Abrufstatus
