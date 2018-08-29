@@ -734,6 +734,9 @@ definitions:
         type: integer
         format: int32
         description: Seite im Dokument, 1-basiert.
+      ungewiss:
+        type: boolean
+        description: Flag, wenn Unterlagenerkennung ungenau
 
   Bezug:
     type: object
