@@ -34,11 +34,6 @@ paths:
         description: Name zur Anzeige auf der Oberfläche.
       - in: formData
         required: false
-        name: filename
-        type: string
-        description: Name der Datei.
-      - in: formData
-        required: false
         name: vorgangsNummer
         type: string
         description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
