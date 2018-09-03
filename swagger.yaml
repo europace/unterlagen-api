@@ -3,8 +3,8 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.14.14"
-host: "dokumente.api.europace.de"
+  version: "0.15.0"
+host: "api.europace.de"
 schemes:
   - https
 # will be prefixed to all paths
@@ -271,7 +271,6 @@ paths:
       - Dokumente
 
   /dokumente/{id}/kategorisierung/unterlagen:
-  # TODO: Stößt dieser Request ein ernuete SmartCat-Kategorisierung an oder dient er lediglich zum Trainieren des Modells für soätere Kategorisierungs-Anfragen?
     put:
       summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
       description: |
@@ -715,7 +714,7 @@ definitions:
     description: |
       Enthält die Kategorisierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
     properties:
-      kategorie:
+      wahrscheinlicheKategorien:
         description: |
           Kategorien des Dokuments nach Relevanz sortiert.
           Das erste Element beinhaltet die höchste Relevanz.
@@ -723,6 +722,10 @@ definitions:
         items:
           type: string
           example: Personalausweis
+      manuelleKategorie:
+        description: |
+          Manuell gesetzte Kategorie der Seite der Unterlage.
+        type: string
       bezug:
         $ref: "#/definitions/Bezug"
       seite:
