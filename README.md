@@ -3,7 +3,7 @@ API rund um Plattformdokumente
 
 ### API Docs
 
-https://dokumente-api-16.api-docs.io/0.14/dokumente
+https://dokumente-api-17.api-docs.io/0.15.0/dokumente
 
 ### JAVA Client generieren
 
