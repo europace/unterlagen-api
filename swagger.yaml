@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.15.0"
+  version: "0.15.1"
 host: "api.europace.de"
 schemes:
   - https
@@ -176,6 +176,8 @@ paths:
       description: |
         An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
       operationId: getContent
+      produces:
+      - "application/pdf"
       parameters:
       - name: id
         in: path
