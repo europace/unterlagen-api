@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.15.1"
+  version: "0.15.2"
 host: "api.europace.de"
 schemes:
   - https
@@ -844,8 +844,10 @@ definitions:
       status:
         type: string
         enum:
-        - SUCCESS
-        - FAIL
+        - CREATED
+        - IN_PROGRESS
+        - FAILED
+        - DELIVERED
       message:
         type: string
 
