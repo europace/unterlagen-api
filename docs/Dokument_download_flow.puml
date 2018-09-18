@@ -1,0 +1,45 @@
+@startuml
+title Dokument / Unterlage Download
+
+participant Client as c
+participant "Dokumente API" as api
+
+== Download aller Vorgangsdokumente (Variante 1) ==
+c -> api: GET /vorgang/{vorgangsId}/dokumente/
+api --> c: 200 Dokumente
+
+== Download aller Vorgangsdokumente (Variante 2) ==
+c -> api: GET /dokumente?vorgangsId={vorgangsId}
+api --> c: 200 Dokumente
+
+== Download eines Dokuments ==
+c -> api: GET /dokumente/{dokumenteId}
+api --> c: 200 Dokument
+
+== Download aller Vorgangsunterlagen (Variante 1) ==
+c -> api: GET /vorgang/{vorgangsId}/unterlagen
+api --> c: 200 Unterlagen mit Dokument Links
+
+== Download aller Vorgangsunterlagen (Variante 2) ==
+c -> api: GET /unterlagen?vorgangsId={vorgangsId}
+api --> c: 200 Unterlagen mit Dokument Links
+
+== Download aller Vorgangsunterlagen (Variante 3) ==
+c -> api: GET /dokumente/unterlagen?vorgangsId={vorgangsId}
+api --> c: 200 Unterlagen mit Dokument Links
+
+== Download aller Unterlagen zu einem Dokument ==
+c -> api: GET /dokumente/{dokumentId}/unterlagen
+api --> c: 200 Unterlagen  zum Dokument
+
+== Download einer Unterlage (Variante 1) ==
+c -> api: GET /unterlagen/{unterlagenId}
+api --> c: 200 Unterlage
+
+
+== Download einer Unterlage (Variante 1) ==
+c -> api: GET /dokumente/unterlagen/{unterlagenId}
+api --> c: 200 Unterlage
+
+
+@enduml
