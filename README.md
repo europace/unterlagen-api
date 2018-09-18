@@ -5,9 +5,11 @@ API rund um Plattformdokumente
 
 https://dokumente-api-17.api-docs.io/0.15.0/dokumente
 
-#### UML Sequenz-Diagramm
+#### UML Sequenz-Diagramme
+
 
 ![Klassifizierung](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument_flow.puml&fmt=svg)
+
 
 ### JAVA Client generieren
 
