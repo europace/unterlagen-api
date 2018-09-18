@@ -98,6 +98,12 @@ else
   JAVA_CMD="$JAVA_HOME/bin/java"
 fi
 
+# validate yaml
+info "validate yaml"
+info "${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} validate -i ${YAML_PATH}"
+${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} validate -i ${YAML_PATH}
+if [ $? -ne 0 ]; then exit "validate ${YAML_PATH}"; fi
+
 # generate client
 info "genriere client"
 info $(pwd)

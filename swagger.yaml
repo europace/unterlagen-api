@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.15.2"
+  version: "0.16.0"
 host: "api.europace.de"
 schemes:
   - https
@@ -81,7 +81,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}:
+  /dokumente/{dokumentId}:
     get:
       summary: Ein Dokument
       description: |
@@ -90,7 +90,7 @@ paths:
       produces:
       - "application/json;charset=UTF-8"
       parameters:
-      - name: id
+      - name: dokumentId
         in: path
         description: Unique identifier des Dokuments.
         required: true
@@ -123,7 +123,7 @@ paths:
         - multipart/form-data
       parameters:
         - in: path
-          name: id
+          name: dokumentId
           description: Unique identifier des Dokuments.
           required: true
           type: string
@@ -152,7 +152,7 @@ paths:
         An diesen Endpunkt kann das Dokument gelöscht werden.
       operationId: deleteDokument
       parameters:
-      - name: id
+      - name: dokumentId
         in: path
         description: Unique identifier des Dokuments.
         required: true
@@ -170,16 +170,16 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/content:
+  /dokumente/{dokumentId}/content:
     get:
       summary: Ein Dokument runterladen
       description: |
         An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
-      operationId: getContent
+      operationId: downloadDokument
       produces:
       - "application/pdf"
       parameters:
-      - name: id
+      - name: dokumentId
         in: path
         description: Unique identifier des Dokuments.
         required: true
@@ -203,116 +203,7 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{id}/kategorisierung:
-    post:
-      summary: Starte Kategorisierung eines Dokuments
-      description: |
-        Die Kategorisierung eines Dokuments laden.
-      operationId: starteKategorisierung
-      parameters:
-      - name: id
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      - name: kategorisierungsAnfrage
-        in: body
-        description: Alle zur Kategorisierung durch SmartCat notwendigen Informationen.
-        required: true
-        schema:
-          $ref: '#/definitions/KategorisierungsAnfrage'
-      responses:
-        200:
-          description: Eine Kategorisierung eines Dokuments starten
-        404:
-          description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-      tags:
-      - Dokumente
-
-    get:
-      summary: Lade die Kategorisierung eines Dokuments
-      description: |
-        Die Kategorisierung eines Dokuments laden.
-      operationId: getKategorisierung
-      parameters:
-      - name: id
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      responses:
-        200:
-          description: Eine Kategorisierung eines Dokuments
-          schema:
-            $ref: '#/definitions/Kategorisierung'
-        204:
-          description: Die Kategorisierung ist noch nicht abgeschlossen.
-          schema:
-            $ref: '#/definitions/KategorisierungsStatus'
-        404:
-          description: Kategorisierungen nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-      tags:
-      - Dokumente
-
-  /dokumente/{id}/kategorisierung/unterlagen:
-    put:
-      summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
-      description: |
-        Korrigiere Seite der Unterlage der angegebenen Kategorisierung, um SmartCat Feedback zu liefern.
-      operationId: updateKategorisierung
-      parameters:
-      - name: id
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      - name: unterlagen
-        in: body
-        description: Die aktualisierten Unterlage.
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Unterlage"
-      consumes:
-        - application/json
-      responses:
-        200:
-          description: Unterlage erfolgreich korrigiert
-          schema:
-            $ref: '#/definitions/Kategorisierung'
-        404:
-          description: Kategorisierung nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-      tags:
-      - Dokumente
-
-  /dokumente/{id}/preview:
+  /dokumente/{dokumentId}/preview:
     get:
       summary: Vorschaubild
       description: |
@@ -322,7 +213,7 @@ paths:
         - image/jpeg
         - application/json
       parameters:
-      - name: id
+      - name: dokumentId
         in: path
         description: Unique identifier des Dokuments.
         required: true
@@ -361,12 +252,187 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/freigegebene-unterlagen:
+  /dokumente/{dokumentId}/kategorisierung:
+    post:
+      summary: Starte Kategorisierung eines Dokuments
+      description: |
+        Die Kategorisierung eines Dokuments laden.
+      operationId: starteKategorisierung
+      parameters:
+      - name: dokumentId
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      - name: kategorisierungsAnfrage
+        in: body
+        description: Alle zur Kategorisierung durch SmartCat notwendigen Informationen.
+        required: true
+        schema:
+          $ref: '#/definitions/KategorisierungsAnfrage'
+      responses:
+        200:
+          description: Eine Kategorisierung eines Dokuments starten
+        404:
+          description: Dokument nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+    get:
+      summary: Lade die Kategorisierung eines Dokuments
+      description: |
+        Die Kategorisierung eines Dokuments laden.
+      operationId: getKategorisierung
+      parameters:
+      - name: dokumentId
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      responses:
+        200:
+          description: |
+            Die Kategorisierung eines Dokuments ist abgeschlossen, die Unterlagen können geladen werden
+          schema:
+            $ref: '#/definitions/KategorisierungsStatus'
+        204:
+          description: Die Kategorisierung ist noch nicht abgeschlossen.
+          schema:
+            $ref: '#/definitions/KategorisierungsStatus'
+        404:
+          description: Dokument nicht gefunden oder Kategorisierung noch nicht gestartet.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+
+  /dokumente/{dokumentId}/unterlagen:
+    get:
+      summary: Unterlagen eines Dokuments
+      description: |
+        Lade die Unterlagen eines Dokuments.
+      operationId: getDokumentUnterlagen
+      parameters:
+      - name: dokumentId
+        in: path
+        description: Unique identifier des Dokuments.
+        required: true
+        type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Liste der Unterlagen des Dokuments
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Unterlage"
+        404:
+          description: Dokument nicht gefunden oder Unterlagen existieren nicht.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Unterlagen
+
+  /dokumente/unterlagen:
+    get:
+      summary: Unterlagen eines Vorgangs
+      description: |
+        Lade die Unterlagen eines Vorgangs.
+      operationId: getVorgangsUnterlagen
+      produces:
+        - application/json
+      parameters:
+      - name: vorgangsNummer
+        in: query
+        description: Vorgangsnummer der Unterlagen.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Liste der Unterlagen eines Vorgangs
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Unterlage"
+        404:
+          description: Vorgang oder Unterlagen nicht gefunden.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Unterlagen
+    put:
+      summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
+      description: |
+        Hiermit können die Unterlagen eines Vorgangs aktualisiert werden. Es ist Möglich die Reihenfolge der Unterlagen um Array zu ändern,
+        sowie die manuelleKategorie innerhalb der einzelnen Unterlagen.
+      operationId: updateVorgangsUnterlagen
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - name: unterlagen
+        in: body
+        description: Die aktualisierten Unterlage.
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Unterlage"
+      responses:
+        200:
+          description: Unterlage erfolgreich korrigiert
+          schema:
+            $ref: '#/definitions/Kategorisierung'
+        404:
+          description: Kategorisierung nicht gefunden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Unterlagen
+
+  /dokumente/freigabe:
     post:
       summary: Unterlagen freigeben
       description: |
-         Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen.
-      operationId: erzeugeFreigegebeneUnterlagen
+         Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen für einen Antrag.
+      operationId: erzeugeFreigabe
       consumes:
         - application/json
       produces:
@@ -388,7 +454,7 @@ paths:
               unterlagen:
                 type: array
                 items:
-                  $ref: '#/definitions/UnterlagenFreigabe'
+                  $ref: '#/definitions/Unterlage'
       responses:
         201:
           description: Die Liste der freigegebenen Unterlagen.
@@ -404,12 +470,12 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Freigegebene Unterlage
+      - Freigabe
     get:
       summary: Alle freigegebenen Unterlagen
       description: |
          Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
-      operationId: getFreigegebeneUnterlagen
+      operationId: getFreigaben
       parameters:
       - name: antragsNummer
         in: query
@@ -441,14 +507,14 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Freigegebene Unterlage
+      - Freigabe
 
-  /dokumente/freigegebene-unterlagen/{id}:
+  /dokumente/freigabe/{id}:
     get:
       summary: Eine freigegebene Unterlage
       description: |
         Dieser Endpunkt liefert eine freigegebene Unterlage.
-      operationId: getFreigegebeneUnterlage
+      operationId: getFreigabe
       parameters:
         - name: id
           in: path
@@ -473,14 +539,14 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Freigegebene Unterlage
+      - Freigabe
 
-  /dokumente/freigegebene-unterlagen/{id}/content:
+  /dokumente/freigabe/{id}/content:
     get:
       summary: Eine freigegebene Unterlage runterladen
       description: |
         An diesen Endpunkt kann der Inhalt einer freigegebenen Unterlage heruntergeladen werden.
-      operationId: getFreigegebeneUnterlageContent
+      operationId: downloadFreigabe
       parameters:
       - name: id
         in: path
@@ -504,9 +570,9 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Dokumente
+      - Freigabe
 
-  /dokumente/freigegebene-unterlagen/{id}/status:
+  /dokumente/freigabe/{id}/status:
     get:
       summary: Freigabestatus auslesen
       description: |
@@ -562,7 +628,7 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Freigegebene Unterlage Status
+      - Freigabe
 
 securityDefinitions:
   oauth2:
@@ -716,27 +782,33 @@ definitions:
     description: |
       Enthält die Kategorisierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
     properties:
-      wahrscheinlicheKategorien:
-        description: |
-          Kategorien des Dokuments nach Relevanz sortiert.
-          Das erste Element beinhaltet die höchste Relevanz.
-        type: array
-        items:
-          type: string
-          example: Personalausweis
-      manuelleKategorie:
+      klassifizierung:
+        type: object
+        properties:
+          kategorien:
+            description: |
+              Kategorien des Dokuments nach Relevanz sortiert.
+              Das erste Element beinhaltet die höchste Relevanz.
+            type: array
+            items:
+              type: string
+              example: Personalausweis
+          ungewiss:
+            type: boolean
+            description: Flag, wenn Unterlagenerkennung ungenau
+      kategorie:
         description: |
           Manuell gesetzte Kategorie der Seite der Unterlage.
         type: string
       bezug:
         $ref: "#/definitions/Bezug"
+      dokumentId:
+        type: string
+        description: ID des referenzierten Dokuments.
       seite:
         type: integer
         format: int32
         description: Seite im Dokument, 1-basiert.
-      ungewiss:
-        type: boolean
-        description: Flag, wenn Unterlagenerkennung ungenau
 
   Bezug:
     type: object
@@ -760,31 +832,6 @@ definitions:
          description: |
            Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
            diese Zuordnung bezieht.
-
-  UnterlagenFreigabe:
-    type: object
-    description: |
-      Freizugebende Unterlagen nach Kategorie und Bezug gruppiert.
-    properties:
-      kategorie:
-        type: string
-        description: Kategorie
-      bezug:
-        $ref: "#/definitions/Bezug"
-      seiten:
-        type: array
-        items:
-          type: object
-          description: |
-            Verweis auf eine Unterlage.
-          properties:
-            dokumentId:
-              type: string
-              description: ID des referenzierten Dokuments.
-            seite:
-              type: integer
-              format: int32
-              description: Seite im Dokument, 1-basiert.
 
   FreigegebeneUnterlage:
     type: object
