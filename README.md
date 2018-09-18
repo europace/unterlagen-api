@@ -7,7 +7,7 @@ https://dokumente-api-17.api-docs.io/0.15.0/dokumente
 
 #### UML Sequenz-Diagramm
 
-!(http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/plantuml/plantuml-server/master/src/main/webapp/resource/test2diagrams.txt)
+![Klassifizierung](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument_flow.puml)
 
 ### JAVA Client generieren
 
