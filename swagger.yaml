@@ -303,7 +303,7 @@ paths:
             Die Kategorisierung eines Dokuments ist abgeschlossen, die Unterlagen können geladen werden
           schema:
             $ref: '#/definitions/KategorisierungsStatus'
-        204:
+        202:
           description: Die Kategorisierung ist noch nicht abgeschlossen.
           schema:
             $ref: '#/definitions/KategorisierungsStatus'
@@ -391,7 +391,7 @@ paths:
       tags:
       - Unterlagen
     put:
-      summary: Korrigiere kategorisierte Unterlagen (Seite des Dokuments)
+      summary: Korrigiere kategorisierte Unterlagen
       description: |
         Hiermit können die Unterlagen eines Vorgangs aktualisiert werden. Es ist Möglich die Reihenfolge der Unterlagen um Array zu ändern,
         sowie die manuelleKategorie innerhalb der einzelnen Unterlagen.
@@ -780,7 +780,7 @@ definitions:
   Unterlage:
     type: object
     description: |
-      Enthält die Kategorisierung eines Bereiches (ein oder mehrere Seiten) in einem Dokument.
+      Enthält alle kategorisierten Seiten der Dokumente eines Vorgangs.
     properties:
       klassifizierung:
         type: object
@@ -793,22 +793,17 @@ definitions:
             items:
               type: string
               example: Personalausweis
-          ungewiss:
-            type: boolean
-            description: Flag, wenn Unterlagenerkennung ungenau
       kategorie:
         description: |
-          Manuell gesetzte Kategorie der Seite der Unterlage.
+          Manuell gesetzte Kategorie der Seite der Unterlage. Initial die wahrscheinlichste Kategorie,
+          wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
       bezug:
         $ref: "#/definitions/Bezug"
-      dokumentId:
-        type: string
-        description: ID des referenzierten Dokuments.
-      seite:
-        type: integer
-        format: int32
-        description: Seite im Dokument, 1-basiert.
+      seiten:
+        type: array
+        items:
+          $ref: "#/definitions/Seite"
 
   Bezug:
     type: object
@@ -832,6 +827,22 @@ definitions:
          description: |
            Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
            diese Zuordnung bezieht.
+
+  Seite:
+    type: object
+    description: |
+      Definiert eine Seite eines Dokuments.
+    properties:
+      dokumentId:
+        type: string
+        description: ID des referenzierten Dokuments.
+      seite:
+        type: integer
+        format: int32
+        description: Seite im Dokument, 1-basiert.
+      preview:
+        $ref: "#/definitions/Relation"
+        description: URL für die Preview Images
 
   FreigegebeneUnterlage:
     type: object
@@ -884,7 +895,6 @@ definitions:
             description: URL zum Abfragen und Setzen des Abrufstatus
             $ref: "#/definitions/Relation"
 
-
   Abrufstatus:
     type: object
     properties:
@@ -897,16 +907,6 @@ definitions:
         - DELIVERED
       message:
         type: string
-
-  Freigabe:
-    type: object
-    description: |
-      Liste freigegebener Unterlagen.
-    properties:
-      freigegebeneUnterlagen:
-        type: array
-        items:
-          $ref: "#/definitions/FreigegebeneUnterlage"
 
   Partner:
     type: object
