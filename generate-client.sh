@@ -101,14 +101,14 @@ fi
 # validate yaml
 info "validate yaml"
 info "${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} validate -i ${YAML_PATH}"
-${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} validate -i ${YAML_PATH}
+"${JAVA_CMD}" -jar "${SWAGGER_CODEGEN_JAR}" validate -i "${YAML_PATH}"
 if [ $? -ne 0 ]; then exit "validate ${YAML_PATH}"; fi
 
 # generate client
 info "genriere client"
 info $(pwd)
 info "${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}"
-${JAVA_CMD} -jar ${SWAGGER_CODEGEN_JAR} generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o ${OUTPUT_DIR}
+"${JAVA_CMD}" -jar "${SWAGGER_CODEGEN_JAR}" generate -i ${YAML_PATH} -l java -c codegen-config-file.json -o "${OUTPUT_DIR}"
 
 if [ $? -ne 0 ]; then exit "swagger codegen"; fi
 
