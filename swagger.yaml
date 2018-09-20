@@ -416,9 +416,11 @@ paths:
             $ref: "#/definitions/Unterlage"
       responses:
         200:
-          description: Unterlage erfolgreich korrigiert
+          description: Unterlagen erfolgreich korrigiert
           schema:
-            $ref: '#/definitions/Kategorisierung'
+            type: array
+            items:
+              $ref: "#/definitions/Unterlage"
         404:
           description: Kategorisierung nicht gefunden
           schema:
