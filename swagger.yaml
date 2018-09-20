@@ -407,6 +407,11 @@ paths:
       produces:
         - application/json
       parameters:
+      - name: vorgangsNummer
+        in: query
+        description: Vorgangsnummer der Unterlagen.
+        required: true
+        type: string
       - name: unterlagen
         in: body
         description: Die aktualisierten Unterlage.
