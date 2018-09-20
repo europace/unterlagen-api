@@ -63,6 +63,12 @@ paths:
           description: Vorgangsnummer um nur Dokumente eines bestimmten Vorgangs zu erhalten.
           required: false
           type: string
+        - name: inprogressonly
+          in: query
+          description: Liefert bei true nur die aktuell in Kategorisierung befindlichen Dokumente. Bei false wird nichts gefiltert.
+          type: boolean
+          required: false
+          default: false
       # Hier ggf. Parameter Hochgeladenes Dokument
       responses:
         200:
