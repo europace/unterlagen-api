@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.16.0"
+  version: "0.17.0"
 host: "api.europace.de"
 schemes:
   - https
@@ -306,7 +306,7 @@ paths:
       responses:
         200:
           description: |
-            Die Kategorisierung eines Dokuments ist abgeschlossen, die Unterlagen können geladen werden
+            Die Kategorisierung eines Dokuments ist abgeschlossen, die Seiten können geladen werden
           schema:
             $ref: '#/definitions/KategorisierungsStatus'
         202:
@@ -327,12 +327,12 @@ paths:
       tags:
       - Dokumente
 
-  /dokumente/{dokumentId}/unterlagen:
+  /dokumente/{dokumentId}/seiten:
     get:
-      summary: Unterlagen eines Dokuments
+      summary: Seiten eines Dokuments
       description: |
-        Lade die Unterlagen eines Dokuments.
-      operationId: getDokumentUnterlagen
+        Lade die Seiten eines Dokuments.
+      operationId: getDokumentSeiten
       parameters:
       - name: dokumentId
         in: path
@@ -343,13 +343,13 @@ paths:
         - application/json
       responses:
         200:
-          description: Liste der Unterlagen des Dokuments
+          description: Liste der Seiten des Dokuments
           schema:
             type: array
             items:
-              $ref: "#/definitions/Unterlage"
+              $ref: "#/definitions/Seite"
         404:
-          description: Dokument nicht gefunden oder Unterlagen existieren nicht.
+          description: Dokument nicht gefunden.
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -360,31 +360,69 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Unterlagen
+      - Seiten
 
-  /dokumente/unterlagen:
+  /dokumente/{dokumentId}/seiten/{seite}:
+      get:
+        summary: Seite eines Dokuments
+        description: |
+          Lade die Seite eines Dokuments.
+        operationId: getDokumentSeite
+        parameters:
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
+        - name: seite
+          in: path
+          description: Seite des Dokuments. 1-basiert.
+          required: true
+          type: integer
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Liste der Seiten des Dokuments
+            schema:
+              $ref: '#/definitions/Seite'
+          404:
+            description: Dokument oder Seite nicht gefunden.
+            schema:
+              $ref: '#/definitions/Error'
+          default:
+            description: Unerwarteter Fehler
+            schema:
+              $ref: '#/definitions/Error'
+        security:
+        - oauth2:
+          - "API"
+        tags:
+        - Seiten
+
+  /dokumente/sortierung:
     get:
-      summary: Unterlagen eines Vorgangs
+      summary: Lade alle Seiten der Dokumente eines Vorgangs
       description: |
-        Lade die Unterlagen eines Vorgangs.
-      operationId: getVorgangsUnterlagen
+              Lade die Seiten der Dokumente eines Vorgangs in gespeicherter Sortierung.
+      operationId: getSortierteSeiten
       produces:
         - application/json
       parameters:
       - name: vorgangsNummer
         in: query
-        description: Vorgangsnummer der Unterlagen.
+        description: Vorgangsnummer der Dokumente.
         required: true
         type: string
       responses:
         200:
-          description: Liste der Unterlagen eines Vorgangs
+          description: Liste der Seiten
           schema:
             type: array
             items:
-              $ref: "#/definitions/Unterlage"
+              $ref: "#/definitions/Seite"
         404:
-          description: Vorgang oder Unterlagen nicht gefunden.
+          description: Vorgang nicht gefunden.
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -395,39 +433,35 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Unterlagen
-    put:
-      summary: Korrigiere kategorisierte Unterlagen
-      description: |
-        Hiermit können die Unterlagen eines Vorgangs aktualisiert werden. Es ist Möglich die Reihenfolge der Unterlagen um Array zu ändern,
-        sowie die manuelleKategorie innerhalb der einzelnen Unterlagen.
-      operationId: updateVorgangsUnterlagen
-      consumes:
-        - application/json
-      produces:
-        - application/json
+      - Seiten
+    patch:
+      summary: Manipulation der Reihenfolge der Seiten
+      operationId: patchSortierteSeiten
       parameters:
-      - name: vorgangsNummer
-        in: query
-        description: Vorgangsnummer der Unterlagen.
-        required: true
-        type: string
-      - name: unterlagen
-        in: body
-        description: Die aktualisierten Unterlage.
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Unterlage"
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer der Dokumente.
+          required: true
+          type: string
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+          description: nur move Operation unterstützt
       responses:
         200:
-          description: Unterlagen erfolgreich korrigiert
+          description: Liste der Seiten
           schema:
             type: array
             items:
-              $ref: "#/definitions/Unterlage"
+              $ref: "#/definitions/Seite"
         404:
-          description: Kategorisierung nicht gefunden
+          description: Vorgang nicht gefunden.
+          schema:
+            $ref: '#/definitions/Error'
+        405:
+          description: Operation nicht unterstützt
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -438,11 +472,11 @@ paths:
       - oauth2:
         - "API"
       tags:
-      - Unterlagen
+      - Seiten
 
   /dokumente/freigabe:
     post:
-      summary: Unterlagen freigeben
+      summary: Seiten freigeben
       description: |
          Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen für einen Antrag.
       operationId: erzeugeFreigabe
@@ -453,7 +487,7 @@ paths:
       parameters:
         - in: body
           name: freigabe
-          description: Freizugebende Unterlagen für einen Antrag und ProduktAnbieter.
+          description: Freizugebende Seiten für einen Antrag und ProduktAnbieter.
           required: true
           schema:
             type: object
@@ -464,17 +498,13 @@ paths:
                 description: Wenn angegeben, erfolgt ein POST-Request der Freigabe an diese URL.
                 type: string
                 format: uri
-              unterlagen:
+              seiten:
                 type: array
                 items:
-                  $ref: '#/definitions/Unterlage'
+                  $ref: '#/definitions/Seite'
       responses:
         201:
-          description: Die Liste der freigegebenen Unterlagen.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/FreigegebeneUnterlage'
+          description: Freigabe erstellt
         default:
           description: Unerwarteter Fehler
           schema:
@@ -654,7 +684,7 @@ securityDefinitions:
 definitions:
   Dokument:
     description: |
-      Ein Dokument ist eine hochgeladene Datei und kann eus einer oder mehreren - z.b. gescannten - Unterlagen bestehen.
+      Ein Dokument ist eine hochgeladene Datei und kann aus einer oder mehreren - z.b. gescannten - Unterlagen bestehen.
     type: object
     properties:
       id:
@@ -706,6 +736,9 @@ definitions:
           publicDownload:
             $ref: "#/definitions/Relation"
             description: URL zum Runterladen des Dokuments (öffentlich)
+          seiten:
+            $ref: "#/definitions/Relation"
+            description: URL zu den Seiten des Dokuments
 
   KategorisierungsAnfrage:
       type: object
@@ -768,38 +801,10 @@ definitions:
           description: |
             Progress Wert in Prozent 0 - 100
 
-  Unterlage:
-    type: object
-    description: |
-      Enthält alle kategorisierten Seiten der Dokumente eines Vorgangs.
-    properties:
-      klassifizierung:
-        type: object
-        properties:
-          kategorien:
-            description: |
-              Kategorien des Dokuments nach Relevanz sortiert.
-              Das erste Element beinhaltet die höchste Relevanz.
-            type: array
-            items:
-              type: string
-              example: Personalausweis
-      kategorie:
-        description: |
-          Manuell gesetzte Kategorie der Seite der Unterlage. Initial die wahrscheinlichste Kategorie,
-          wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
-        type: string
-      bezug:
-        $ref: "#/definitions/Bezug"
-      seiten:
-        type: array
-        items:
-          $ref: "#/definitions/Seite"
-
   Bezug:
     type: object
     description: |
-      Zuordnung einer Unterlage zu einem Antrag und dem entsprechenden Business-Object.
+      Zuordnung einer Dokumentenseite zu einem Antrag und dem entsprechenden Business-Object.
     properties:
       typ:
         type: string
@@ -831,9 +836,33 @@ definitions:
         type: integer
         format: int32
         description: Seite im Dokument, 1-basiert.
-      preview:
-        $ref: "#/definitions/Relation"
-        description: URL für die Preview Images
+      klassifizierung:
+        type: object
+        properties:
+          kategorien:
+            description: |
+              Kategorien der Seite nach Relevanz sortiert.
+              Das erste Element beinhaltet die höchste Relevanz.
+            type: array
+            items:
+              type: string
+              example: Personalausweis
+      kategorie:
+        description: |
+          Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
+          wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
+        type: string
+      bezug:
+        $ref: "#/definitions/Bezug"
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: "#/definitions/Relation"
+            description: Self relation
+          preview:
+            $ref: "#/definitions/Relation"
+            description: URL Template für die Preview Images
 
   FreigegebeneUnterlage:
     type: object
@@ -907,6 +936,34 @@ definitions:
         description: Id eines Partners auf der Europace-Plattform. Identifiziert eine Plakette im Partnermanagement.
         example: ABC45
 
+  PatchRequest:
+    type: array
+    items:
+      type: object
+      description: A JSONPatch document as defined by RFC 6902
+      required:
+       - "op"
+       - "path"
+      properties:
+       op:
+        type: string
+        description: The operation to be performed
+        enum:
+         - "add"
+         - "remove"
+         - "replace"
+         - "move"
+         - "copy"
+         - "test"
+       path:
+        type: string
+        description: A JSON-Pointer
+       value:
+        type: object
+        description: The value to be used within the operations.
+       from:
+        type: string
+        description: A string containing a JSON Pointer value.
   Relation:
     type: object
     properties:
