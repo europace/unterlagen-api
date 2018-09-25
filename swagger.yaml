@@ -398,11 +398,16 @@ paths:
         summary: Manipulation einer einzelnen Seite. Zum Beispiel Ändern der Kategorie
         operationId: patchSeite
         parameters:
-          - name: vorgangsNummer
-            in: query
-            description: Vorgangsnummer der Dokumente.
+          - name: dokumentId
+            in: path
+            description: Unique identifier des Dokuments.
             required: true
             type: string
+          - name: seite
+            in: path
+            description: Seite des Dokuments. 1-basiert.
+            required: true
+            type: integer
           - name: JsonPatch
             in: body
             required: true
