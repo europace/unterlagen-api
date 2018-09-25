@@ -383,11 +383,43 @@ paths:
           - application/json
         responses:
           200:
-            description: Liste der Seiten des Dokuments
+            description: Seite des Dokuments
             schema:
               $ref: '#/definitions/Seite'
           404:
             description: Dokument oder Seite nicht gefunden.
+            schema:
+              $ref: '#/definitions/Error'
+          default:
+            description: Unerwarteter Fehler
+            schema:
+              $ref: '#/definitions/Error'
+      patch:
+        summary: Manipulation einer einzelnen Seite. Zum Beispiel Ändern der Kategorie
+        operationId: patchSeite
+        parameters:
+          - name: vorgangsNummer
+            in: query
+            description: Vorgangsnummer der Dokumente.
+            required: true
+            type: string
+          - name: JsonPatch
+            in: body
+            required: true
+            schema:
+              $ref: "#/definitions/PatchRequest"
+            description: Unterstützt werden aktuell für /kategorie die Operationen add,move,delete.
+        responses:
+          200:
+            description: Seite des Dokuments
+            schema:
+              $ref: '#/definitions/Seite'
+          404:
+            description: Vorgang, Dokument oder Seite nicht gefunden.
+            schema:
+              $ref: '#/definitions/Error'
+          405:
+            description: Operation nicht unterstützt
             schema:
               $ref: '#/definitions/Error'
           default:
