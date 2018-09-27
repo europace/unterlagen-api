@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.17.0"
+  version: "0.17.3"
 host: "api.europace.de"
 schemes:
   - https
@@ -394,55 +394,13 @@ paths:
             description: Unerwarteter Fehler
             schema:
               $ref: '#/definitions/Error'
-      patch:
-        summary: Manipulation einer einzelnen Seite. Zum Beispiel Ändern der Kategorie
-        operationId: patchSeite
-        parameters:
-          - name: dokumentId
-            in: path
-            description: Unique identifier des Dokuments.
-            required: true
-            type: string
-          - name: seite
-            in: path
-            description: Seite des Dokuments. 1-basiert.
-            required: true
-            type: integer
-          - name: JsonPatch
-            in: body
-            required: true
-            schema:
-              $ref: "#/definitions/PatchRequest"
-            description: Unterstützt werden aktuell für /kategorie die Operationen add,move,delete.
-        responses:
-          200:
-            description: Seite des Dokuments
-            schema:
-              $ref: '#/definitions/Seite'
-          404:
-            description: Vorgang, Dokument oder Seite nicht gefunden.
-            schema:
-              $ref: '#/definitions/Error'
-          405:
-            description: Operation nicht unterstützt
-            schema:
-              $ref: '#/definitions/Error'
-          default:
-            description: Unerwarteter Fehler
-            schema:
-              $ref: '#/definitions/Error'
-        security:
-        - oauth2:
-          - "API"
-        tags:
-        - Seiten
 
-  /dokumente/sortierung:
+  /dokumente/seiten:
     get:
       summary: Lade alle Seiten der Dokumente eines Vorgangs
       description: |
               Lade die Seiten der Dokumente eines Vorgangs in gespeicherter Sortierung.
-      operationId: getSortierteSeiten
+      operationId: getSeiten
       produces:
         - application/json
       parameters:
@@ -455,9 +413,7 @@ paths:
         200:
           description: Liste der Seiten
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Seite"
+            $ref: "#/definitions/Seiten"
         404:
           description: Vorgang nicht gefunden.
           schema:
@@ -472,12 +428,17 @@ paths:
       tags:
       - Seiten
     patch:
-      summary: Manipulation der Reihenfolge der Seiten
-      operationId: patchSortierteSeiten
+      summary: Manipulation der Seiten. Zum Beispiel um die Kategorie von Seiten zu ändern oder auch deren Reihenfolge.
+      operationId: patchSeiten
       parameters:
         - name: vorgangsNummer
           in: query
           description: Vorgangsnummer der Dokumente.
+          required: true
+          type: string
+        - name: letzteSortierAenderungId
+          in: query
+          description: Der Wert wird bei Abfrage von GET /dokumente/sortierung mit zurückgegeben. Es ist zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden. Durch Anhängen von Seiten ändert sich der Wert nicht. Durch die ID wird sichergestellt, dass die Patchoperation die richtige Seite adressiert.
           required: true
           type: string
         - name: JsonPatch
@@ -501,6 +462,8 @@ paths:
           description: Operation nicht unterstützt
           schema:
             $ref: '#/definitions/Error'
+        409:
+          description: Der Wert für den Requestparameter "letzteSortierAenderungId" entspricht nicht dem aktuellen Stand.
         default:
           description: Unerwarteter Fehler
           schema:
@@ -860,6 +823,17 @@ definitions:
          description: |
            Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
            diese Zuordnung bezieht.
+
+  Seiten:
+    type: object
+    properties:
+      letzteSortierAenderungId:
+        type: string
+        description: zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden. Durch Anhängen von Seiten ändert sich der Wert nicht
+      seiten:
+        type: array
+        items:
+          $ref: "#/definitions/Seite"
 
   Seite:
     type: object
