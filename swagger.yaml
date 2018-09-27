@@ -446,14 +446,19 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/PatchRequest"
-          description: nur move Operation unterstützt
+      description: |
+        Endpunkt zum Aktualisieren der Seiten eines Vorgangs. Unterstützt ist aktuell das Ändern der Sortierung und das Ändern der Kategorie.
+
+        Beispiel für umsortieren: [{op: 'move', from: '/seiten/0', path: '/seiten/2'}] Die erste Seite wird hinter die dritte Seite gehangen.
+
+        Beispiel für umsortieren: [{op: 'move', from: '/seiten/0', path: '/seiten/-'}] Die erste Seite wird ans Ende gehangen.
+
+        Beispiel für Kategorie ändern: [{op: 'replace', path: '/seiten/0/kategorie', value: 'Ausweis'}] Die Kategorie der ersten Seite wird geändert
       responses:
         200:
           description: Liste der Seiten
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Seite"
+            $ref: "#/definitions/Seiten"
         404:
           description: Vorgang nicht gefunden.
           schema:
@@ -975,6 +980,8 @@ definitions:
        from:
         type: string
         description: A string containing a JSON Pointer value.
+    example:
+
   Relation:
     type: object
     properties:
