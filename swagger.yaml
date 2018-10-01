@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.17.6"
+  version: "0.17.7"
 host: "api.europace.de"
 schemes:
   - https
@@ -77,6 +77,29 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Dokument'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Dokumente
+    delete:
+      summary: Alle Resourcen zu diesem Vorgang löschen
+      description: |
+        Dokumente und Seiten zu diesem Vorgang löschen.
+      operationId: deleteVorgangsResourcen
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer zu der alle Resourcen gelöscht werden sollen.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Resourcen erfolgreich gelöscht.
         default:
           description: Unerwarteter Fehler
           schema:
