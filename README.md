@@ -3,7 +3,7 @@ API rund um Plattformdokumente
 
 ### API Docs
 
-[API Docs](https://dokumente-api-34.api-docs.io/0.17.8)
+[API Docs](https://dokumente-api-35.api-docs.io/0.17.8)
 
 #### UML Sequenz-Diagramme
 
