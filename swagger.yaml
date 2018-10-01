@@ -516,6 +516,7 @@ paths:
               seiten:
                 type: array
                 items:
+                  type: object
                   properties:
                     dokumentId:
                       type: string
