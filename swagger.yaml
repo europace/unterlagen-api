@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.17.4"
+  version: "0.17.5"
 host: "api.europace.de"
 schemes:
   - https
@@ -436,7 +436,7 @@ paths:
           description: Vorgangsnummer der Dokumente.
           required: true
           type: string
-        - name: letzteSortierAenderungId
+        - name: revision
           in: query
           description: Der Wert wird bei Abfrage von GET /dokumente/sortierung mit zurückgegeben. Es ist zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden. Durch Anhängen von Seiten ändert sich der Wert nicht. Durch die ID wird sichergestellt, dass die Patchoperation die richtige Seite adressiert.
           required: true
@@ -468,7 +468,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         409:
-          description: Der Wert für den Requestparameter "letzteSortierAenderungId" entspricht nicht dem aktuellen Stand.
+          description: Der Wert für den Requestparameter "revision" entspricht nicht dem aktuellen Stand.
         default:
           description: Unerwarteter Fehler
           schema:
@@ -490,6 +490,16 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: revision
+          in: query
+          description: |
+            Der Wert wird bei Abfrage von GET /dokumente/sortierung mit zurückgegeben. Es ist zufällige ID, die immer dann geändert wird,
+
+            wenn Seiten umsortiert oder einer anderen Kategorie zugeordnet werden.
+
+            Durch Anhängen von Seiten ändert sich der Wert nicht. Durch die ID wird sichergestellt, dass die Patchoperation die richtige Seite adressiert.
+          required: true
+          type: string
         - in: body
           name: freigabe
           description: Freizugebende Seiten für einen Antrag und ProduktAnbieter.
@@ -506,10 +516,22 @@ paths:
               seiten:
                 type: array
                 items:
-                  $ref: '#/definitions/Seite'
+                  properties:
+                    dokumentId:
+                      type: string
+                      description: ID des referenzierten Dokuments.
+                    seite:
+                      type: integer
+                      format: int32
+                      description: Seite im Dokument, 1-basiert.
+
       responses:
         201:
           description: Freigabe erstellt
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FreigegebeneUnterlage'
         default:
           description: Unerwarteter Fehler
           schema:
@@ -832,7 +854,7 @@ definitions:
   Seiten:
     type: object
     properties:
-      letzteSortierAenderungId:
+      revision:
         type: string
         description: zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden. Durch Anhängen von Seiten ändert sich der Wert nicht
       seiten:
