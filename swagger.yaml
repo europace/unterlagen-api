@@ -33,7 +33,7 @@ paths:
         type: string
         description: Name zur Anzeige auf der Oberfläche.
       - in: formData
-        required: false
+        required: true
         name: vorgangsNummer
         type: string
         description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
