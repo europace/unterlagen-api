@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "0.17.8"
+  version: "1.0.0"
 host: "api.europace.de"
 schemes:
   - https
@@ -939,6 +939,10 @@ definitions:
       antragsNummer:
         type: string
         description: Antrag in dem diese Seite bereits freigegeben wurde
+      datum:
+        type: string
+        format: date-time
+        description: Gibt das Datum an, an dem Das Dokument freigegeben wurde.
 
   FreigegebeneUnterlage:
     type: object
