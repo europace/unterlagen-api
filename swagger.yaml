@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.2"
+  version: "1.0.3"
 host: "api.europace.de"
 schemes:
   - https
@@ -798,13 +798,6 @@ definitions:
       description: |
         Alle Metadaten nach denen SmartCat im Dokument suchen soll.
       properties:
-        kategorisierungsModell:
-          type: string
-          description: |
-            Wählt das Modell, mit dem SmartCat das dokument katgorisieren soll.
-          enum:
-           - 'BAUFI'
-           - 'RATE'
         bezuege:
           type: array
           items:
