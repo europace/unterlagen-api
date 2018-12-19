@@ -1,4 +1,4 @@
-# ep-dokumente-api
+# dokumente-api
 API rund um Plattformdokumente
 
 ### API Docs
