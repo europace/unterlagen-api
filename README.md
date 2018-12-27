@@ -1,8 +1,14 @@
 # dokumente-api
-API rund um Plattformdokumente
+API rund um Plattformdokumente.
+
+
+# Dokumentation
+*Aktuelle Version: 1.0*
+
+⚠️ HINWEIS: Diese API befindet sich aktuell in der Entwicklung und eignet sich noch nicht zum produktiven Einsatz!
+
 
 ### API Docs
-
 [API Docs](https://dokumente-api-39.api-docs.io/1.0.3)
 (generated via https://api-docs.io/ )
 
@@ -34,6 +40,7 @@ java -jar swagger-codegen-cli-2.3.1.jar generate \
 }
 ``` 
 
+<!--
 ### Use-Cases
 
 Nachfolgende Fragen sollen durch die Dokumente API beantwortet werden:
@@ -73,6 +80,7 @@ Nachfolgende Fragen sollen durch die Dokumente API beantwortet werden:
   * Wenn ja wie sieht eine Notiz aus?
   * Sind mehrere Notitzen möglich?
 * Wie lange kann ich auf ein Dokument zugreifen?
+-->
 
 ### Beispiel URL's
 
