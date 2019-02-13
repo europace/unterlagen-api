@@ -502,6 +502,46 @@ paths:
       tags:
       - Seiten
 
+  /dokumente/kategorien/{kategorieId}:
+    put:
+      summary: Seiten umkategorisieren
+      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Kategorie {kategorieId} zugeordnet.
+      operationId: setzeKategorie
+      parameters:
+        - name: kategorieId
+          in: path
+          description: Die Kategorie, der die Seiten zugeordnet werden sollen.
+          required: true
+          type: string
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, deren Kategorie geändert werden sollen.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Kategorie nicht gefunden.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+
   /dokumente/freigabe:
     post:
       summary: Seiten freigeben
@@ -925,6 +965,19 @@ definitions:
           preview:
             $ref: "#/definitions/Relation"
             description: URL Template für die Preview Images
+
+  SeitenReferenz:
+    type: object
+    description: |
+      Referenziert eine Seite eines Dokuments.
+    properties:
+      dokumentId:
+        type: string
+        description: ID des referenzierten Dokuments.
+      seite:
+        type: integer
+        format: int32
+        description: Seite im Dokument, 1-basiert.
 
   SeitenFreigabe:
     type: object
