@@ -9,7 +9,7 @@ API rund um Plattformdokumente.
 
 
 ### API Docs
-[API Docs](https://dokumente-api-40.api-docs.io/1.0.4)
+[API Docs](https://dokumente-api-40.api-docs.io/1.0.5)
 (generated via https://api-docs.io/ )
 
 #### UML Sequenz-Diagramme
