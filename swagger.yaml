@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.3"
+  version: "1.0.4"
 host: "api.europace.de"
 schemes:
   - https
@@ -806,6 +806,9 @@ definitions:
       vorgangsNummer:
         type: string
         description: Vorgang dem das Dokument zugeordnet ist.
+      verschluesselt:
+        type: boolean
+        description: Gibt an, ob das Dokument verschlüsselt ist
       kategorisierungsStatus:
         type: object
         description: |
