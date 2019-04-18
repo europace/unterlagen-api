@@ -3,13 +3,13 @@ API rund um Plattformdokumente.
 
 
 # Dokumentation
-*Aktuelle Version: 1.0*
+*Aktuelle Version: 1.0.6*
 
 ⚠️ HINWEIS: Diese API befindet sich aktuell in der Entwicklung und eignet sich noch nicht zum produktiven Einsatz!
 
 
 ### API Docs
-[API Docs](https://dokumente-api-40.api-docs.io/1.0.5)
+[API Docs](https://dokumente-api-40.api-docs.io/1.0.6/)
 (generated via https://api-docs.io/ )
 
 #### UML Sequenz-Diagramme
