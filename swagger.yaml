@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.5"
+  version: "1.0.6"
 host: "api.europace.de"
 schemes:
   - https
@@ -889,6 +889,9 @@ definitions:
           format: int32
           description: |
             Progress Wert in Prozent 0 - 100
+        meldung:
+          type: string
+          description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt oder nähere Informationen liefert. Kann null sein.
 
   Bezug:
     type: object
