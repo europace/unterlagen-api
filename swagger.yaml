@@ -1008,6 +1008,9 @@ definitions:
           Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
           wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
+      archiviert:
+        type: boolean
+        description: Archivierungsstatus der Seite.
       freigaben:
         type: array
         description: Angaben zu Freigaben dieser Seite
