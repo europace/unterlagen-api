@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.6"
+  version: "1.0.7"
 host: "api.europace.de"
 schemes:
   - https
@@ -54,8 +54,7 @@ paths:
     get:
       summary: Alle Dokumente
       description: |
-        Dieser Endpunkt liefert alle Dokumente, auf die ich Zugriff habe. Da dies viele Dokumente sein können,
-        lässt sich die Menge über Filter reduzieren.
+        Dieser Endpunkt liefert alle Dokumente eines Vorgangs.
       operationId: getDokumente
       parameters:
         - name: vorgangsNummer
@@ -63,12 +62,6 @@ paths:
           description: Vorgangsnummer um nur Dokumente eines bestimmten Vorgangs zu erhalten.
           required: false
           type: string
-        - name: inprogressonly
-          in: query
-          description: Liefert bei true nur die aktuell in Kategorisierung befindlichen Dokumente. Bei false wird nichts gefiltert.
-          type: boolean
-          required: false
-          default: false
       # Hier ggf. Parameter Hochgeladenes Dokument
       responses:
         200:
@@ -530,6 +523,66 @@ paths:
             $ref: '#/definitions/Error'
         404:
           description: Kategorie nicht gefunden.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+
+  /dokumente/archiv:
+    put:
+      summary: Seiten ins Archiv verschieben
+      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden ins Archiv verschoben (archiv-Flag setzen).
+      operationId: setArchiv
+      parameters:
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben werden sollen.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+    delete:
+      summary: Seiten aus dem Archiv herausholen
+      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden aus dem Archiv zurückgeholt (archiv-flag löschen).
+      operationId: unsetArchiv
+      parameters:
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, die aus dem Archiv zurückgeholt werden sollen.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
           schema:
             $ref: '#/definitions/Error'
         default:
