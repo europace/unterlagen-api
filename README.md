@@ -4,7 +4,7 @@
 API rund um Plattformdokumente.
 
 # Dokumentation
-*Aktuelle Version: 1.0.6*
+*Aktuelle Version: 1.0.7*
 
 ### API Docs
 [API Docs](https://dokumente-api-41.api-docs.io/1.0.7/)
