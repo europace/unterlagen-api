@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.7"
+  version: "1.0.9"
 host: "api.europace.de"
 schemes:
   - https
@@ -535,6 +535,42 @@ paths:
       tags:
         - Seiten
 
+  /dokumente/verbindlichkeitsart/{verbindlichkeitsart}:
+    put:
+      summary: Seiten einer Verbindlichkeitsart zuordnen
+      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Verbindlichkeitsart {verbindlichkeitsart} zugeordnet.
+      operationId: setzeVerbindlichkeitsart
+      parameters:
+        - name: verbindlichkeitsart
+          in: path
+          description: Die Verbindlichkeitsart, der die Seiten zugeordnet werden sollen.
+          required: true
+          type: string
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, deren Verbindlichkeitsart geändert werden sollen.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+
   /dokumente/archiv:
     put:
       summary: Seiten ins Archiv verschieben
@@ -1008,6 +1044,9 @@ definitions:
           Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
           wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
+      verbindlichkeitsart:
+        type: string
+        description: Verbindlichkeitsart der Seite.
       archiviert:
         type: boolean
         description: Archivierungsstatus der Seite.
