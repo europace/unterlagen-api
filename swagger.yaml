@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.9"
+  version: "1.0.10"
 host: "api.europace.de"
 schemes:
   - https
@@ -1045,8 +1045,8 @@ definitions:
           wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
       verbindlichkeitsart:
+        description: Art der Verbindlichkeit
         type: string
-        description: Verbindlichkeitsart der Seite.
       archiviert:
         type: boolean
         description: Archivierungsstatus der Seite.
@@ -1122,6 +1122,9 @@ definitions:
         description: Media-Type nach https://tools.ietf.org/html/rfc6838.
       kategorie:
         description: Kategorie.
+        type: string
+      verbindlichkeitsart:
+        description: Art der Verbindlichkeit.
         type: string
       bezug:
         $ref: "#/definitions/Bezug"
