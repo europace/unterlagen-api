@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.10"
+  version: "1.0.11"
 host: "api.europace.de"
 schemes:
   - https
@@ -444,7 +444,7 @@ paths:
       tags:
       - Seiten
     patch:
-      summary: Manipulation der Seiten. Zum Beispiel um die Kategorie von Seiten zu ändern oder auch deren Reihenfolge.
+      summary: (DEPRECATED) Manipulation der Seiten. Zum Beispiel um die Kategorie von Seiten zu ändern oder auch deren Reihenfolge.
       operationId: patchSeiten
       parameters:
         - name: vorgangsNummer
@@ -642,16 +642,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: revision
-          in: query
-          description: |
-            Der Wert wird bei Abfrage von GET /dokumente/sortierung mit zurückgegeben. Es ist zufällige ID, die immer dann geändert wird,
-
-            wenn Seiten umsortiert oder einer anderen Kategorie zugeordnet werden.
-
-            Durch Anhängen von Seiten ändert sich der Wert nicht. Durch die ID wird sichergestellt, dass die Patchoperation die richtige Seite adressiert.
-          required: true
-          type: string
         - in: body
           name: freigabe
           description: Freizugebende Seiten für einen Antrag und ProduktAnbieter.
@@ -855,6 +845,39 @@ paths:
       tags:
       - Freigabe
 
+  /dokumente/revision:
+    get:
+      summary: Revisionnummern der Daten zum angegebenen Vorgang
+      description: |
+        Liefert die aktuellen Revisionsnummern der Resourcen zum angegebenen Vorgang. Jede Änderung einer Resource ändert deren Revisionsnummer.
+      operationId: getRevision
+      produces:
+        - application/json
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer der Dokumente.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Revisionsnummern der verschiedenen Resourcen des Vorgangs
+          schema:
+            $ref: "#/definitions/Revision"
+        404:
+          description: Vorgang nicht gefunden.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Revision
+
 securityDefinitions:
   oauth2:
     type: oauth2
@@ -1010,7 +1033,7 @@ definitions:
     properties:
       revision:
         type: string
-        description: zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden. Durch Anhängen von Seiten ändert sich der Wert nicht
+        description: (DEPRECATED) zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden.
       seiten:
         type: array
         items:
@@ -1210,6 +1233,16 @@ definitions:
       type:
         type: string
         description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+
+  Revision:
+    type: object
+    properties:
+      dokumenteRevision:
+        type: string
+        description: Revisionsnummer der Dokumente des Vorgangs.
+      seitenRevision:
+        type: string
+        description: Revisionsnummer der Dokumentseiten des Vorgangs.
 
   Error:
     type: object
