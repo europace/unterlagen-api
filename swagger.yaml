@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.11"
+  version: "1.0.12"
 host: "api.europace.de"
 schemes:
   - https
@@ -286,12 +286,6 @@ paths:
         description: Unique identifier des Dokuments.
         required: true
         type: string
-      - name: kategorisierungsAnfrage
-        in: body
-        description: Alle zur Kategorisierung durch SmartCat notwendigen Informationen.
-        required: true
-        schema:
-          $ref: '#/definitions/KategorisierungsAnfrage'
       responses:
         200:
           description: Eine Kategorisierung eines Dokuments starten
@@ -497,7 +491,7 @@ paths:
 
   /dokumente/kategorien/{kategorieId}:
     put:
-      summary: Seiten umkategorisieren
+      summary: (DEPRECATED) Seiten umkategorisieren - wird ersetzt durch /dokumente/zuordnung/{kategorie}/{bezug}
       description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Kategorie {kategorieId} zugeordnet.
       operationId: setzeKategorie
       parameters:
@@ -537,7 +531,7 @@ paths:
 
   /dokumente/verbindlichkeitsart/{verbindlichkeitsart}:
     put:
-      summary: Seiten einer Verbindlichkeitsart zuordnen
+      summary: (DEPRECATED) Seiten einer Verbindlichkeitsart zuordnen - wird ersetzt durch /dokumente/zuordnung/{kategorie}
       description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Verbindlichkeitsart {verbindlichkeitsart} zugeordnet.
       operationId: setzeVerbindlichkeitsart
       parameters:
@@ -559,6 +553,89 @@ paths:
           description: Ok
         400:
           description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+
+
+  /dokumente/zuordnung/{kategorie}:
+    put:
+      summary: Seiten einer Kategorie und einem Bezug zuordnen
+      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Kategorie und dem Bezug zugeordnet.
+      operationId: setzeZuordnung
+      parameters:
+        - name: kategorie
+          in: path
+          description: Die Kategorie, der die Seiten zugeordnet werden sollen.
+          required: true
+          type: string
+        - name: bezug
+          in: query
+          description: Der Bezug, dem die Seiten zugeordnet werden sollen.
+          required: false
+          type: string
+        #          allowReserved: true
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, deren Kategorie und Bezug geändert werden sollen.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Kategorie/Bezug nicht gefunden.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+
+  /dokumente/zuordnungen:
+    get:
+      summary: Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten erhalten.
+      description: Welche Zuordnungen stehen in diesem Vorgang für Seiten zur Verfügung.
+      operationId: getMoeglicheZuordnungen
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer
+          required: true
+          type: string
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MoeglicheZuordnung'
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Vorgang nicht gefunden.
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -948,42 +1025,6 @@ definitions:
             $ref: "#/definitions/Relation"
             description: URL zu den Seiten des Dokuments
 
-  KategorisierungsAnfrage:
-      type: object
-      description: |
-        Alle Metadaten nach denen SmartCat im Dokument suchen soll.
-      properties:
-        bezuege:
-          type: array
-          items:
-            type: object
-            properties:
-              bezug:
-                $ref: "#/definitions/Bezug"
-              bezugsDetails:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    key:
-                      type: string
-                      enum:
-                      - 'VORNAME'
-                      - 'NACHNAME'
-                      - 'TITEL'
-                      - 'GEBURTSDATUM'
-                      - 'PLZ'
-                      - 'STADT'
-                      - 'STRASSE'
-                      - 'HAUSNUMMER'
-                      - 'IBAN'
-                      - 'BIC'
-                      - 'EINKOMMENBRUTTO'
-                      - 'EINKOMMENNETTO'
-                      - 'STEUERID'
-                    value:
-                      type: string
-
   KategorisierungsStatus:
       type: object
       description: |
@@ -1004,29 +1045,6 @@ definitions:
         meldung:
           type: string
           description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt oder nähere Informationen liefert. Kann null sein.
-
-  Bezug:
-    type: object
-    description: |
-      Zuordnung einer Dokumentenseite zu einem Antrag und dem entsprechenden Business-Object.
-    properties:
-      typ:
-        type: string
-        description: |
-        enum:
-          - 'ANTRAGSTELLER'
-          - 'IMMOBILIE'
-          - 'VORHABEN'
-          - 'HAUSHALT'
-      anzeigename:
-         description: Name des Bezugsobjektes
-         example: Max Mustermann
-         type: string
-      referenzId:
-         type: string
-         description: |
-           Identifier des Bezugsobjekts wie Antragsteller oder Immobilie, auf die sich
-           diese Zuordnung bezieht.
 
   Seiten:
     type: object
@@ -1064,11 +1082,15 @@ definitions:
               example: Personalausweis
       kategorie:
         description: |
+          Die Kategorie der Seite bildet zusammen mit dem Bezug die Zuordnung.
           Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
           wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
       verbindlichkeitsart:
         description: Art der Verbindlichkeit
+        type: string
+      bezug:
+        description: Der Bezug der Seite bildet zusammen mit der Kategorie die Zuordnung.
         type: string
       archiviert:
         type: boolean
@@ -1078,8 +1100,6 @@ definitions:
         description: Angaben zu Freigaben dieser Seite
         items:
           $ref: "#/definitions/SeitenFreigabe"
-      bezug:
-        $ref: "#/definitions/Bezug"
       _links:
         type: object
         properties:
@@ -1144,13 +1164,11 @@ definitions:
         type: string
         description: Media-Type nach https://tools.ietf.org/html/rfc6838.
       kategorie:
-        description: Kategorie.
+        description: Die Kategorie der Freigabe.
         type: string
       verbindlichkeitsart:
         description: Art der Verbindlichkeit.
         type: string
-      bezug:
-        $ref: "#/definitions/Bezug"
       freigebender:
         $ref: "#/definitions/Partner"
         description: freigebender Vermittler
@@ -1243,6 +1261,33 @@ definitions:
       seitenRevision:
         type: string
         description: Revisionsnummer der Dokumentseiten des Vorgangs.
+
+  MoeglicheZuordnung:
+    type: object
+    properties:
+      kategorie:
+        type: string
+      label:
+        type: string
+        description: Revisionsnummer der Dokumentseiten des Vorgangs.
+      bezuege:
+        type: array
+        items:
+          type: object
+          description: A JSONPatch document as defined by RFC 6902
+          required:
+            - "op"
+            - "path"
+          properties:
+            bezug:
+              type: string
+              description: Id des Bezuges
+            label:
+              type: string
+              description: Anzeigename für diesen Bezug
+            oberkategorie:
+              type: string
+              description: Anzeigename der Gruppe in die Seiten gehören, für die diese Zuordnung ausgewählt wurde.
 
   Error:
     type: object
