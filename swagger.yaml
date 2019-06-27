@@ -799,6 +799,35 @@ paths:
       tags:
       - Freigabe
 
+  /dokumente/freigaben/content:
+    get:
+      summary: Den Inhalt aller erfolgreich freigegebenen Unterlagen als ZIP-Archiv herunterladen
+      description: |
+         Dieser Endpunkt liefert ein ZIP-Archiv, in dem alle für einen Teilantrag erfolgreich freigegebenen Unterlagen als PDF-Dateien enthalten sind.
+      operationId: downloadFreigaben
+      parameters:
+      - name: teilAntragsNummer
+        in: query
+        description: Teilantragsnummer
+        required: true
+        type: string
+      produces:
+        - "application/zip"
+      responses:
+        200:
+          description: Ein ZIP-Archiv mit allen für den Teilantrag erfolgreich freigegebenen Unterlagen als PDF-Dateien
+          schema:
+            type: file
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+      - oauth2:
+        - "API"
+      tags:
+      - Freigabe
+
   /dokumente/freigabe/{id}:
     get:
       summary: Eine freigegebene Unterlage
