@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.13"
+  version: "1.0.14"
 host: "api.europace.de"
 schemes:
   - https
@@ -59,8 +59,8 @@ paths:
       parameters:
         - name: vorgangsNummer
           in: query
-          description: Vorgangsnummer um nur Dokumente eines bestimmten Vorgangs zu erhalten.
-          required: false
+          description: Vorgangsnummer für welche Dokumente geliefert werden sollen.
+          required: true
           type: string
       # Hier ggf. Parameter Hochgeladenes Dokument
       responses:
