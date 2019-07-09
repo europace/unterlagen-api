@@ -1305,7 +1305,7 @@ definitions:
         description: Eine nähere Beschreibung, was mit der Kategorie erfasst werden soll (optional).
       hinweistext:
         type: string
-        description: Ein Hinweistext, der dem Nutzer für Unterlagen in dieser Kategorie angezeigt werden soll (optional).
+        description: Ein Hinweistext, der dem Nutzer für Unterlagen in dieser Kategorie angezeigt werden soll (optional, kann Markdown-Formatierung verwenden).
       bezuege:
         type: array
         items:
