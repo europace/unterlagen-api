@@ -7,7 +7,7 @@ API rund um Plattformdokumente.
 *Aktuelle Version: 1.0*
 
 ### API Docs
-[API Docs](https://dokumente-api-48.api-docs.io/1.0.14/)
+[API Docs](https://dokumente-api-49.api-docs.io/1.0.15/)
 (generated via https://api-docs.io/ )
 
 #### UML Sequenz-Diagramme
