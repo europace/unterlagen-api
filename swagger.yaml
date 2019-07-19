@@ -1201,7 +1201,7 @@ definitions:
         description: Die Kategorie der Freigabe.
         type: string
       bezug:
-        $ref: "#/definitions/Bezugsobjekt",
+        $ref: "#/definitions/Bezugsobjekt"
         description: Bezugsobjekt der Unterlage, wenn vorhanden
       verbindlichkeitsart:
         description: Art der Verbindlichkeit.
