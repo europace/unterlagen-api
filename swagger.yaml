@@ -623,6 +623,11 @@ paths:
           description: Vorgangsnummer
           required: true
           type: string
+        - name: teilAntragsNummer
+          in: query
+          description: Teilantragsnummer, wenn die Unterlagenakte für einen Antrag geöffnet ist
+          required: false
+          type: string
       responses:
         200:
           description: Ok
@@ -1195,6 +1200,9 @@ definitions:
       kategorie:
         description: Die Kategorie der Freigabe.
         type: string
+      bezug:
+        $ref: "#/definitions/Bezugsobjekt",
+        description: Bezugsobjekt der Unterlage, wenn vorhanden
       verbindlichkeitsart:
         description: Art der Verbindlichkeit.
         type: string
@@ -1231,6 +1239,22 @@ definitions:
         - DELIVERED
       message:
         type: string
+
+  Bezugsobjekt:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Id des Bezugsobjekts (innerhalb eines Teilantrags eindeutig).
+        example: "Immobilie:4711"
+      typ:
+        type: string
+        description: Typ des Bezugsobjekts.
+        example: "Immobilie"
+      bezeichnung:
+        type: string
+        description: Typ des Bezugsobjekts.
+        example: "Finanzierungsobjekt Feldweg 17"
 
   Partner:
     type: object
