@@ -1347,7 +1347,12 @@ definitions:
               description: Anzeigename für diesen Bezug
             oberkategorie:
               type: string
-              description: Anzeigename der Gruppe in die Seiten gehören, für die diese Zuordnung ausgewählt wurde.
+              description: Anzeigename der Gruppe, in die die Seiten gehören, für die diese Zuordnung ausgewählt wurde. Wird ggf. mit oberkategorieZusatz ergänzt.
+              example: Zusatzsicherheit
+            oberkategorieZusatz:
+              type: string
+              description: Zusätzliche Detailangaben zu der Gruppe, in die die Seiten gehören, für die diese Zuordnung gewählt wurde. Optional. oberkategorie und oberkategorieZusatz definieren *gemeinsam* die Gruppe.
+              example: Feldweg 17
 
   Error:
     type: object
