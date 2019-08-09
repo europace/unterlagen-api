@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.17"
+  version: "1.0.18"
 host: "api.europace.de"
 schemes:
   - https
