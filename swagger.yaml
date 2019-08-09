@@ -1173,12 +1173,8 @@ definitions:
         description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
       kategorie:
         type: string
-        description: Die Kategorie, mit der die Seite freigegeben wurde
-        example: Privatkreditvertrag
-      uiKategorie:
-        type: string
-        description: Die für den Nutzer sichtbare Kategorie, mit der die Seite freigegeben wurde. Hier werden die für den Nutzer "erfundenen" zusätzlichen Kategorien für |
-          Ratenkreditverträge berücksichtigt. In allen anderen Fällen entspricht der Wert dem Wert in dem Feld "kategorie".
+        description: Die Kategorie, mit der die Seite freigegeben wurde. Hier werden ggf. die für den Nutzer "erfundenen" zusätzlichen Kategorien für |
+          Ratenkreditverträge verwendet -- genau wie bei der Kategorie an der Seite und *anders* als bei der Kategorie in FreigegebeneUnterlage.
         example: Privatkreditvertrag_neu
       bezug:
         type: string
