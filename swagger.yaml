@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.19"
+  version: "1.0.20"
 host: "api.europace.de"
 schemes:
   - https
@@ -437,134 +437,6 @@ paths:
         - "API"
       tags:
       - Seiten
-    patch:
-      summary: (DEPRECATED) Manipulation der Seiten. Zum Beispiel um die Kategorie von Seiten zu ändern oder auch deren Reihenfolge.
-      operationId: patchSeiten
-      parameters:
-        - name: vorgangsNummer
-          in: query
-          description: Vorgangsnummer der Dokumente.
-          required: true
-          type: string
-        - name: revision
-          in: query
-          description: Der Wert wird bei Abfrage von GET /dokumente/sortierung mit zurückgegeben. Es ist zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden. Durch Anhängen von Seiten ändert sich der Wert nicht. Durch die ID wird sichergestellt, dass die Patchoperation die richtige Seite adressiert.
-          required: true
-          type: string
-        - name: JsonPatch
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/PatchRequest"
-      description: |
-        Endpunkt zum Aktualisieren der Seiten eines Vorgangs. Unterstützt ist aktuell das Ändern der Sortierung und das Ändern der Kategorie.
-
-        Beispiel für umsortieren: [{op: 'move', from: '/seiten/0', path: '/seiten/2'}] Die erste Seite wird hinter die dritte Seite gehangen.
-
-        Beispiel für umsortieren: [{op: 'move', from: '/seiten/0', path: '/seiten/-'}] Die erste Seite wird ans Ende gehangen.
-
-        Beispiel für Kategorie ändern: [{op: 'replace', path: '/seiten/0/kategorie', value: 'Ausweis'}] Die Kategorie der ersten Seite wird geändert
-      responses:
-        200:
-          description: Liste der Seiten
-          schema:
-            $ref: "#/definitions/Seiten"
-        404:
-          description: Vorgang nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
-        405:
-          description: Operation nicht unterstützt
-          schema:
-            $ref: '#/definitions/Error'
-        409:
-          description: Der Wert für den Requestparameter "revision" entspricht nicht dem aktuellen Stand.
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-      - oauth2:
-        - "API"
-      tags:
-      - Seiten
-
-  /dokumente/kategorien/{kategorieId}:
-    put:
-      summary: (DEPRECATED) Seiten umkategorisieren - wird ersetzt durch /dokumente/zuordnung/{kategorie}/{bezug}
-      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Kategorie {kategorieId} zugeordnet.
-      operationId: setzeKategorie
-      parameters:
-        - name: kategorieId
-          in: path
-          description: Die Kategorie, der die Seiten zugeordnet werden sollen.
-          required: true
-          type: string
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, deren Kategorie geändert werden sollen.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
-      responses:
-        200:
-          description: Ok
-        400:
-          description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
-        404:
-          description: Kategorie nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - oauth2:
-            - "API"
-      tags:
-        - Seiten
-
-  /dokumente/verbindlichkeitsart/{verbindlichkeitsart}:
-    put:
-      summary: (DEPRECATED) Seiten einer Verbindlichkeitsart zuordnen - wird ersetzt durch /dokumente/zuordnung/{kategorie}
-      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Verbindlichkeitsart {verbindlichkeitsart} zugeordnet.
-      operationId: setzeVerbindlichkeitsart
-      parameters:
-        - name: verbindlichkeitsart
-          in: path
-          description: Die Verbindlichkeitsart, der die Seiten zugeordnet werden sollen.
-          required: true
-          type: string
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, deren Verbindlichkeitsart geändert werden sollen.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
-      responses:
-        200:
-          description: Ok
-        400:
-          description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - oauth2:
-            - "API"
-      tags:
-        - Seiten
-
 
   /dokumente/zuordnung/{kategorie}:
     put:
@@ -1083,9 +955,6 @@ definitions:
   Seiten:
     type: object
     properties:
-      revision:
-        type: string
-        description: (DEPRECATED) zufällige ID, die immer dann geändert wird, wenn Seiten umsortiert werden.
       seiten:
         type: array
         items:
@@ -1272,36 +1141,6 @@ definitions:
         type: string
         description: Id eines Partners auf der Europace-Plattform. Identifiziert eine Plakette im Partnermanagement.
         example: ABC45
-
-  PatchRequest:
-    type: array
-    items:
-      type: object
-      description: A JSONPatch document as defined by RFC 6902
-      required:
-       - "op"
-       - "path"
-      properties:
-       op:
-        type: string
-        description: The operation to be performed
-        enum:
-         - "add"
-         - "remove"
-         - "replace"
-         - "move"
-         - "copy"
-         - "test"
-       path:
-        type: string
-        description: A JSON-Pointer
-       value:
-        type: object
-        description: The value to be used within the operations.
-       from:
-        type: string
-        description: A string containing a JSON Pointer value.
-    example:
 
   Relation:
     type: object
