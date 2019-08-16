@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.20"
+  version: "1.0.21"
 host: "api.europace.de"
 schemes:
   - https
@@ -371,39 +371,6 @@ paths:
         - "API"
       tags:
       - Seiten
-
-  /dokumente/{dokumentId}/seiten/{seite}:
-      get:
-        summary: Seite eines Dokuments
-        description: |
-          Lade die Seite eines Dokuments.
-        operationId: getDokumentSeite
-        parameters:
-        - name: dokumentId
-          in: path
-          description: Unique identifier des Dokuments.
-          required: true
-          type: string
-        - name: seite
-          in: path
-          description: Seite des Dokuments. 1-basiert.
-          required: true
-          type: integer
-        produces:
-          - application/json
-        responses:
-          200:
-            description: Seite des Dokuments
-            schema:
-              $ref: '#/definitions/Seite'
-          404:
-            description: Dokument oder Seite nicht gefunden.
-            schema:
-              $ref: '#/definitions/Error'
-          default:
-            description: Unerwarteter Fehler
-            schema:
-              $ref: '#/definitions/Error'
 
   /dokumente/seiten:
     get:
