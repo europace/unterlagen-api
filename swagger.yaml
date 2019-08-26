@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.22"
+  version: "1.0.23"
 host: "api.europace.de"
 schemes:
   - https
@@ -20,23 +20,23 @@ paths:
         An diesen Endpunkt kann ein Dokument samt Metadaten per Form-Data hochgeladen werden.
       operationId: uploadDokument
       consumes:
-      - multipart/form-data
+        - multipart/form-data
       parameters:
-      - in: formData
-        required: true
-        name: content
-        type: file
-        description: Inhalt des Dokuments.
-      - in: formData
-        required: false
-        name: anzeigename
-        type: string
-        description: Name zur Anzeige auf der Oberfläche.
-      - in: formData
-        required: true
-        name: vorgangsNummer
-        type: string
-        description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+        - in: formData
+          required: true
+          name: file
+          type: file
+          description: Inhalt des Dokuments.
+        - in: formData
+          required: false
+          name: anzeigename
+          type: string
+          description: Name zur Anzeige auf der Oberfläche.
+        - in: formData
+          required: true
+          name: vorgangsNummer
+          type: string
+          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
       responses:
         201:
           description: Dokument erfolgreich hochgeladen
@@ -47,10 +47,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
     get:
       summary: Alle Dokumente
       description: |
@@ -75,10 +75,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
     delete:
       summary: Alle Resourcen zu diesem Vorgang löschen
       description: |
@@ -98,10 +98,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
 
   /dokumente/{dokumentId}:
     get:
@@ -110,13 +110,13 @@ paths:
         Ein Dokument mit angegebener dokumentId.
       operationId: getDokument
       produces:
-      - "application/json;charset=UTF-8"
+        - "application/json;charset=UTF-8"
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
       responses:
         200:
           description: Ein Dokument
@@ -131,10 +131,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
     put:
       summary: Dokument aktualisieren
       description: |
@@ -164,21 +164,21 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
     delete:
       summary: Dokument löschen
       description: |
         An diesen Endpunkt kann das Dokument gelöscht werden.
       operationId: deleteDokument
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
       responses:
         200:
           description: Dokument erfolgreich gelöscht
@@ -187,10 +187,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
 
   /dokumente/{dokumentId}/content:
     get:
@@ -199,13 +199,13 @@ paths:
         An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
       operationId: downloadDokument
       produces:
-      - "application/pdf"
+        - "application/pdf"
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
       responses:
         200:
           description: OK
@@ -220,10 +220,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
 
   /dokumente/{dokumentId}/preview:
     get:
@@ -235,25 +235,25 @@ paths:
         - image/jpeg
         - application/json
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
-      - name: page
-        in: query
-        description: anzuzeigende Seite, 1-basiert
-        required: true
-        type: integer
-        format: int32
-      - name: size
-        in: query
-        description: "Bildgröße: small oder large"
-        default: 'small'
-        type: string
-        enum:
-          - 'small'
-          - 'large'
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: anzuzeigende Seite, 1-basiert
+          required: true
+          type: integer
+          format: int32
+        - name: size
+          in: query
+          description: "Bildgröße: small oder large"
+          default: 'small'
+          type: string
+          enum:
+            - 'small'
+            - 'large'
       responses:
         200:
           description: Vorschaubild in JPEG
@@ -269,10 +269,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
 
   /dokumente/{dokumentId}/kategorisierung:
     post:
@@ -281,11 +281,11 @@ paths:
         Die Kategorisierung eines Dokuments laden.
       operationId: starteKategorisierung
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
       responses:
         200:
           description: Eine Kategorisierung eines Dokuments starten
@@ -298,21 +298,21 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
     get:
       summary: Lade die Kategorisierung eines Dokuments
       description: |
         Die Kategorisierung eines Dokuments laden.
       operationId: getKategorisierung
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
       responses:
         200:
           description: |
@@ -332,10 +332,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Dokumente
+        - Dokumente
 
   /dokumente/{dokumentId}/seiten:
     get:
@@ -344,11 +344,11 @@ paths:
         Lade die Seiten eines Dokuments.
       operationId: getDokumentSeiten
       parameters:
-      - name: dokumentId
-        in: path
-        description: Unique identifier des Dokuments.
-        required: true
-        type: string
+        - name: dokumentId
+          in: path
+          description: Unique identifier des Dokuments.
+          required: true
+          type: string
       produces:
         - application/json
       responses:
@@ -367,25 +367,25 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Seiten
+        - Seiten
 
   /dokumente/seiten:
     get:
       summary: Lade alle Seiten der Dokumente eines Vorgangs
       description: |
-              Lade die Seiten der Dokumente eines Vorgangs in gespeicherter Sortierung.
+        Lade die Seiten der Dokumente eines Vorgangs in gespeicherter Sortierung.
       operationId: getSeiten
       produces:
         - application/json
       parameters:
-      - name: vorgangsNummer
-        in: query
-        description: Vorgangsnummer der Dokumente.
-        required: true
-        type: string
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer der Dokumente.
+          required: true
+          type: string
       responses:
         200:
           description: Liste der Seiten
@@ -400,10 +400,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Seiten
+        - Seiten
 
   /dokumente/zuordnung/{kategorie}:
     put:
@@ -556,7 +556,7 @@ paths:
     post:
       summary: Seiten freigeben
       description: |
-         Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen für einen Antrag.
+        Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen für einen Antrag.
       operationId: erzeugeFreigabe
       consumes:
         - application/json
@@ -601,31 +601,31 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Freigabe
+        - Freigabe
     get:
       summary: Alle freigegebenen Unterlagen
       description: |
-         Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
+        Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
       operationId: getFreigaben
       parameters:
-      - name: antragsNummer
-        in: query
-        description: Antragsnummer.
-        required: true
-        type: string
-      - name: von
-        in: query
-        required: false
-        type: string
-        format: date-time
-      - name: bis
-        in: query
-        required: false
-        type: string
-        format: date-time
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer.
+          required: true
+          type: string
+        - name: von
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: bis
+          in: query
+          required: false
+          type: string
+          format: date-time
       responses:
         200:
           description: Eine Liste von freigegebenen Unterlagen.
@@ -638,23 +638,23 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Freigabe
+        - Freigabe
 
   /dokumente/freigaben/content:
     get:
       summary: Den Inhalt aller erfolgreich freigegebenen Unterlagen als ZIP-Archiv herunterladen
       description: |
-         Dieser Endpunkt liefert ein ZIP-Archiv, in dem alle für einen Teilantrag erfolgreich freigegebenen Unterlagen als PDF-Dateien enthalten sind.
+        Dieser Endpunkt liefert ein ZIP-Archiv, in dem alle für einen Teilantrag erfolgreich freigegebenen Unterlagen als PDF-Dateien enthalten sind.
       operationId: downloadFreigaben
       parameters:
-      - name: teilAntragsNummer
-        in: query
-        description: Teilantragsnummer
-        required: true
-        type: string
+        - name: teilAntragsNummer
+          in: query
+          description: Teilantragsnummer
+          required: true
+          type: string
       produces:
         - "application/zip"
       responses:
@@ -667,10 +667,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Freigabe
+        - Freigabe
 
   /dokumente/freigabe/{id}:
     get:
@@ -699,10 +699,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Freigabe
+        - Freigabe
 
   /dokumente/freigabe/{id}/content:
     get:
@@ -711,13 +711,13 @@ paths:
         An diesen Endpunkt kann der Inhalt einer freigegebenen Unterlage heruntergeladen werden.
       operationId: downloadFreigabe
       produces:
-      - "application/pdf"
+        - "application/pdf"
       parameters:
-      - name: id
-        in: path
-        description: Unique identifier der freigegebenen Unterlage.
-        required: true
-        type: string
+        - name: id
+          in: path
+          description: Unique identifier der freigegebenen Unterlage.
+          required: true
+          type: string
       responses:
         200:
           description: OK
@@ -732,10 +732,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Freigabe
+        - Freigabe
 
   /dokumente/freigabe/{id}/status:
     get:
@@ -790,10 +790,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       security:
-      - oauth2:
-        - "API"
+        - oauth2:
+            - "API"
       tags:
-      - Freigabe
+        - Freigabe
 
   /dokumente/revision:
     get:
@@ -899,25 +899,25 @@ definitions:
             description: URL zu den Seiten des Dokuments
 
   KategorisierungsStatus:
-      type: object
-      description: |
-        Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung erfragt werden.
-      properties:
-        status:
-          type: string
-          enum:
-           - 'NEW'
-           - 'IN_PROGRESS'
-           - 'DONE'
-           - 'ERROR'
-        progress:
-          type: integer
-          format: int32
-          description: |
-            Progress Wert in Prozent 0 - 100
-        meldung:
-          type: string
-          description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt oder nähere Informationen liefert. Kann null sein.
+    type: object
+    description: |
+      Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung erfragt werden.
+    properties:
+      status:
+        type: string
+        enum:
+          - 'NEW'
+          - 'IN_PROGRESS'
+          - 'DONE'
+          - 'ERROR'
+      progress:
+        type: integer
+        format: int32
+        description: |
+          Progress Wert in Prozent 0 - 100
+      meldung:
+        type: string
+        description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt oder nähere Informationen liefert. Kann null sein.
 
   Seiten:
     type: object
@@ -1075,10 +1075,10 @@ definitions:
       status:
         type: string
         enum:
-        - CREATED
-        - IN_PROGRESS
-        - FAILED
-        - DELIVERED
+          - CREATED
+          - IN_PROGRESS
+          - FAILED
+          - DELIVERED
       message:
         type: string
 
