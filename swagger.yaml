@@ -572,10 +572,6 @@ paths:
             properties:
               antragsNummer:
                 type: string
-              callbackUrl:
-                description: Wenn angegeben, erfolgt ein POST-Request der Freigabe an diese URL.
-                type: string
-                format: uri
               seiten:
                 type: array
                 items:
