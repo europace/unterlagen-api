@@ -554,14 +554,14 @@ paths:
 
   /dokumente/geprueft:
     put:
-      summary: Seiten als "geprüft" markieren
-      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden als "geprüft" (mit aktuellem Zeitstempel) markiert. |
-            Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.
+      summary: 'Seiten als "geprüft" markieren'
+      description: 'Die Seiten mit den im Body angegebenen Seitenreferenzen werden als "geprüft" (mit aktuellem Zeitstempel) markiert.
+            Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.'
       operationId: setGeprueft
       parameters:
         - name: seitenReferenzen
           in: body
-          description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.
+          description: 'Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.'
           required: true
           schema:
             type: array
@@ -584,14 +584,14 @@ paths:
       tags:
         - Seiten
     delete:
-      summary: "geprüft"-Markierung für angegebene Seiten löschen
-      description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"-Markierung entfernt, sie erscheinen dann ungeprüft. |
-            Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.
+      summary: '"geprüft"-Markierung für angegebene Seiten löschen'
+      description: 'Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"-Markierung entfernt, sie erscheinen dann ungeprüft.
+            Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.'
       operationId: unsetGeprueft
       parameters:
         - name: seitenReferenzen
           in: body
-          description: Die Seiten-Referenzen der Seiten, deren "geprüft"-Markierung entfernt werden soll.
+          description: 'Die Seiten-Referenzen der Seiten, deren "geprüft"-Markierung entfernt werden soll.'
           required: true
           schema:
             type: array
