@@ -552,6 +552,68 @@ paths:
       tags:
         - Seiten
 
+  /dokumente/geprueft:
+    put:
+      summary: Seiten als "geprüft" markieren
+      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden als "geprüft" (mit aktuellem Zeitstempel) markiert. |
+            Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.
+      operationId: setGeprueft
+      parameters:
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+    delete:
+      summary: "geprüft"-Markierung für angegebene Seiten löschen
+      description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"-Markierung entfernt, sie erscheinen dann ungeprüft. |
+            Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.
+      operationId: unsetGeprueft
+      parameters:
+        - name: seitenReferenzen
+          in: body
+          description: Die Seiten-Referenzen der Seiten, deren "geprüft"-Markierung entfernt werden soll.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SeitenReferenz'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Fehler in den Eingabedaten.
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unerwarteter Fehler
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Seiten
+
   /dokumente/freigabe:
     post:
       summary: Seiten freigeben
@@ -961,6 +1023,10 @@ definitions:
       archiviert:
         type: boolean
         description: Archivierungsstatus der Seite.
+      geprueftAm:
+        type: string
+        format: date-time
+        description: Zeitpunkt, an dem die Seite inhaltlich geprüft wurde. null, wenn die Seite noch nicht inhaltlich geprüft wurde.
       freigaben:
         type: array
         description: Angaben zu Freigaben dieser Seite
