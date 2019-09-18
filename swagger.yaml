@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.25"
+  version: "1.0.26"
 host: "api.europace.de"
 schemes:
   - https
@@ -137,12 +137,10 @@ paths:
         - Dokumente
     put:
       summary: Dokument aktualisieren
-      description: |
-        Update der Dokument Metadaten.
+      description: Update der Dokument Metadaten.
       operationId: updateDokument
       consumes:
         - application/json
-        - multipart/form-data
       parameters:
         - in: path
           name: dokumentId
@@ -150,10 +148,9 @@ paths:
           required: true
           type: string
         - in: body
-          name: dokument
-          description: Dokument als JSON oder Attribute als Formparameter
+          name: metadaten
           schema:
-            $ref: '#/definitions/Dokument'
+            $ref: '#/definitions/AenderbareDokumentMetadaten'
       responses:
         200:
           description: Metadaten des Dokuments erfolgreich aktualisiert
@@ -955,6 +952,14 @@ definitions:
           seiten:
             $ref: "#/definitions/Relation"
             description: URL zu den Seiten des Dokuments
+
+  AenderbareDokumentMetadaten:
+    description: Metadaten die für ein Dokument geändert werden können.
+    type: object
+    properties:
+      anzeigename:
+        type: string
+        description: Anzeigename
 
   KategorisierungsStatus:
     type: object
