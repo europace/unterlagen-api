@@ -997,6 +997,17 @@ definitions:
         type: integer
         format: int32
         description: Seite im Dokument, 1-basiert.
+      drehung:
+        type: integer
+        format: int32
+        enum:
+          - 0
+          - 90
+          - 180
+          - 270
+        description: |
+          Winkel in Grad, um den die Seite gegenüber dem Originaldokument gedreht werden muss, um richtig zu liegen. Ist 0, 90, 180 oder 270.
+          Ist die Angabe null oder nicht vorhanden, dann ist dieser Winkel nicht bekannt, und die Seite wird nicht gedreht.
       klassifizierung:
         type: object
         properties:
