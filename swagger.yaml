@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.27"
+  version: "1.0.28"
 host: "api.europace.de"
 schemes:
   - https
@@ -15,9 +15,9 @@ produces:
 paths:
   /dokumente:
     post:
-      summary: Dokument erstellen
+      summary: Dokument hochladen
       description: |
-        An diesen Endpunkt kann ein Dokument samt Metadaten per Form-Data hochgeladen werden.
+        Ein Dokument samt Metadaten per Form-Data hochladen.
       operationId: uploadDokument
       consumes:
         - multipart/form-data
@@ -52,9 +52,7 @@ paths:
       tags:
         - Dokumente
     get:
-      summary: Alle Dokumente
-      description: |
-        Dieser Endpunkt liefert alle Dokumente eines Vorgangs.
+      summary: Metadaten zu allen Dokumenten eines Vorgangs laden
       operationId: getDokumente
       parameters:
         - name: vorgangsNummer
@@ -101,13 +99,11 @@ paths:
         - oauth2:
             - "API"
       tags:
-        - Dokumente
+        - Vorgang
 
   /dokumente/{dokumentId}:
     get:
-      summary: Ein Dokument
-      description: |
-        Ein Dokument mit angegebener dokumentId.
+      summary: Metadaten zu einem Dokument laden
       operationId: getDokument
       produces:
         - "application/json;charset=UTF-8"
@@ -136,8 +132,7 @@ paths:
       tags:
         - Dokumente
     put:
-      summary: Dokument aktualisieren
-      description: Update der Dokument Metadaten.
+      summary: Metadaten eines Dokuments aktualisieren
       operationId: updateDokument
       consumes:
         - application/json
@@ -166,9 +161,7 @@ paths:
       tags:
         - Dokumente
     delete:
-      summary: Dokument löschen
-      description: |
-        An diesen Endpunkt kann das Dokument gelöscht werden.
+      summary: Metadaten und Inhalt eines Dokuments löschen
       operationId: deleteDokument
       parameters:
         - name: dokumentId
@@ -191,9 +184,7 @@ paths:
 
   /dokumente/{dokumentId}/content:
     get:
-      summary: Ein Dokument runterladen
-      description: |
-        An diesen Endpunkt kann der Inhalt eines Dokuments heruntergeladen werden.
+      summary: Inhalt eines Dokuments laden
       operationId: downloadDokument
       produces:
         - "application/pdf"
@@ -224,9 +215,7 @@ paths:
 
   /dokumente/{dokumentId}/preview:
     get:
-      summary: Vorschaubild
-      description: |
-        Der Endpunkt liefert das Vorschaubild einer Seite eines Dokuments.
+      summary: Vorschaubild einer Seite eines Dokuments laden
       operationId: getPreview
       produces:
         - image/jpeg
@@ -273,9 +262,7 @@ paths:
 
   /dokumente/{dokumentId}/kategorisierung:
     post:
-      summary: Starte Kategorisierung eines Dokuments
-      description: |
-        Die Kategorisierung eines Dokuments laden.
+      summary: Kategorisierung eines Dokuments anstoßen
       operationId: starteKategorisierung
       parameters:
         - name: dokumentId
@@ -285,7 +272,7 @@ paths:
           type: string
       responses:
         200:
-          description: Eine Kategorisierung eines Dokuments starten
+          description: Kategorisierung wurde gestartet
         404:
           description: Dokument nicht gefunden
           schema:
@@ -300,9 +287,7 @@ paths:
       tags:
         - Dokumente
     get:
-      summary: Lade die Kategorisierung eines Dokuments
-      description: |
-        Die Kategorisierung eines Dokuments laden.
+      summary: Kategorisierungsstatus eines Dokuments laden
       operationId: getKategorisierung
       parameters:
         - name: dokumentId
@@ -336,9 +321,7 @@ paths:
 
   /dokumente/{dokumentId}/seiten:
     get:
-      summary: Seiten eines Dokuments
-      description: |
-        Lade die Seiten eines Dokuments.
+      summary: Metadaten zu allen Seiten eines Dokuments laden
       operationId: getDokumentSeiten
       parameters:
         - name: dokumentId
@@ -371,9 +354,7 @@ paths:
 
   /dokumente/seiten:
     get:
-      summary: Lade alle Seiten der Dokumente eines Vorgangs
-      description: |
-        Lade die Seiten der Dokumente eines Vorgangs in gespeicherter Sortierung.
+      summary: Metadaten zu allen Seiten eines Vorgangs laden
       operationId: getSeiten
       produces:
         - application/json
@@ -404,18 +385,17 @@ paths:
 
   /dokumente/zuordnung/{kategorie}:
     put:
-      summary: Seiten einer Kategorie und einem Bezug zuordnen
-      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden der Kategorie und dem Bezug zugeordnet.
+      summary: Zuordnung (Kategorie und Bezug) für mehrere Seiten setzen
       operationId: setzeZuordnung
       parameters:
         - name: kategorie
           in: path
-          description: Die Kategorie, der die Seiten zugeordnet werden sollen.
+          description: Die Kategorie, die den Seiten zugeordnet werden soll.
           required: true
           type: string
         - name: bezug
           in: query
-          description: Der Bezug, dem die Seiten zugeordnet werden sollen.
+          description: Der Bezug, der den Seiten zugeordnet werden soll.
           required: false
           type: string
         #          allowReserved: true
@@ -451,7 +431,7 @@ paths:
   /dokumente/zuordnungen:
     get:
       summary: Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten erhalten.
-      description: Welche Zuordnungen stehen in diesem Vorgang für Seiten zur Verfügung.
+      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur Verfügung.
       operationId: getMoeglicheZuordnungen
       parameters:
         - name: vorgangsNummer
@@ -459,9 +439,14 @@ paths:
           description: Vorgangsnummer
           required: true
           type: string
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die aktuellen Vorgangsdaten.
+          required: false
+          type: string
         - name: teilAntragsNummer
           in: query
-          description: Teilantragsnummer, wenn die Unterlagenakte für einen Antrag geöffnet ist
+          description: Deprecated - bitte antragsNummer verwenden
           required: false
           type: string
       responses:
@@ -492,7 +477,7 @@ paths:
   /dokumente/archiv:
     put:
       summary: Seiten ins Archiv verschieben
-      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden ins Archiv verschoben (archiv-Flag setzen).
+      description: Archiv-Flag wird gesetzt.
       operationId: setArchiv
       parameters:
         - name: seitenReferenzen
@@ -521,7 +506,7 @@ paths:
         - Seiten
     delete:
       summary: Seiten aus dem Archiv herausholen
-      description: Die Seiten mit den im Body angegebenen Seitenreferenzen werden aus dem Archiv zurückgeholt (archiv-flag löschen).
+      description: Archiv-Flag wird entfernt.
       operationId: unsetArchiv
       parameters:
         - name: seitenReferenzen
@@ -551,14 +536,14 @@ paths:
 
   /dokumente/geprueft:
     put:
-      summary: 'Seiten als "geprüft" markieren'
-      description: 'Die Seiten mit den im Body angegebenen Seitenreferenzen werden als "geprüft" (mit aktuellem Zeitstempel) markiert.
-            Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.'
+      summary: Seiten als "geprüft" markieren
+      description: Seiten werden (mit aktuellem Zeitstempel) als "geprüft" markiert.
+        Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.
       operationId: setGeprueft
       parameters:
         - name: seitenReferenzen
           in: body
-          description: 'Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.'
+          description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.
           required: true
           schema:
             type: array
@@ -580,15 +565,16 @@ paths:
             - "API"
       tags:
         - Seiten
+
     delete:
-      summary: '"geprüft"-Markierung für angegebene Seiten löschen'
-      description: 'Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"-Markierung entfernt, sie erscheinen dann ungeprüft.
-            Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.'
+      summary: Die "geprüft"-Markierung für angegebene Seiten löschen
+      description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"
+        -Markierung entfernt, sie erscheinen dann ungeprüft. Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.
       operationId: unsetGeprueft
       parameters:
         - name: seitenReferenzen
           in: body
-          description: 'Die Seiten-Referenzen der Seiten, deren "geprüft"-Markierung entfernt werden soll.'
+          description: Die Seiten-Referenzen der Seiten, deren "geprüft"-Markierung entfernt werden soll.
           required: true
           schema:
             type: array
@@ -613,9 +599,8 @@ paths:
 
   /dokumente/freigabe:
     post:
-      summary: Seiten freigeben
-      description: |
-        Dieser Endpunkt erzeugt ein Set freigegebener Unterlagen für einen Antrag.
+      summary: Seiten für einen ProduktAnbieter freigeben
+      description: Es werden die Zuordnungen (Kategorie/Bezug) verwendet, die an den Seiten ermittelt oder manuell gesetzt wurden
       operationId: erzeugeFreigabe
       consumes:
         - application/json
@@ -661,9 +646,7 @@ paths:
       tags:
         - Freigabe
     get:
-      summary: Alle freigegebenen Unterlagen
-      description: |
-        Dieser Endpunkt liefert alle freigegebenen Unterlagen für einen Antrag innerhalb eines Zeitraumes.
+      summary: Metadaten aller freigegebener Unterlagen (in einem Zeitraum) laden
       operationId: getFreigaben
       parameters:
         - name: antragsNummer
@@ -701,20 +684,23 @@ paths:
   /dokumente/freigaben/content:
     get:
       summary: Den Inhalt aller erfolgreich freigegebenen Unterlagen als ZIP-Archiv herunterladen
-      description: |
-        Dieser Endpunkt liefert ein ZIP-Archiv, in dem alle für einen Teilantrag erfolgreich freigegebenen Unterlagen als PDF-Dateien enthalten sind.
       operationId: downloadFreigaben
       parameters:
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer (ist required! - steht wegen Abwärtskompatibilität grade auf false)
+          required: false
+          type: string
         - name: teilAntragsNummer
           in: query
-          description: Teilantragsnummer
-          required: true
+          description: Deprecated - bitte antragsNummer verwenden
+          required: false
           type: string
       produces:
         - "application/zip"
       responses:
         200:
-          description: Ein ZIP-Archiv mit allen für den Teilantrag erfolgreich freigegebenen Unterlagen als PDF-Dateien
+          description: Ein ZIP-Archiv mit allen für den Antrag erfolgreich freigegebenen Unterlagen als PDF-Dateien
           schema:
             type: file
         default:
@@ -729,7 +715,7 @@ paths:
 
   /dokumente/freigabe/{id}:
     get:
-      summary: Eine freigegebene Unterlage
+      summary: Metadaten einer freigegebene Unterlage laden
       description: |
         Dieser Endpunkt liefert eine freigegebene Unterlage.
       operationId: getFreigabe
@@ -761,9 +747,7 @@ paths:
 
   /dokumente/freigabe/{id}/content:
     get:
-      summary: Eine freigegebene Unterlage runterladen
-      description: |
-        An diesen Endpunkt kann der Inhalt einer freigegebenen Unterlage heruntergeladen werden.
+      summary: Inhalt einer freigegebene Unterlage laden
       operationId: downloadFreigabe
       produces:
         - "application/pdf"
@@ -794,9 +778,7 @@ paths:
 
   /dokumente/freigabe/{id}/status:
     get:
-      summary: Freigabestatus auslesen
-      description: |
-        Dieser Endpunkt liefert den Abrufstatus einer freigegebene Unterlage.
+      summary: Abrufstatus einer freigegebenen Unterlage laden
       operationId: getFreigegebeneUnterlageStatus
       parameters:
         - name: id
@@ -817,10 +799,14 @@ paths:
           description: Unerwarteter Fehler
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - oauth2:
+            - "API"
+      tags:
+        - Freigabe
+
     post:
-      summary: Freigabestatus setzen
-      description: |
-        Dieser Endpunkt setzt den Abrufstatus einer freigegebenen Unterlage.
+      summary: Abrufstatus einer freigegebenen Unterlage setzen
       operationId: setFreigegebeneUnterlageStatus
       parameters:
         - name: id
@@ -1149,6 +1135,7 @@ definitions:
 
   Abrufstatus:
     type: object
+    description: Status, ob die vom Vertrieb freigegebene Unterlage beim Produktanbieter angekommen ist
     properties:
       status:
         type: string
@@ -1165,7 +1152,7 @@ definitions:
     properties:
       id:
         type: string
-        description: Id des Bezugsobjekts (innerhalb eines Teilantrags eindeutig).
+        description: Id des Bezugsobjekts (innerhalb eines Antrags eindeutig).
         example: "Immobilie:4711"
       typ:
         type: string
