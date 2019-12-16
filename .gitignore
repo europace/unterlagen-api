@@ -2,3 +2,6 @@
 *.iml
 generate-client.sh
 client/
+
+# Gradle files
+.gradle/
