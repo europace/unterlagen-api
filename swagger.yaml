@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.29"
+  version: "1.0.30"
 host: "api.europace.de"
 schemes:
   - https
@@ -442,7 +442,7 @@ paths:
         - name: antragsNummer
           in: query
           description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die aktuellen Vorgangsdaten.
-          required: true
+          required: false
           type: string
       responses:
         200:
