@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.28"
+  version: "1.0.29"
 host: "api.europace.de"
 schemes:
   - https
@@ -442,12 +442,7 @@ paths:
         - name: antragsNummer
           in: query
           description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die aktuellen Vorgangsdaten.
-          required: false
-          type: string
-        - name: teilAntragsNummer
-          in: query
-          description: Deprecated - bitte antragsNummer verwenden
-          required: false
+          required: true
           type: string
       responses:
         200:
@@ -688,13 +683,8 @@ paths:
       parameters:
         - name: antragsNummer
           in: query
-          description: Antragsnummer (ist required! - steht wegen Abwärtskompatibilität grade auf false)
-          required: false
-          type: string
-        - name: teilAntragsNummer
-          in: query
-          description: Deprecated - bitte antragsNummer verwenden
-          required: false
+          description: Antragsnummer
+          required: true
           type: string
       produces:
         - "application/zip"
