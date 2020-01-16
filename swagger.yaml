@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.30"
+  version: "1.0.31"
 host: "api.europace.de"
 schemes:
   - https
@@ -329,6 +329,16 @@ paths:
           description: Unique identifier des Dokuments.
           required: true
           type: string
+        - name: vorgangsNummer
+          in: query
+          description: Wird Pflichtfeld - bitte anpassen --  Vorgangsnummer des Dokuments.
+          required: false
+          type: string
+        - name: antragsNummer
+          in: query
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang zum Zeitpunkt, als der Antrag angenommen wurde.
+          required: false
+          type: string
       produces:
         - application/json
       responses:
@@ -363,6 +373,11 @@ paths:
           in: query
           description: Vorgangsnummer der Dokumente.
           required: true
+          type: string
+        - name: antragsNummer
+          in: query
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang zum Zeitpunkt, als der Antrag angenommen wurde.
+          required: false
           type: string
       responses:
         200:
@@ -1000,17 +1015,20 @@ definitions:
             items:
               type: string
               example: Personalausweis
+      zuordnung:
+        type: object
+        $ref: "#/definitions/ZuordnungMitStatus"
       kategorie:
         description: |
-          Die Kategorie der Seite bildet zusammen mit dem Bezug die Zuordnung.
+          deprecated => see zuordnung - Die Kategorie der Seite bildet zusammen mit dem Bezug die Zuordnung.
           Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
           wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
       verbindlichkeitsart:
-        description: Art der Verbindlichkeit
+        description: deprecated => see zuordnung - Art der Verbindlichkeit
         type: string
       bezug:
-        description: Der Bezug der Seite bildet zusammen mit der Kategorie die Zuordnung.
+        description: deprecated => see zuordnung - Der Bezug der Seite bildet zusammen mit der Kategorie die Zuordnung.
         type: string
       archiviert:
         type: boolean
@@ -1058,14 +1076,16 @@ definitions:
         type: string
         format: date-time
         description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
+      zuordnung:
+        $ref: "#/definitions/Zuordnung"
       kategorie:
         type: string
-        description: Die Kategorie, mit der die Seite freigegeben wurde. Hier werden ggf. die für den Nutzer "erfundenen" zusätzlichen Kategorien für |
+        description: deprecated => see zuordnung - Die Kategorie, mit der die Seite freigegeben wurde. Hier werden ggf. die für den Nutzer "erfundenen" zusätzlichen Kategorien für |
           Ratenkreditverträge verwendet -- genau wie bei der Kategorie an der Seite und *anders* als bei der Kategorie in FreigegebeneUnterlage.
         example: Privatkreditvertrag_neu
       bezug:
         type: string
-        description: Die Bezugs-Id, mit der die Seite freigegeben wurde. Ist null, wenn kein Bezug gesetzt war.
+        description: deprecated => see zuordnung - Die Bezugs-Id, mit der die Seite freigegeben wurde. Ist null, wenn kein Bezug gesetzt war.
         example: immobilie:finanzierungsobjekt
 
   FreigegebeneUnterlage:
@@ -1181,6 +1201,32 @@ definitions:
       seitenRevision:
         type: string
         description: Revisionsnummer der Dokumentseiten des Vorgangs.
+
+  Zuordnung:
+    type: object
+    properties:
+      kategorie:
+        description: Beantwortet die Frage "Was ist es?"
+        example: Krankenversicherungsnachweis
+        type: string
+      bezug:
+        description: Beantwortet die Frage "Worauf bezieht es sich?"
+        example: antragsteller:1
+        type: string
+
+  ZuordnungMitStatus:
+    allOf:
+      - $ref: '#/definitions/Zuordnung'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+              - KATEGORIE_FEHLT
+              - KATEGORIE_UNGUELTIG
+              - BEZUG_FEHLT
+              - BEZUG_UNGUELTIG
+              - VOLLSTAENDIG
 
   MoeglicheZuordnung:
     type: object
