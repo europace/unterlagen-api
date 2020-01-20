@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.31"
+  version: "1.0.32"
 host: "api.europace.de"
 schemes:
   - https
@@ -1024,9 +1024,6 @@ definitions:
           Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
           wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
         type: string
-      verbindlichkeitsart:
-        description: deprecated => see zuordnung - Art der Verbindlichkeit
-        type: string
       bezug:
         description: deprecated => see zuordnung - Der Bezug der Seite bildet zusammen mit der Kategorie die Zuordnung.
         type: string
@@ -1119,9 +1116,6 @@ definitions:
       bezug:
         $ref: "#/definitions/Bezugsobjekt"
         description: Bezugsobjekt der Unterlage, wenn vorhanden
-      verbindlichkeitsart:
-        description: Art der Verbindlichkeit.
-        type: string
       freigebender:
         $ref: "#/definitions/Partner"
         description: freigebender Vermittler
