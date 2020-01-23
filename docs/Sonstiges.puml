@@ -1,0 +1,19 @@
+@startuml
+title weitere Interaktionen mit der API
+
+participant Client as c
+participant "Dokumente API" as api
+
+== Preview einer Seite als JPEG abrufen ==
+c -> api: GET /dokumente/{dokumentId}/preview (dokumentId, seite, [small|large])
+api --> c: 200 OK
+
+== mögliche Zuordnungen (Kategorie, Bezug) für Vorgang/Antrag ermitteln ==
+c -> api: GET /dokumente/zuordnungen (vorgangsNummer, antragsNummer)
+api --> c: 200 OK
+
+== Synchron bleiben\naktuelle Revisionen der Resourcen ermitteln\n die Resourcen Dokument und Seite führen eine Revision\nhat sie sich geändert, so kann dies Trigger für eine erneute Synchronisierung sein ==
+c -> api: GET /dokumente/revision
+api --> c: 200 OK
+
+@enduml

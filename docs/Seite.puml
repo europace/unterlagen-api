@@ -1,0 +1,28 @@
+@startuml
+title die wichtigsten Interaktionen mit Seiten
+
+participant Client as c
+participant "Dokumente API" as api
+
+== Metadaten aller Seiten eines Dokuments liefern ==
+c -> api: GET /dokumente/{dokumentId}/seiten
+api --> c: 200 OK
+
+== Metadaten aller Seiten eines Vorgangs liefern ==
+c -> api: GET /dokumente/seiten vorgangsNummer
+api --> c: 200 OK
+
+== Seiten ins Archiv verschieben ==
+c -> api: PUT /dokumente/archiv (seiten)
+api --> c: 200 OK
+
+== Seiten als geprüft markieren ==
+c -> api: PUT /dokumente/archiv (seiten)
+api --> c: 200 OK
+
+== Seiten zuordnen (Kategorie und Bezug setzen) ==
+c -> api: PUT /dokumente/zuordnung/{kategorie} (bezug, seiten)
+api --> c: 200 OK
+
+
+@enduml

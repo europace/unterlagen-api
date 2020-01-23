@@ -1,0 +1,32 @@
+@startuml
+title die wichtigsten Interaktionen mit freigebenen Unterlagen
+
+participant Client as c
+participant "Dokumente API" as api
+
+== Freigabe von Unterlagen ==
+c -> api: POST /dokumente/freigabe (antragsNummer, seiten)
+api --> c: 201 CREATED
+
+== Metadaten zu Unterlagen abrufen ==
+c -> api: GET /dokumente/freigabe/{id}
+api --> c: 200 OK
+
+== Metadaten zu allen Unterlagen eines Antrags abrufen ==
+c -> api: GET /dokumente/freigabe (antragsNummer)
+api --> c: 200 OK
+
+== Inhalt einer Unterlage abrufen ==
+c -> api: GET /dokumente/freigabe/{id}/content
+api --> c: 200 OK
+
+== Inhalt aller Unterlage eines Antrags abrufen ==
+c -> api: GET /dokumente/freigaben/content (antragsNummer)
+api --> c: 200 OK
+
+== Abrufstatus einer Unterlage ermitteln\nIst die Unterlage beim Produktanbieter angekommen? ==
+c -> api: GET /dokumente/freigabe/{id}/status
+api --> c: 200 OK
+
+
+@enduml

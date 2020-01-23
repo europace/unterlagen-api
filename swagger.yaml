@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.32"
+  version: "1.0.33"
 host: "api.europace.de"
 schemes:
   - https
@@ -413,7 +413,16 @@ paths:
           description: Der Bezug, der den Seiten zugeordnet werden soll.
           required: false
           type: string
-        #          allowReserved: true
+        - name: vorgangsNummer
+          in: query
+          description: Wird Pflichtfeld - bitte anpassen --  Vorgangsnummer des Dokuments.
+          required: false
+          type: string
+        - name: antragsNummer
+          in: query
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang zum Zeitpunkt, als der Antrag angenommen wurde.
+          required: false
+          type: string
         - name: seitenReferenzen
           in: body
           description: Die Seiten-Referenzen der Seiten, deren Kategorie und Bezug geändert werden sollen.
