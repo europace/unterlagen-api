@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.34"
+  version: "1.0.35"
 host: "api.europace.de"
 schemes:
   - https
@@ -1027,15 +1027,6 @@ definitions:
       zuordnung:
         type: object
         $ref: "#/definitions/ZuordnungMitStatus"
-      kategorie:
-        description: |
-          deprecated => see zuordnung - Die Kategorie der Seite bildet zusammen mit dem Bezug die Zuordnung.
-          Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
-          wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
-        type: string
-      bezug:
-        description: deprecated => see zuordnung - Der Bezug der Seite bildet zusammen mit der Kategorie die Zuordnung.
-        type: string
       archiviert:
         type: boolean
         description: Archivierungsstatus der Seite.
@@ -1084,15 +1075,6 @@ definitions:
         description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
       zuordnung:
         $ref: "#/definitions/Zuordnung"
-      kategorie:
-        type: string
-        description: deprecated => see zuordnung - Die Kategorie, mit der die Seite freigegeben wurde. Hier werden ggf. die für den Nutzer "erfundenen" zusätzlichen Kategorien für |
-          Ratenkreditverträge verwendet -- genau wie bei der Kategorie an der Seite und *anders* als bei der Kategorie in FreigegebeneUnterlage.
-        example: Privatkreditvertrag_neu
-      bezug:
-        type: string
-        description: deprecated => see zuordnung - Die Bezugs-Id, mit der die Seite freigegeben wurde. Ist null, wenn kein Bezug gesetzt war.
-        example: immobilie:finanzierungsobjekt
 
   FreigegebeneUnterlage:
     type: object

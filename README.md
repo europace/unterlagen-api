@@ -1,11 +1,9 @@
-# ⚠️ HINWEIS: Diese API befindet sich aktuell in der Entwicklung und eignet sich noch nicht zum produktiven Einsatz!
-
 # Dokumente API
 Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
 
 ### API Dokumentation
 
-[swagger-Definition als API Docs](https://dokumente-api-70.api-docs.io/1.0.34/)
+[swagger-Definition als API Docs](https://dokumente-api-71.api-docs.io/1.0.35/)
 (generated via https://api-docs.io/ )
 
 [swagger.yml](./swagger.yaml)
