@@ -1,17 +1,8 @@
-# this is the description of the Europace Dokumente API
-swagger: '2.0'
+openapi: 3.0.0
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.34"
-host: "api.europace.de"
-schemes:
-  - https
-# will be prefixed to all paths
-basePath: /v1
-produces:
-  - application/json
-
+  version: 1.0.34
 paths:
   /dokumente:
     post:
@@ -19,36 +10,57 @@ paths:
       description: |
         Ein Dokument samt Metadaten per Form-Data hochladen.
       operationId: uploadDokument
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: formData
-          required: true
-          name: file
-          type: file
-          description: Inhalt des Dokuments.
-        - in: formData
-          required: false
-          name: anzeigename
-          type: string
-          description: Name zur Anzeige auf der Oberfläche.
-        - in: formData
-          required: true
-          name: vorgangsNummer
-          type: string
-          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: Inhalt des Dokuments.
+                  type: string
+                  format: binary
+                anzeigename:
+                  description: Name zur Anzeige auf der Oberfläche.
+                  type: string
+                vorgangsNummer:
+                  description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+                  type: string
+              required:
+                - file
+                - vorgangsNummer
+          application/json:
+            schema:
+              type: object
+              properties:
+                anzeigename:
+                  description: Name zur Anzeige auf der Oberfläche.
+                  type: string
+                vorgangsNummer:
+                  description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+                  type: string
+                url:
+                  description: upload URL
+                  type: string
+              required:
+                - url
+                - vorgangsNummer
       responses:
-        201:
+        "201":
           description: Dokument erfolgreich hochgeladen
-          schema:
-            $ref: '#/definitions/Dokument'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dokument"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
     get:
@@ -59,22 +71,26 @@ paths:
           in: query
           description: Vorgangsnummer für welche Dokumente geliefert werden sollen.
           required: true
-          type: string
-      # Hier ggf. Parameter Hochgeladenes Dokument
-      responses:
-        200:
-          description: Eine Liste von Dokumenten
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Dokument'
+            type: string
+      responses:
+        "200":
+          description: Eine Liste von Dokumenten
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Dokument"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
     delete:
@@ -87,77 +103,88 @@ paths:
           in: query
           description: Vorgangsnummer zu der alle Resourcen gelöscht werden sollen.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Resourcen erfolgreich gelöscht.
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Vorgang
-
-  /dokumente/{dokumentId}:
+  "/dokumente/{dokumentId}":
     get:
       summary: Metadaten zu einem Dokument laden
       operationId: getDokument
-      produces:
-        - "application/json;charset=UTF-8"
       parameters:
         - name: dokumentId
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Ein Dokument
-          schema:
-            $ref: '#/definitions/Dokument'
-        404:
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/Dokument"
+        "404":
           description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
     put:
       summary: Metadaten eines Dokuments aktualisieren
       operationId: updateDokument
-      consumes:
-        - application/json
       parameters:
         - in: path
           name: dokumentId
           description: Unique identifier des Dokuments.
           required: true
-          type: string
-        - in: body
-          name: metadaten
           schema:
-            $ref: '#/definitions/AenderbareDokumentMetadaten'
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AenderbareDokumentMetadaten"
       responses:
-        200:
+        "200":
           description: Metadaten des Dokuments erfolgreich aktualisiert
-          schema:
-            $ref: '#/definitions/Dokument'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dokument"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
     delete:
@@ -168,99 +195,121 @@ paths:
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Dokument erfolgreich gelöscht
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
-
-  /dokumente/{dokumentId}/content:
+  "/dokumente/{dokumentId}/content":
     get:
       summary: Inhalt eines Dokuments laden
       operationId: downloadDokument
-      produces:
-        - "application/pdf"
       parameters:
         - name: dokumentId
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: OK
-          schema:
-            type: file
-        404:
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "404":
           description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/pdf:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/pdf:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
-
-  /dokumente/{dokumentId}/preview:
+  "/dokumente/{dokumentId}/preview":
     get:
       summary: Vorschaubild einer Seite eines Dokuments laden
       operationId: getPreview
-      produces:
-        - image/jpeg
-        - application/json
       parameters:
         - name: dokumentId
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
+          schema:
+            type: string
         - name: page
           in: query
           description: anzuzeigende Seite, 1-basiert
           required: true
-          type: integer
-          format: int32
+          schema:
+            type: integer
+            format: int32
         - name: size
           in: query
           description: "Bildgröße: small oder large"
-          default: 'small'
-          type: string
-          enum:
-            - 'small'
-            - 'large'
+          schema:
+            type: string
+            enum:
+              - small
+              - large
+            default: small
       responses:
-        200:
+        "200":
           description: Vorschaubild in JPEG
-          schema:
-            type:
-              file
-        404:
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: string
+                format: binary
+        "404":
           description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            image/jpeg:
+              schema:
+                $ref: "#/components/schemas/Error"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            image/jpeg:
+              schema:
+                $ref: "#/components/schemas/Error"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
-
-  /dokumente/{dokumentId}/kategorisierung:
+  "/dokumente/{dokumentId}/kategorisierung":
     post:
       summary: Kategorisierung eines Dokuments anstoßen
       operationId: starteKategorisierung
@@ -269,21 +318,26 @@ paths:
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
-      responses:
-        200:
-          description: Kategorisierung wurde gestartet
-        404:
-          description: Dokument nicht gefunden
           schema:
-            $ref: '#/definitions/Error'
+            type: string
+      responses:
+        "200":
+          description: Kategorisierung wurde gestartet
+        "404":
+          description: Dokument nicht gefunden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
     get:
@@ -294,32 +348,41 @@ paths:
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
-          description: |
-            Die Kategorisierung eines Dokuments ist abgeschlossen, die Seiten können geladen werden
-          schema:
-            $ref: '#/definitions/KategorisierungsStatus'
-        202:
+        "200":
+          description: >
+            Die Kategorisierung eines Dokuments ist abgeschlossen, die Seiten
+            können geladen werden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KategorisierungsStatus"
+        "202":
           description: Die Kategorisierung ist noch nicht abgeschlossen.
-          schema:
-            $ref: '#/definitions/KategorisierungsStatus'
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KategorisierungsStatus"
+        "404":
           description: Dokument nicht gefunden oder Kategorisierung noch nicht gestartet.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Dokumente
-
-  /dokumente/{dokumentId}/seiten:
+  "/dokumente/{dokumentId}/seiten":
     get:
       summary: Metadaten zu allen Seiten eines Dokuments laden
       operationId: getDokumentSeiten
@@ -328,77 +391,90 @@ paths:
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          type: string
+          schema:
+            type: string
         - name: vorgangsNummer
           in: query
           description: Wird Pflichtfeld - bitte anpassen --  Vorgangsnummer des Dokuments.
           required: false
-          type: string
+          schema:
+            type: string
         - name: antragsNummer
           in: query
-          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang zum Zeitpunkt, als der Antrag angenommen wurde.
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang
+            zum Zeitpunkt, als der Antrag angenommen wurde.
           required: false
-          type: string
-      produces:
-        - application/json
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Liste der Seiten des Dokuments
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Seite"
-        404:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Seite"
+        "404":
           description: Dokument nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
   /dokumente/seiten:
     get:
       summary: Metadaten zu allen Seiten eines Vorgangs laden
       operationId: getSeiten
-      produces:
-        - application/json
       parameters:
         - name: vorgangsNummer
           in: query
           description: Vorgangsnummer der Dokumente.
           required: true
-          type: string
+          schema:
+            type: string
         - name: antragsNummer
           in: query
-          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang zum Zeitpunkt, als der Antrag angenommen wurde.
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang
+            zum Zeitpunkt, als der Antrag angenommen wurde.
           required: false
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Liste der Seiten
-          schema:
-            $ref: "#/definitions/Seiten"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Seiten"
+        "404":
           description: Vorgang nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
-  /dokumente/zuordnung/{kategorie}:
+  "/dokumente/zuordnung/{kategorie}":
     put:
       summary: Zuordnung (Kategorie und Bezug) für mehrere Seiten setzen
       operationId: setzeZuordnung
@@ -407,261 +483,284 @@ paths:
           in: path
           description: Die Kategorie, die den Seiten zugeordnet werden soll.
           required: true
-          type: string
+          schema:
+            type: string
         - name: bezug
           in: query
           description: Der Bezug, der den Seiten zugeordnet werden soll.
           required: false
-          type: string
+          schema:
+            type: string
         - name: vorgangsNummer
           in: query
           description: Vorgangsnummer der zugeordneten Seiten.
           required: true
-          type: string
+          schema:
+            type: string
         - name: antragsNummer
           in: query
-          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang zum Zeitpunkt, als der Antrag angenommen wurde.
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang
+            zum Zeitpunkt, als der Antrag angenommen wurde.
           required: false
-          type: string
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, deren Kategorie und Bezug geändert werden sollen.
-          required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SeitenReferenz"
+        description: Die Seiten-Referenzen der Seiten, deren Kategorie und Bezug geändert
+          werden sollen.
+        required: true
       responses:
-        200:
+        "200":
           description: Ok
-        400:
+        "400":
           description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
           description: Kategorie/Bezug nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
   /dokumente/zuordnungen:
     get:
-      summary: Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten erhalten.
-      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur Verfügung.
+      summary: Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten
+        erhalten.
+      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur
+        Verfügung.
       operationId: getMoeglicheZuordnungen
       parameters:
         - name: vorgangsNummer
           in: query
           description: Vorgangsnummer
           required: true
-          type: string
+          schema:
+            type: string
         - name: antragsNummer
           in: query
-          description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die aktuellen Vorgangsdaten.
+          description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die
+            Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die
+            aktuellen Vorgangsdaten.
           required: false
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Ok
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/MoeglicheZuordnung'
-        400:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MoeglicheZuordnung"
+        "400":
           description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
           description: Vorgang nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
   /dokumente/archiv:
     put:
       summary: Seiten ins Archiv verschieben
       description: Archiv-Flag wird gesetzt.
       operationId: setArchiv
-      parameters:
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben werden sollen.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SeitenReferenz"
+        description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben werden
+          sollen.
+        required: true
       responses:
-        200:
+        "200":
           description: Ok
-        400:
+        "400":
           description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
     delete:
       summary: Seiten aus dem Archiv herausholen
       description: Archiv-Flag wird entfernt.
       operationId: unsetArchiv
-      parameters:
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, die aus dem Archiv zurückgeholt werden sollen.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
       responses:
-        200:
+        "200":
           description: Ok
-        400:
+        "400":
           description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
   /dokumente/geprueft:
     put:
       summary: Seiten als "geprüft" markieren
-      description: Seiten werden (mit aktuellem Zeitstempel) als "geprüft" markiert.
-        Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.
+      description: Seiten werden (mit aktuellem Zeitstempel) als "geprüft" markiert. Bei
+        bereits geprüften Seiten wird der Zeitstempel aktualisiert.
       operationId: setGeprueft
-      parameters:
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SeitenReferenz"
+        description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden
+          sollen.
+        required: true
       responses:
-        200:
+        "200":
           description: Ok
-        400:
+        "400":
           description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
     delete:
       summary: Die "geprüft"-Markierung für angegebene Seiten löschen
-      description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"
-        -Markierung entfernt, sie erscheinen dann ungeprüft. Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.
+      description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die
+        "geprüft" -Markierung entfernt, sie erscheinen dann ungeprüft. Bei
+        Seiten ohne "geprüft"-Markierung ändert sich nichts.
       operationId: unsetGeprueft
-      parameters:
-        - name: seitenReferenzen
-          in: body
-          description: Die Seiten-Referenzen der Seiten, deren "geprüft"-Markierung entfernt werden soll.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SeitenReferenz'
       responses:
-        200:
+        "200":
           description: Ok
-        400:
+        "400":
           description: Fehler in den Eingabedaten.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Seiten
-
   /dokumente/freigabe:
     post:
       summary: Seiten für einen ProduktAnbieter freigeben
-      description: Es werden die Zuordnungen (Kategorie/Bezug) verwendet, die an den Seiten ermittelt oder manuell gesetzt wurden
+      description: Es werden die Zuordnungen (Kategorie/Bezug) verwendet, die an den Seiten
+        ermittelt oder manuell gesetzt wurden
       operationId: erzeugeFreigabe
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: freigabe
-          description: Freizugebende Seiten für einen Antrag und ProduktAnbieter.
-          required: true
-          schema:
-            type: object
-            properties:
-              antragsNummer:
-                type: string
-              seiten:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                antragsNummer:
+                  type: string
+                seiten:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      dokumentId:
+                        type: string
+                        description: ID des referenzierten Dokuments.
+                      seite:
+                        type: integer
+                        format: int32
+                        description: Seite im Dokument, 1-basiert.
+        description: Freizugebende Seiten für einen Antrag und ProduktAnbieter.
+        required: true
+      responses:
+        "201":
+          description: Freigabe erstellt
+          content:
+            application/json:
+              schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    dokumentId:
-                      type: string
-                      description: ID des referenzierten Dokuments.
-                    seite:
-                      type: integer
-                      format: int32
-                      description: Seite im Dokument, 1-basiert.
-
-      responses:
-        201:
-          description: Freigabe erstellt
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/FreigegebeneUnterlage'
+                  $ref: "#/components/schemas/FreigegebeneUnterlage"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
     get:
@@ -672,62 +771,73 @@ paths:
           in: query
           description: Antragsnummer.
           required: true
-          type: string
+          schema:
+            type: string
         - name: von
           in: query
           required: false
-          type: string
-          format: date-time
+          schema:
+            type: string
+            format: date-time
         - name: bis
           in: query
           required: false
-          type: string
-          format: date-time
-      responses:
-        200:
-          description: Eine Liste von freigegebenen Unterlagen.
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/FreigegebeneUnterlage'
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Eine Liste von freigegebenen Unterlagen.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FreigegebeneUnterlage"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
-
   /dokumente/freigaben/content:
     get:
-      summary: Den Inhalt aller erfolgreich freigegebenen Unterlagen als ZIP-Archiv herunterladen
+      summary: Den Inhalt aller erfolgreich freigegebenen Unterlagen als ZIP-Archiv
+        herunterladen
       operationId: downloadFreigaben
       parameters:
         - name: antragsNummer
           in: query
           description: Antragsnummer
           required: true
-          type: string
-      produces:
-        - "application/zip"
-      responses:
-        200:
-          description: Ein ZIP-Archiv mit allen für den Antrag erfolgreich freigegebenen Unterlagen als PDF-Dateien
           schema:
-            type: file
+            type: string
+      responses:
+        "200":
+          description: Ein ZIP-Archiv mit allen für den Antrag erfolgreich freigegebenen
+            Unterlagen als PDF-Dateien
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/zip:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
-
-  /dokumente/freigabe/{id}:
+  "/dokumente/freigabe/{id}":
     get:
       summary: Metadaten einer freigegebene Unterlage laden
       description: |
@@ -738,59 +848,69 @@ paths:
           in: path
           description: Id der freigegebenen Unterlage
           required: true
-          type: string
-
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Eine freigegebene Unterlage.
-          schema:
-            $ref: '#/definitions/FreigegebeneUnterlage'
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FreigegebeneUnterlage"
+        "404":
           description: Freigegebene Unterlage not found.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
-
-  /dokumente/freigabe/{id}/content:
+  "/dokumente/freigabe/{id}/content":
     get:
       summary: Inhalt einer freigegebene Unterlage laden
       operationId: downloadFreigabe
-      produces:
-        - "application/pdf"
       parameters:
         - name: id
           in: path
           description: Unique identifier der freigegebenen Unterlage.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: OK
-          schema:
-            type: file
-        404:
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "404":
           description: Dokument nicht gefunden
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/pdf:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/pdf:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
-
-  /dokumente/freigabe/{id}/status:
+  "/dokumente/freigabe/{id}/status":
     get:
       summary: Abrufstatus einer freigegebenen Unterlage laden
       operationId: getFreigegebeneUnterlageStatus
@@ -799,26 +919,32 @@ paths:
           in: path
           description: Id der freigegebenen Unterlage
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Status der freigegebenen Unterlage.
-          schema:
-            $ref: '#/definitions/Abrufstatus'
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Abrufstatus"
+        "404":
           description: Freigegebene Unterlage not found.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
-
     post:
       summary: Abrufstatus einer freigegebenen Unterlage setzen
       operationId: setFreigegebeneUnterlageStatus
@@ -827,462 +953,469 @@ paths:
           in: path
           description: Id der freigegebenen Unterlage
           required: true
-          type: string
-        - name: abrufstatus
-          in: body
-          required: true
           schema:
-            $ref: '#/definitions/Abrufstatus'
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Abrufstatus"
+        required: true
       responses:
-        201:
+        "201":
           description: Keine Rückgabe-Objekte.
-        404:
+        "404":
           description: Freigegebene Unterlage not found.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Freigabe
-
   /dokumente/revision:
     get:
       summary: Revisionnummern der Daten zum angegebenen Vorgang
-      description: |
-        Liefert die aktuellen Revisionsnummern der Resourcen zum angegebenen Vorgang. Jede Änderung einer Resource ändert deren Revisionsnummer.
+      description: >
+        Liefert die aktuellen Revisionsnummern der Resourcen zum angegebenen
+        Vorgang. Jede Änderung einer Resource ändert deren Revisionsnummer.
       operationId: getRevision
-      produces:
-        - application/json
       parameters:
         - name: vorgangsNummer
           in: query
           description: Vorgangsnummer der Dokumente.
           required: true
-          type: string
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Revisionsnummern der verschiedenen Resourcen des Vorgangs
-          schema:
-            $ref: "#/definitions/Revision"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Revision"
+        "404":
           description: Vorgang nicht gefunden.
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
-          schema:
-            $ref: '#/definitions/Error'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - oauth2:
-            - "API"
+            - API
       tags:
         - Revision
-
-securityDefinitions:
-  oauth2:
-    type: oauth2
-    tokenUrl: "https://api.europace.de/login"
-    flow: password
-    scopes:
-      API: Authorisation Scope für die gesamte API.
-
-definitions:
-  Dokument:
-    description: |
-      Ein Dokument ist eine hochgeladene Datei und kann aus einer oder mehreren - z.b. gescannten - Unterlagen bestehen.
-    type: object
-    properties:
-      id:
-        type: string
-        description: Unique identifier des Dokuments.
-      schluessel:
-        type: string
-        description: Öffentlicher Schlüssel der Dokumentenverwaltung.
-      anzeigename:
-        type: string
-        description: Anzeigename, kann verändert werden.
-      filename:
-        type: string
-        description: Name der original hochgeladenen Datei.
-      erstellungsdatum:
-        type: string
-        format: date-time
-        description: Gibt das Datum an, an dem Das Dokument hochgeladen wurde, sich also der Inhalt geändert hat.
-      type:
-        type: string
-        description: Media-Type nach https://tools.ietf.org/html/rfc6838.
-      size:
-        type: integer
-        format: int64
-        description: Größe des Inhalts des Dokuments in Bytes.
-      vorgangsNummer:
-        type: string
-        description: Vorgang dem das Dokument zugeordnet ist.
-      verschluesselt:
-        type: boolean
-        description: Gibt an, ob das Dokument verschlüsselt ist
-      kategorisierungsStatus:
-        type: object
-        description: |
-          Status der Kategorisierung des Dokuments.
-        $ref: "#/definitions/KategorisierungsStatus"
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: "#/definitions/Relation"
-            description: Self relation
-          preview:
-            $ref: "#/definitions/Relation"
-            description: Base URL für die Preview Images
-          kategorisierung:
-            $ref: "#/definitions/Relation"
-            description: URL zur Kategorisierung
-          download:
-            $ref: "#/definitions/Relation"
-            description: URL zum Runterladen des Dokuments (intern)
-          publicDownload:
-            $ref: "#/definitions/Relation"
-            description: URL zum Runterladen des Dokuments (öffentlich)
-          seiten:
-            $ref: "#/definitions/Relation"
-            description: URL zu den Seiten des Dokuments
-
-  AenderbareDokumentMetadaten:
-    description: Metadaten die für ein Dokument geändert werden können.
-    type: object
-    properties:
-      anzeigename:
-        type: string
-        description: Anzeigename
-
-  KategorisierungsStatus:
-    type: object
-    description: |
-      Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung erfragt werden.
-    properties:
-      status:
-        type: string
-        enum:
-          - 'NEW'
-          - 'IN_PROGRESS'
-          - 'DONE'
-          - 'ERROR'
-      progress:
-        type: integer
-        format: int32
-        description: |
-          Progress Wert in Prozent 0 - 100
-      meldung:
-        type: string
-        description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt oder nähere Informationen liefert. Kann null sein.
-
-  Seiten:
-    type: object
-    properties:
-      seiten:
-        type: array
-        items:
-          $ref: "#/definitions/Seite"
-
-  Seite:
-    type: object
-    description: |
-      Definiert eine Seite eines Dokuments.
-    properties:
-      dokumentId:
-        type: string
-        description: ID des referenzierten Dokuments.
-      seite:
-        type: integer
-        format: int32
-        description: Seite im Dokument, 1-basiert.
-      drehung:
-        type: integer
-        format: int32
-        enum:
-          - 0
-          - 90
-          - 180
-          - 270
-        description: |
-          Winkel in Grad, um den die Seite gegenüber dem Originaldokument gedreht werden muss, um richtig zu liegen. Ist 0, 90, 180 oder 270.
-          Ist die Angabe null oder nicht vorhanden, dann ist dieser Winkel nicht bekannt, und die Seite wird nicht gedreht.
-      klassifizierung:
-        type: object
-        properties:
-          kategorien:
-            description: |
-              Kategorien der Seite nach Relevanz sortiert.
-              Das erste Element beinhaltet die höchste Relevanz.
-            type: array
-            items:
-              type: string
-              example: Personalausweis
-      zuordnung:
-        type: object
-        $ref: "#/definitions/ZuordnungMitStatus"
-      kategorie:
-        description: |
-          deprecated => see zuordnung - Die Kategorie der Seite bildet zusammen mit dem Bezug die Zuordnung.
-          Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
-          wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
-        type: string
-      bezug:
-        description: deprecated => see zuordnung - Der Bezug der Seite bildet zusammen mit der Kategorie die Zuordnung.
-        type: string
-      archiviert:
-        type: boolean
-        description: Archivierungsstatus der Seite.
-      geprueftAm:
-        type: string
-        format: date-time
-        description: Zeitpunkt, an dem die Seite inhaltlich geprüft wurde. null, wenn die Seite noch nicht inhaltlich geprüft wurde.
-      freigaben:
-        type: array
-        description: Angaben zu Freigaben dieser Seite
-        items:
-          $ref: "#/definitions/SeitenFreigabe"
-      _links:
-        type: object
-        properties:
-          preview:
-            $ref: "#/definitions/Relation"
-            description: URL Template für die Preview Images
-
-  SeitenReferenz:
-    type: object
-    description: |
-      Referenziert eine Seite eines Dokuments.
-    properties:
-      dokumentId:
-        type: string
-        description: ID des referenzierten Dokuments.
-      seite:
-        type: integer
-        format: int32
-        description: Seite im Dokument, 1-basiert.
-
-  SeitenFreigabe:
-    type: object
-    description: |
-      Angaben zur Freigabe dieser Seite
-    properties:
-      abrufStatus:
-        $ref: "#/definitions/Abrufstatus"
-      antragsNummer:
-        type: string
-        description: Antrag in dem diese Seite bereits freigegeben wurde
-      datum:
-        type: string
-        format: date-time
-        description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
-      zuordnung:
-        $ref: "#/definitions/Zuordnung"
-      kategorie:
-        type: string
-        description: deprecated => see zuordnung - Die Kategorie, mit der die Seite freigegeben wurde. Hier werden ggf. die für den Nutzer "erfundenen" zusätzlichen Kategorien für |
-          Ratenkreditverträge verwendet -- genau wie bei der Kategorie an der Seite und *anders* als bei der Kategorie in FreigegebeneUnterlage.
-        example: Privatkreditvertrag_neu
-      bezug:
-        type: string
-        description: deprecated => see zuordnung - Die Bezugs-Id, mit der die Seite freigegeben wurde. Ist null, wenn kein Bezug gesetzt war.
-        example: immobilie:finanzierungsobjekt
-
-  FreigegebeneUnterlage:
-    type: object
-    description: |
-      Mehrseitige vom Vertrieb fuer den Produktanbieter freigegebene Unterlage.
-      Die Unterlage besitzt eine Kategorie und bezieht sich auf ein Bezugsobjekt.
-    properties:
-      id:
-        type: string
-        description: Unique identifier der freigegebenen Unterlage.
-      antragsNummer:
-        type: string
-        description: Antragsnummer
-      anzeigename:
-        type: string
-        description: Anzeigename.
-      filename:
-        type: string
-        description: Name der Datei.
-      freigabedatum:
-        type: string
-        format: date-time
-        description: Gibt das Datum an, an dem die Unterlage freigegeben wurde.
-      mediaType:
-        type: string
-        description: Media-Type nach https://tools.ietf.org/html/rfc6838.
-      kategorie:
-        description: Die Kategorie der Freigabe.
-        type: string
-      bezug:
-        $ref: "#/definitions/Bezugsobjekt"
-        description: Bezugsobjekt der Unterlage, wenn vorhanden
-      freigebender:
-        $ref: "#/definitions/Partner"
-        description: freigebender Vermittler
-      abrufstatus:
-        $ref: "#/definitions/Abrufstatus"
-      _links:
-        type: object
-        properties:
-          self:
-            description: Self Relation
-            $ref: "#/definitions/Relation"
-          download:
-            description: URL zum Runterladen der freigegebenen Unterlage.
-            $ref: "#/definitions/Relation"
-          publicDownload:
-            description: URL zum Runterladen des freigegebenen Unterlage (öffentlich)
-            $ref: "#/definitions/Relation"
-          abrufstatus:
-            description: URL zum Abfragen und Setzen des Abrufstatus
-            $ref: "#/definitions/Relation"
-
-  Abrufstatus:
-    type: object
-    description: Status, ob die vom Vertrieb freigegebene Unterlage beim Produktanbieter angekommen ist
-    properties:
-      status:
-        type: string
-        enum:
-          - CREATED
-          - IN_PROGRESS
-          - FAILED
-          - DELIVERED
-      message:
-        type: string
-
-  Bezugsobjekt:
-    type: object
-    properties:
-      id:
-        type: string
-        description: Id des Bezugsobjekts (innerhalb eines Antrags eindeutig).
-        example: "Immobilie:4711"
-      typ:
-        type: string
-        description: Typ des Bezugsobjekts.
-        example: "Immobilie"
-      bezeichnung:
-        type: string
-        description: Typ des Bezugsobjekts.
-        example: "Finanzierungsobjekt Feldweg 17"
-
-  Partner:
-    type: object
-    properties:
-      partnerId:
-        type: string
-        description: Id eines Partners auf der Europace-Plattform. Identifiziert eine Plakette im Partnermanagement.
-        example: ABC45
-
-  Relation:
-    type: object
-    properties:
-      href:
-        type: string
-        format: uri
-        description: A HAL Ref
-      type:
-        type: string
-        description: Media-Type nach https://tools.ietf.org/html/rfc6838.
-
-  Revision:
-    type: object
-    properties:
-      dokumenteRevision:
-        type: string
-        description: Revisionsnummer der Dokumente des Vorgangs.
-      seitenRevision:
-        type: string
-        description: Revisionsnummer der Dokumentseiten des Vorgangs.
-
-  Zuordnung:
-    type: object
-    properties:
-      kategorie:
-        description: Beantwortet die Frage "Was ist es?"
-        example: Krankenversicherungsnachweis
-        type: string
-      bezug:
-        description: Beantwortet die Frage "Worauf bezieht es sich?"
-        example: antragsteller:1
-        type: string
-
-  ZuordnungMitStatus:
-    allOf:
-      - $ref: '#/definitions/Zuordnung'
-      - type: object
-        properties:
-          status:
-            type: string
-            enum:
-              - KATEGORIE_FEHLT
-              - KATEGORIE_UNGUELTIG
-              - BEZUG_FEHLT
-              - BEZUG_UNGUELTIG
-              - VOLLSTAENDIG
-
-  MoeglicheZuordnung:
-    type: object
-    properties:
-      kategorie:
-        type: string
-        description: Technische Bezeichnung der Kategorie.
-      label:
-        type: string
-        description: Für den Nutzer sichtbare Bezeichnung der Kategorie.
-      beschreibung:
-        type: string
-        description: Eine nähere Beschreibung, was mit der Kategorie erfasst werden soll (optional).
-      hinweistext:
-        type: string
-        description: Ein Hinweistext, der dem Nutzer für Unterlagen in dieser Kategorie angezeigt werden soll (optional, kann Markdown-Formatierung verwenden).
-      bezuege:
-        type: array
-        items:
+servers:
+  - url: https://api.europace.de/v1
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://api.europace.de/login
+          scopes:
+            API: Authorisation Scope für die gesamte API.
+  schemas:
+    Dokument:
+      description: >
+        Ein Dokument ist eine hochgeladene Datei und kann aus einer oder
+        mehreren - z.b. gescannten - Unterlagen bestehen.
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier des Dokuments.
+        schluessel:
+          type: string
+          description: Öffentlicher Schlüssel der Dokumentenverwaltung.
+        anzeigename:
+          type: string
+          description: Anzeigename, kann verändert werden.
+        filename:
+          type: string
+          description: Name der original hochgeladenen Datei.
+        erstellungsdatum:
+          type: string
+          format: date-time
+          description: Gibt das Datum an, an dem Das Dokument hochgeladen wurde, sich also
+            der Inhalt geändert hat.
+        type:
+          type: string
+          description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+        size:
+          type: integer
+          format: int64
+          description: Größe des Inhalts des Dokuments in Bytes.
+        vorgangsNummer:
+          type: string
+          description: Vorgang dem das Dokument zugeordnet ist.
+        verschluesselt:
+          type: boolean
+          description: Gibt an, ob das Dokument verschlüsselt ist
+        kategorisierungsStatus:
+          $ref: "#/components/schemas/KategorisierungsStatus"
+        _links:
           type: object
-          description: Mögliche Bezugsobjekte für diese Kategorie
-          required:
-            - "op"
-            - "path"
           properties:
-            bezug:
-              type: string
-              description: Id des Bezuges
-            label:
-              type: string
-              description: Anzeigename für diesen Bezug
-            oberkategorie:
-              type: string
-              description: Anzeigename der Gruppe, in die die Seiten gehören, für die diese Zuordnung ausgewählt wurde. Wird ggf. mit oberkategorieZusatz ergänzt.
-              example: Zusatzsicherheit
-            oberkategorieZusatz:
-              type: string
-              description: Zusätzliche Detailangaben zu der Gruppe, in die die Seiten gehören, für die diese Zuordnung gewählt wurde. Optional. oberkategorie und oberkategorieZusatz definieren *gemeinsam* die Gruppe.
-              example: Feldweg 17
+            self:
+              $ref: "#/components/schemas/Relation"
+            preview:
+              $ref: "#/components/schemas/Relation"
+            kategorisierung:
+              $ref: "#/components/schemas/Relation"
+            download:
+              $ref: "#/components/schemas/Relation"
+            publicDownload:
+              $ref: "#/components/schemas/Relation"
+            seiten:
+              $ref: "#/components/schemas/Relation"
+    AenderbareDokumentMetadaten:
+      description: Metadaten die für ein Dokument geändert werden können.
+      type: object
+      properties:
+        anzeigename:
+          type: string
+          description: Anzeigename
+    KategorisierungsStatus:
+      type: object
+      description: >
+        Wenn die Kategorisierung noch läuft, kann der Status der Kategorisierung
+        erfragt werden.
+      properties:
+        status:
+          type: string
+          enum:
+            - NEW
+            - IN_PROGRESS
+            - DONE
+            - ERROR
+        progress:
+          type: integer
+          format: int32
+          description: |
+            Progress Wert in Prozent 0 - 100
+        meldung:
+          type: string
+          description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt
+            oder nähere Informationen liefert. Kann null sein.
+    Seiten:
+      type: object
+      properties:
+        seiten:
+          type: array
+          items:
+            $ref: "#/components/schemas/Seite"
+    Seite:
+      type: object
+      description: |
+        Definiert eine Seite eines Dokuments.
+      properties:
+        dokumentId:
+          type: string
+          description: ID des referenzierten Dokuments.
+        seite:
+          type: integer
+          format: int32
+          description: Seite im Dokument, 1-basiert.
+        drehung:
+          type: integer
+          format: int32
+          enum:
+            - 0
+            - 90
+            - 180
+            - 270
+          description: >
+            Winkel in Grad, um den die Seite gegenüber dem Originaldokument
+            gedreht werden muss, um richtig zu liegen. Ist 0, 90, 180 oder 270.
 
-  Error:
-    type: object
-    properties:
-      message:
-        type: string
-      statusCode:
-        type: integer
-        format: int32
-      statusMessage:
-        type: string
-      timestamp:
-        type: string
-        format: date-time
-      traceId:
-        type: string
-    title: Error
+            Ist die Angabe null oder nicht vorhanden, dann ist dieser Winkel nicht bekannt, und die Seite wird nicht gedreht.
+        klassifizierung:
+          type: object
+          properties:
+            kategorien:
+              description: |
+                Kategorien der Seite nach Relevanz sortiert.
+                Das erste Element beinhaltet die höchste Relevanz.
+              type: array
+              items:
+                type: string
+                example: Personalausweis
+        zuordnung:
+          $ref: "#/components/schemas/ZuordnungMitStatus"
+        kategorie:
+          description: >
+            deprecated => see zuordnung - Die Kategorie der Seite bildet
+            zusammen mit dem Bezug die Zuordnung.
+
+            Manuell gesetzte Kategorie der Seite. Initial die wahrscheinlichste Kategorie,
+
+            wenn die Kategorisierung hinreichend sicher ist, ansonsten wird die Kategorie nicht gesetzt.
+          type: string
+        bezug:
+          description: deprecated => see zuordnung - Der Bezug der Seite bildet zusammen
+            mit der Kategorie die Zuordnung.
+          type: string
+        archiviert:
+          type: boolean
+          description: Archivierungsstatus der Seite.
+        geprueftAm:
+          type: string
+          format: date-time
+          description: Zeitpunkt, an dem die Seite inhaltlich geprüft wurde. null, wenn die
+            Seite noch nicht inhaltlich geprüft wurde.
+        freigaben:
+          type: array
+          description: Angaben zu Freigaben dieser Seite
+          items:
+            $ref: "#/components/schemas/SeitenFreigabe"
+        _links:
+          type: object
+          properties:
+            preview:
+              $ref: "#/components/schemas/Relation"
+    SeitenReferenz:
+      type: object
+      description: |
+        Referenziert eine Seite eines Dokuments.
+      properties:
+        dokumentId:
+          type: string
+          description: ID des referenzierten Dokuments.
+        seite:
+          type: integer
+          format: int32
+          description: Seite im Dokument, 1-basiert.
+    SeitenFreigabe:
+      type: object
+      description: |
+        Angaben zur Freigabe dieser Seite
+      properties:
+        abrufStatus:
+          $ref: "#/components/schemas/Abrufstatus"
+        antragsNummer:
+          type: string
+          description: Antrag in dem diese Seite bereits freigegeben wurde
+        datum:
+          type: string
+          format: date-time
+          description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
+        zuordnung:
+          $ref: "#/components/schemas/Zuordnung"
+        kategorie:
+          type: string
+          description: deprecated => see zuordnung - Die Kategorie, mit der die Seite
+            freigegeben wurde. Hier werden ggf. die für den Nutzer "erfundenen"
+            zusätzlichen Kategorien für | Ratenkreditverträge verwendet -- genau
+            wie bei der Kategorie an der Seite und *anders* als bei der
+            Kategorie in FreigegebeneUnterlage.
+          example: Privatkreditvertrag_neu
+        bezug:
+          type: string
+          description: deprecated => see zuordnung - Die Bezugs-Id, mit der die Seite
+            freigegeben wurde. Ist null, wenn kein Bezug gesetzt war.
+          example: immobilie:finanzierungsobjekt
+    FreigegebeneUnterlage:
+      type: object
+      description: >
+        Mehrseitige vom Vertrieb fuer den Produktanbieter freigegebene
+        Unterlage.
+
+        Die Unterlage besitzt eine Kategorie und bezieht sich auf ein Bezugsobjekt.
+      properties:
+        id:
+          type: string
+          description: Unique identifier der freigegebenen Unterlage.
+        antragsNummer:
+          type: string
+          description: Antragsnummer
+        anzeigename:
+          type: string
+          description: Anzeigename.
+        filename:
+          type: string
+          description: Name der Datei.
+        freigabedatum:
+          type: string
+          format: date-time
+          description: Gibt das Datum an, an dem die Unterlage freigegeben wurde.
+        mediaType:
+          type: string
+          description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+        kategorie:
+          description: Die Kategorie der Freigabe.
+          type: string
+        bezug:
+          $ref: "#/components/schemas/Bezugsobjekt"
+        freigebender:
+          $ref: "#/components/schemas/Partner"
+        abrufstatus:
+          $ref: "#/components/schemas/Abrufstatus"
+        _links:
+          type: object
+          properties:
+            self:
+              $ref: "#/components/schemas/Relation"
+            download:
+              $ref: "#/components/schemas/Relation"
+            publicDownload:
+              $ref: "#/components/schemas/Relation"
+            abrufstatus:
+              $ref: "#/components/schemas/Relation"
+    Abrufstatus:
+      type: object
+      description: Status, ob die vom Vertrieb freigegebene Unterlage beim Produktanbieter
+        angekommen ist
+      properties:
+        status:
+          type: string
+          enum:
+            - CREATED
+            - IN_PROGRESS
+            - FAILED
+            - DELIVERED
+        message:
+          type: string
+    Bezugsobjekt:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id des Bezugsobjekts (innerhalb eines Antrags eindeutig).
+          example: Immobilie:4711
+        typ:
+          type: string
+          description: Typ des Bezugsobjekts.
+          example: Immobilie
+        bezeichnung:
+          type: string
+          description: Typ des Bezugsobjekts.
+          example: Finanzierungsobjekt Feldweg 17
+    Partner:
+      type: object
+      properties:
+        partnerId:
+          type: string
+          description: Id eines Partners auf der Europace-Plattform. Identifiziert eine
+            Plakette im Partnermanagement.
+          example: ABC45
+    Relation:
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+          description: A HAL Ref
+        type:
+          type: string
+          description: Media-Type nach https://tools.ietf.org/html/rfc6838.
+    Revision:
+      type: object
+      properties:
+        dokumenteRevision:
+          type: string
+          description: Revisionsnummer der Dokumente des Vorgangs.
+        seitenRevision:
+          type: string
+          description: Revisionsnummer der Dokumentseiten des Vorgangs.
+    Zuordnung:
+      type: object
+      properties:
+        kategorie:
+          description: Beantwortet die Frage "Was ist es?"
+          example: Krankenversicherungsnachweis
+          type: string
+        bezug:
+          description: Beantwortet die Frage "Worauf bezieht es sich?"
+          example: antragsteller:1
+          type: string
+    ZuordnungMitStatus:
+      allOf:
+        - $ref: "#/components/schemas/Zuordnung"
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - KATEGORIE_FEHLT
+                - KATEGORIE_UNGUELTIG
+                - BEZUG_FEHLT
+                - BEZUG_UNGUELTIG
+                - VOLLSTAENDIG
+    MoeglicheZuordnung:
+      type: object
+      properties:
+        kategorie:
+          type: string
+          description: Technische Bezeichnung der Kategorie.
+        label:
+          type: string
+          description: Für den Nutzer sichtbare Bezeichnung der Kategorie.
+        beschreibung:
+          type: string
+          description: Eine nähere Beschreibung, was mit der Kategorie erfasst werden soll
+            (optional).
+        hinweistext:
+          type: string
+          description: Ein Hinweistext, der dem Nutzer für Unterlagen in dieser Kategorie
+            angezeigt werden soll (optional, kann Markdown-Formatierung
+            verwenden).
+        bezuege:
+          type: array
+          items:
+            type: object
+            description: Mögliche Bezugsobjekte für diese Kategorie
+            required:
+              - op
+              - path
+            properties:
+              bezug:
+                type: string
+                description: Id des Bezuges
+              label:
+                type: string
+                description: Anzeigename für diesen Bezug
+              oberkategorie:
+                type: string
+                description: Anzeigename der Gruppe, in die die Seiten gehören, für die
+                  diese Zuordnung ausgewählt wurde. Wird ggf. mit
+                  oberkategorieZusatz ergänzt.
+                example: Zusatzsicherheit
+              oberkategorieZusatz:
+                type: string
+                description: Zusätzliche Detailangaben zu der Gruppe, in die die Seiten
+                  gehören, für die diese Zuordnung gewählt wurde. Optional.
+                  oberkategorie und oberkategorieZusatz definieren *gemeinsam*
+                  die Gruppe.
+                example: Feldweg 17
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+          format: int32
+        statusMessage:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+      title: Error
