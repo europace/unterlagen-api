@@ -5,7 +5,7 @@ Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
 
 ### API Dokumentation
 
-[swagger-Definition als API Docs](https://dokumente-api-69.api-docs.io/1.0.33/)
+[swagger-Definition als API Docs](https://dokumente-api-70.api-docs.io/1.0.34/)
 (generated via https://api-docs.io/ )
 
 [swagger.yml](./swagger.yaml)

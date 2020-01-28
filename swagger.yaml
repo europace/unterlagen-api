@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.33"
+  version: "1.0.34"
 host: "api.europace.de"
 schemes:
   - https
@@ -415,8 +415,8 @@ paths:
           type: string
         - name: vorgangsNummer
           in: query
-          description: Wird Pflichtfeld - bitte anpassen --  Vorgangsnummer des Dokuments.
-          required: false
+          description: Vorgangsnummer der zugeordneten Seiten.
+          required: true
           type: string
         - name: antragsNummer
           in: query
