@@ -725,22 +725,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                antragsNummer:
-                  type: string
-                seiten:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      dokumentId:
-                        type: string
-                        description: ID des referenzierten Dokuments.
-                      seite:
-                        type: integer
-                        format: int32
-                        description: Seite im Dokument, 1-basiert.
+              $ref: "#/components/schemas/Freigabe"
         description: Freizugebende Seiten für einen Antrag und ProduktAnbieter.
         required: true
       responses:
@@ -1230,6 +1215,28 @@ components:
           description: deprecated => see zuordnung - Die Bezugs-Id, mit der die Seite
             freigegeben wurde. Ist null, wenn kein Bezug gesetzt war.
           example: immobilie:finanzierungsobjekt
+    Freigabe:
+      type: object
+      description: |
+        Freizugebende Seiten für einen Antrag und ProduktAnbieter.
+      properties:
+        antragsNummer:
+          type: string
+        seiten:
+          type: array
+          items:
+            $ref: "#/components/schemas/SeitenFreigabe"
+#   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
+    DokumentefreigabeSeiten:
+      type: object
+      description: |
+        Seitennummer eines freizugebenden Dokuments.
+      properties:
+        dokumentId:
+          type: string
+        seite:
+          type: integer
+          format: int32
     FreigegebeneUnterlage:
       type: object
       description: >
