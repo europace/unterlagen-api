@@ -655,8 +655,8 @@ paths:
         - Seiten
   /dokumente/geprueft:
     put:
-      summary: Seiten als "geprüft" markieren
-      description: Seiten werden (mit aktuellem Zeitstempel) als "geprüft" markiert. Bei
+      summary: Seiten als 'geprüft' markieren
+      description: Seiten werden (mit aktuellem Zeitstempel) als 'geprüft' markiert. Bei
         bereits geprüften Seiten wird der Zeitstempel aktualisiert.
       operationId: setGeprueft
       requestBody:
@@ -666,7 +666,7 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/SeitenReferenz"
-        description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden
+        description: Die Seiten-Referenzen der Seiten, die als 'geprüft' markiert werden
           sollen.
         required: true
       responses:
@@ -690,10 +690,10 @@ paths:
       tags:
         - Seiten
     delete:
-      summary: Die "geprüft"-Markierung für angegebene Seiten löschen
+      summary: Die 'geprüft'-Markierung für angegebene Seiten löschen
       description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die
-        "geprüft" -Markierung entfernt, sie erscheinen dann ungeprüft. Bei
-        Seiten ohne "geprüft"-Markierung ändert sich nichts.
+        'geprüft' -Markierung entfernt, sie erscheinen dann ungeprüft. Bei
+        Seiten ohne 'geprüft'-Markierung ändert sich nichts.
       operationId: unsetGeprueft
       responses:
         "200":
