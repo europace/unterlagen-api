@@ -1,3 +1,5 @@
+# ⚠️ HINWEIS: Diese API befindet sich aktuell in der Entwicklung und eignet sich noch nicht zum produktiven Einsatz!
+
 # Dokumente API
 Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
 
