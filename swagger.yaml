@@ -31,20 +31,7 @@ paths:
                 - vorgangsNummer
           application/json:
             schema:
-              type: object
-              properties:
-                anzeigename:
-                  description: Name zur Anzeige auf der Oberfläche.
-                  type: string
-                vorgangsNummer:
-                  description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
-                  type: string
-                url:
-                  description: upload URL
-                  type: string
-              required:
-                - url
-                - vorgangsNummer
+              $ref: "#/components/schemas/DokumentUpload"
       responses:
         "201":
           description: Dokument erfolgreich hochgeladen
@@ -1034,6 +1021,21 @@ components:
               $ref: "#/components/schemas/Relation"
             seiten:
               $ref: "#/components/schemas/Relation"
+    DokumentUpload:
+      type: object
+      properties:
+        anzeigename:
+          description: Name zur Anzeige auf der Oberfläche.
+          type: string
+        vorgangsNummer:
+          description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
+          type: string
+        url:
+          description: upload URL
+          type: string
+        required:
+          - url
+          - vorgangsNummer
     AenderbareDokumentMetadaten:
       description: Metadaten die für ein Dokument geändert werden können.
       type: object
