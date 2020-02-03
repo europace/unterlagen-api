@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: 1.0.35
+  version: 1.0.36
 paths:
   /dokumente:
     post:
@@ -596,9 +596,17 @@ paths:
         - Seiten
   /dokumente/archiv:
     put:
-      summary: Seiten ins Archiv verschieben
+      summary: Seiten ins Archiv verschieben oder aus dem Archiv herausholen
       description: Archiv-Flag wird gesetzt.
       operationId: setArchiv
+      parameters:
+        - name: archiviert
+          in: query
+          description: Seiten sollen ins Archiv verschoben (true) oder aus dem Archiv herausgeholt werden (false).
+          required: false
+          schema:
+            type: boolean
+            default: true
       requestBody:
         content:
           application/json:
@@ -606,33 +614,8 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/SeitenReferenz"
-        description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben werden
-          sollen.
+        description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben oder aus dem Archiv herausgeholt werden sollen.
         required: true
-      responses:
-        "200":
-          description: Ok
-        "400":
-          description: Fehler in den Eingabedaten.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        default:
-          description: Unerwarteter Fehler
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - oauth2:
-            - API
-      tags:
-        - Seiten
-    delete:
-      summary: Seiten aus dem Archiv herausholen
-      description: Archiv-Flag wird entfernt.
-      operationId: unsetArchiv
       responses:
         "200":
           description: Ok
@@ -655,10 +638,18 @@ paths:
         - Seiten
   /dokumente/geprueft:
     put:
-      summary: Seiten als 'geprüft' markieren
+      summary: Seiten als 'geprüft' markieren oder 'geprüft'-Markierung entfernen
       description: Seiten werden (mit aktuellem Zeitstempel) als 'geprüft' markiert. Bei
-        bereits geprüften Seiten wird der Zeitstempel aktualisiert.
+        bereits geprüften Seiten wird der Zeitstempel aktualisiert. Wird der Parameter geprueft auf false gesetzt, wird die Markierung entfernt und die Seiten erscheinen ungeprüft. Bei geprueft auf false und Seiten ohne 'geprüft'-Markierung ändert sich nichts.
       operationId: setGeprueft
+      parameters:
+        - name: geprueft
+          in: query
+          description: Seiten sollen als 'geprüft' markiert werden (true) bzw. die 'geprüft'-Markierung entfernt werden (false).
+          required: false
+          schema:
+            type: boolean
+            default: true
       requestBody:
         content:
           application/json:
@@ -666,35 +657,9 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/SeitenReferenz"
-        description: Die Seiten-Referenzen der Seiten, die als 'geprüft' markiert werden
+        description: Die Seiten-Referenzen der Seiten, die als 'geprüft' markiert bzw. deren 'geprüft'-Markierung entfernt werden sollen.
           sollen.
         required: true
-      responses:
-        "200":
-          description: Ok
-        "400":
-          description: Fehler in den Eingabedaten.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        default:
-          description: Unerwarteter Fehler
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - oauth2:
-            - API
-      tags:
-        - Seiten
-    delete:
-      summary: Die 'geprüft'-Markierung für angegebene Seiten löschen
-      description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die
-        'geprüft' -Markierung entfernt, sie erscheinen dann ungeprüft. Bei
-        Seiten ohne 'geprüft'-Markierung ändert sich nichts.
-      operationId: unsetGeprueft
       responses:
         "200":
           description: Ok
@@ -1226,7 +1191,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SeitenFreigabe"
-#   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
+    #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
       description: |
