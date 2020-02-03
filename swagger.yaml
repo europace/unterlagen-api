@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: "1.0.35"
+  version: "1.0.36"
 host: "api.europace.de"
 schemes:
   - https
@@ -495,13 +495,19 @@ paths:
 
   /dokumente/archiv:
     put:
-      summary: Seiten ins Archiv verschieben
+      summary: Seiten ins Archiv verschieben oder aus dem Archiv herausholen
       description: Archiv-Flag wird gesetzt.
       operationId: setArchiv
       parameters:
+        - name: archiviert
+          in: query
+          description: Seiten sollen ins Archiv verschoben (true) oder aus dem Archiv herausgeholt werden (false).
+          required: false
+          type: boolean
+          default: true
         - name: seitenReferenzen
           in: body
-          description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben werden sollen.
+          description: Die Seiten-Referenzen der Seiten, die ins Archiv verschoben oder aus dem Archiv herausgeholt werden sollen.
           required: true
           schema:
             type: array
@@ -524,9 +530,10 @@ paths:
       tags:
         - Seiten
     delete:
-      summary: Seiten aus dem Archiv herausholen
-      description: Archiv-Flag wird entfernt.
+      summary: Seiten aus dem Archiv herausholen.
+      description: Archiv-Flag wird entfernt. Deprecated. Bitte PUT /dokumente/archiv mit archiviert=false verwenden.
       operationId: unsetArchiv
+      deprecated: true
       parameters:
         - name: seitenReferenzen
           in: body
@@ -555,14 +562,19 @@ paths:
 
   /dokumente/geprueft:
     put:
-      summary: Seiten als "geprüft" markieren
-      description: Seiten werden (mit aktuellem Zeitstempel) als "geprüft" markiert.
-        Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert.
+      summary: Seiten als "geprüft" markieren oder 'geprüft'-Markierung entfernen
+      description: Seiten werden (mit aktuellem Zeitstempel) als "geprüft" markiert. Bei bereits geprüften Seiten wird der Zeitstempel aktualisiert. Wird der Parameter geprueft auf false gesetzt, wird die Markierung entfernt und die Seiten erscheinen ungeprüft. Bei geprueft auf false und Seiten ohne 'geprüft'-Markierung ändert sich nichts.
       operationId: setGeprueft
       parameters:
+        - name: geprueft
+          in: query
+          description: Seiten sollen als 'geprüft' markiert werden (true) bzw. die 'geprüft'-Markierung entfernt werden (false).
+          required: false
+          type: boolean
+          default: true
         - name: seitenReferenzen
           in: body
-          description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert werden sollen.
+          description: Die Seiten-Referenzen der Seiten, die als "geprüft" markiert bzw. deren 'geprüft'-Markierung entfernt werden sollen.
           required: true
           schema:
             type: array
@@ -589,7 +601,9 @@ paths:
       summary: Die "geprüft"-Markierung für angegebene Seiten löschen
       description: Bei den Seiten mit den im Body angegebenen Seitenreferenzen wird die "geprüft"
         -Markierung entfernt, sie erscheinen dann ungeprüft. Bei Seiten ohne "geprüft"-Markierung ändert sich nichts.
+        Deprecated. Bitte PUT /dokumente/geprueft mit geprueft=false verwenden.
       operationId: unsetGeprueft
+      deprecated: true
       parameters:
         - name: seitenReferenzen
           in: body
