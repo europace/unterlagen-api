@@ -1108,6 +1108,13 @@ definitions:
       filename:
         type: string
         description: Name der Datei.
+      size:
+        type: integer
+        description: Dateigroesse in bytes.
+        format: int64
+      schluessel:
+        type: string
+        description: Oeffentlicher Download Schluessel
       freigabedatum:
         type: string
         format: date-time
