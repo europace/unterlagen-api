@@ -1192,7 +1192,7 @@ components:
         seiten:
           type: array
           items:
-            $ref: "#/components/schemas/SeitenFreigabe"
+            $ref: "#/components/schemas/DokumentefreigabeSeiten"
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
@@ -1201,9 +1201,11 @@ components:
       properties:
         dokumentId:
           type: string
+          description: ID des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
+          description: Seite im Dokument, 1-basiert.
     FreigegebeneUnterlage:
       type: object
       description: >
