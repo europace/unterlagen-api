@@ -1033,9 +1033,9 @@ components:
         url:
           description: upload URL
           type: string
-        required:
-          - url
-          - vorgangsNummer
+      required:
+        - url
+        - vorgangsNummer
     AenderbareDokumentMetadaten:
       description: Metadaten die für ein Dokument geändert werden können.
       type: object
