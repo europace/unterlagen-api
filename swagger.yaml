@@ -1067,9 +1067,9 @@ components:
         url:
           description: Frei zugängliche URL zum Dokument. Kann z.B. mit 'POST /dokumente/transferspeicher' erstellt werden.
           type: string
-        required:
-          - url
-          - vorgangsNummer
+      required:
+        - url
+        - vorgangsNummer
     Transferspeicher:
       type: object
       properties:
