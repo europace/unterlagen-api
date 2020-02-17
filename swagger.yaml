@@ -106,40 +106,6 @@ paths:
             - API
       tags:
         - Vorgang
-  /dokumente/transferspeicher:
-    post:
-      summary: Transferspeicher für ein Dokument erstellen
-      description: |
-        Einen Transferspeicher für ein Dokument erstellen, aus dem das Dokument per URL hochgeladen werden kann.
-      operationId: transferspeicher
-      responses:
-        "201":
-          description: Transferspeicher erfolgreich erstellt
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Transferspeicher"
-          links:
-            /dokumente:
-              operationId: uploadDokument
-              parameters:
-                DokumentUpload:
-                  url: '$response.body#/downloadUrl'
-                  anzeigename: zu setzen
-                  vorgangsnummer: zu setzen
-              description: >
-                Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die `uploadUrl` mit `PUT` übertragen werden.
-        default:
-          description: Unerwarteter Fehler
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - oauth2:
-            - API
-      tags:
-        - Dokumente
   "/dokumente/{dokumentId}":
     get:
       summary: Metadaten zu einem Dokument laden
@@ -1070,15 +1036,6 @@ components:
       required:
         - url
         - vorgangsNummer
-    Transferspeicher:
-      type: object
-      properties:
-        uploadUrl:
-          description: URL zum Hochladen des Dokuments in den Transferspeicher.
-          type: string
-        downloadUrl:
-          description: URL zum Abrufen des Dokuments aus dem Transferspeicher.
-          type: string
     AenderbareDokumentMetadaten:
       description: Metadaten die für ein Dokument geändert werden können.
       type: object
