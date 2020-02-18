@@ -110,7 +110,7 @@ paths:
     post:
       summary: Transferspeicher für ein Dokument erstellen
       description: |
-        Einen Transferspeicher für ein Dokument erstellen, aus dem das Dokument per URL hochgeladen werden kann.
+        Einen Transferspeicher für ein Dokument erstellen, aus dem das Dokument per signed URL (AWS Pre-Signed POST) hochgeladen werden kann. Beipiel siehe Readme.
       operationId: transferspeicher
       responses:
         "201":
@@ -128,7 +128,7 @@ paths:
                   anzeigename: zu setzen
                   vorgangsnummer: zu setzen
               description: >
-                Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die `uploadUrl` mit `PUT` übertragen werden.
+                Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die Url unter `UploadData.url` mit `POST` übertragen werden.
         default:
           description: Unerwarteter Fehler
           content:
@@ -1073,12 +1073,22 @@ components:
     Transferspeicher:
       type: object
       properties:
-        uploadUrl:
-          description: URL zum Hochladen des Dokuments in den Transferspeicher.
-          type: string
+        uploadData:
+          $ref: "#/components/schemas/UploadData"
         downloadUrl:
           description: URL zum Abrufen des Dokuments aus dem Transferspeicher.
           type: string
+    UploadData:
+      type: object
+      properties:
+        url:
+          description: URL zum Hochladen des Dokuments in den Transferspeicher.
+          type: string
+        fields:
+          description: AWS-Felder
+          type: object
+          additionalProperties:
+            type: string
     AenderbareDokumentMetadaten:
       description: Metadaten die für ein Dokument geändert werden können.
       type: object
