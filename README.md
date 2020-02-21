@@ -15,6 +15,7 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 
 | ID        | Anzeigename           | Beschreibung  | Anmerkung | 
 | :--- |:---| :---|:---|
+|Abgeschlossenheit|Abgeschlossenheitsbescheinigung|Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan| |
 |Abloesevollmacht|Ablösevollmacht|Ablösevollmacht, Kreditwechselservice (KWS)|  |
 |Abtretung|Abtretungen|Abtretungsanzeige, Abtretung von Bausparverträgen, Bauträger-Finanzierungsbestätigungen, Gehaltsabtretungen, Kraftfahrzeuge (KFZ-Brief), Lebensversicherungen, Mietforderungen, Rückgewähransprüche|  |
 |Altersvorsorge|Private oder betriebliche Altersvorsorge|Renten- und Lebensversicherungen, Betriebsrenten und Pensionsfonds|  |
@@ -48,19 +49,19 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Erbbaurechtsvertrag|Erbbaurechtsvertrag|Erbbaurechtsvertrag oder Erklärung zum Erbrecht|  |
 |Erlaeuterungsprotokoll|Erläuterungsprotokoll|Erläuterungsprotokoll, Erläuterungen zur Darlehensvermittlung|  |
 |Eroeffnung_Girokonto|Eröffnung Girokonto|Kontoeröffnungen Girokonto, Gehaltskonto|  |
-|Erschliessung|Erschließungsnachweis|Bescheinigung zu Erschließungsbeiträgen, Erschließungsbestätigung, Abgeschlossenheitsbestätigung, Anliegerbeiträge, Wasser, Gas, Telekom|  |
+|Erschliessung|Erschließungsnachweis|Bescheinigung zu Erschließungsbeiträgen, Erschließungsbestätigung, Anliegerbeiträge, Wasser, Gas, Telekom|  |
 |Expose|Exposé|Exposé, Zusammenfassung|  |
 |Faelligkeitsmitteilung|Fälligkeitsmitteilung Notar|Fälligkeitsmitteilung des Notars|  |
 |Finanzierungsvorschlag|Finanzierungsvorschlag|unverbindlicher Finanzierungsvorschlag, Finanzierungsangebot des Vertriebes|  |
 |Finanzierungsvorschlag_Antwort|Antwortschreiben zum Finanzierungsvorschlag|Antwortschreiben zum Finanzierungsvorschlag|  |
-|Finanzierungszusage|Finanzierungszusage|Finanzierungszusage - auch vorläufig, Drittmittel-Bestätigung, Kreditbestätigung, Privatdarlehen, Förderzusage, Genehmigungsschreiben, Darlehenszusage, Grundsatzzusage, Vollvalutierungsbestätigung|  |
+|Finanzierungszusage|Finanzierungszusage|Finanzierungszusage - auch vorläufig, Drittmittel-Bestätigung, Kreditbestätigung, Förderzusage, Genehmigungsschreiben, Darlehenszusage, Grundsatzzusage, Vollvalutierungsbestätigung|  |
 |Foerderdarlehen|Förderdarlehen, -Antrag, -Zusage|Neuer oder Bestehender Antrag, Vertrag oder Angebot für Förderdarlehen, Landesbanken, Investitionsbanken, Förderzusage|  |
 |Freistellungsvereinbarung|Freistellungsvereinbarung Bauträger|Freistellungsvereinbarung Bauträger, Freistellungserklärung, Freigabeversprechen, §3 MaBV, Globalfreistellung|  |
 |Gebaeudeversicherung|Gebäudeversicherung|Jahresrechnung, Nachtrag oder Vertrag zur Wohngebäudeversicherung, Nachweis des Versicherungsschutzes, Rohbau- oder Feuerversicherung, Haftpflicht|  |
 |Gehaltsabrechnung|Lohn/Gehaltsabrechnung|Lohn/Gehaltsabrechnung oder Bezügemitteilung, Rentenabrechnung, Sold, Einkommensnachweis|  |
 |Grundbuchauszug|Grundbuchauszug|Grundbuchauszug, Auskunftseinwilligung, Eintragungsbekanntmachung, Erbbaugrundbuch, Mitteilungen vom Grundbuchamt/Amtsgericht|  |
 |Grunderwerbsteuer|Grunderwerbsteuer, Grundsteuer|Steuerbescheid zur Grunderwerbsteuer, Grundsteuerbescheid|  |
-|Grundschuldbestellung|Grundschuldbestellung oder Löschung|Grundschuldbestellungsurkunde oder Grundschuldbrief, vollstreckbar, Aufgebotsverfahren, Löschungsbewilligung, Pfandfreigabe, Treuhandauftrag|  |
+|Grundschuldbestellung|Grundschuldbestellung oder Löschung|Grundschuldbestellungsurkunde oder Grundschuldbrief, vollstreckbar, Aufgebotsverfahren, Löschungsbewilligung, Pfandfreigabe, Treuhandauftrag, Schuldanerkenntnis, Schuldversprechen|  |
 |Inkasso|Kündigung, Forderung|Inkasso, Mahnung, Forderung, Kündigung, §489 BGB, Vorfälligkeit, Zwangsversteigerung|  |
 |Kaufvertrag|Notarieller Immobilien-Kaufvertrag|Notarieller Kaufvertrag (Urkunde oder Entwurf), Anlagen und Begleitnotizen zum Kaufvertrag, Tauschvertrag, Schenkungsurkunde, Übertragungsvertrag|  |
 |KfW_Antrag|KfW Antrag|Antrag KfW Fördermittel, Wohneigentumsförderung, inkl. KfW Beiblatt zur Baufinanzierung|  |
@@ -85,6 +86,7 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Scheidungsfolgevereinbarung|Scheidungsfolgevereinbarung|Notarielle Scheidungsfolgevereinbarung (Urkunde oder Entwurf), Trennungsvereinbarung|  |
 |Selbstauskunft|Selbstauskunft, Schufa|Selbstauskunft, Erfassungsbogen, Datenschutzklausel und Einwilligung zu Auskünften, Schufa, Datenschutzhinweise|  |
 |Sicherungsvereinbarung|Sicherungsvereinbarung für Grundschuld|Formular Sicherungsvereinbarung für Grundschuld, Abtretung der Rückgewähransprüche|  |
+|SEPA_Mandat|SEPA Lastschriftmandat|SEPA-Lastschriftmandat|  |
 |Sonstige_Einnahmen|Sonstige Einnahmen|Sonstige Einnahmen (Waisenrente, Pflegegeld, Einspeisevergütung, u.a.)|  |
 |Teilungserklaerung|Notarielle Teilungserklärung|Notarielle Teilungserklärung (Urkunde oder Entwurf), Anlagen, Neufassung, Abschrift, Vollmacht|  |
 |Uebergabeprotokoll|Übergabeprotokoll|Übergabeprotokoll an Produktanbieter|  |
