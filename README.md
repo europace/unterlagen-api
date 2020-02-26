@@ -121,7 +121,7 @@ Beispiele für die Benutzung der API mit den wichtigsten Usecases
 ### JAVA Client generieren
 
 ```
-java -jar swagger-codegen-cli-2.3.1.jar generate \
+java -jar swagger-codegen-cli-3.0.16.jar generate \
 -i https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/swagger.yaml \
 -l java -c codegen-config-file.json -o generated
 ```
