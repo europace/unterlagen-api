@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: 1.0.36
+  version: 1.0.38
 paths:
   /dokumente:
     post:
@@ -1031,7 +1031,7 @@ components:
           description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
           type: string
         url:
-          description: upload URL
+          description: Frei zugängliche upload URL
           type: string
       required:
         - url
