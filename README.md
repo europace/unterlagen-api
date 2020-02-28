@@ -1,9 +1,69 @@
 # Dokumente API
 Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
 
-### API Dokumentation
+### Inhaltsverzeichnis
 
-Die API-Dokumentation kann [hier eingesehen](https://europace.github.io/dokumente-api/swggerui.html) werden.
+- [Getting Started](#getting-started)
+- [Dokumentation](#dokumentation)
+    + [API Spezifikation](#api-spezifikation)
+    + [Beispielaufruf](#beispielaufruf)
+    + [UML Sequenz-Diagramme](#uml-sequenz-diagramme)
+    + [JAVA Client generieren](#java-client-generieren)
+- [Kategorien](#kategorien)
+- [FAQs](#faqs)
+- [Autorisierung](#autorisierung)
+- [Kontakt](#kontakt)
+
+### Getting Started
+
+Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europace.de/schnellstart/) zu finden.
+
+### Dokumentation
+
+##### API Spezifikation
+
+Die API-Dokumentation kann [hier](https://europace.github.io/dokumente-api/swggerui.html) eingesehen werden.
+
+##### Beispielaufruf
+
+Abrufen der Metadaten zu allen Dokumenten des Vorgangs Z75226:
+
+```
+curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNummer=Z75226' \
+--header 'Authorization: Bearer jwtToken' 
+``` 
+
+##### UML Sequenz-Diagramme
+
+Beispiele für die Benutzung der API mit den wichtigsten Usecases.
+
+![Dokument](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument.puml&fmt=svg)
+
+![Seite](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Seite.puml&fmt=svg)
+
+![Unterlage](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Unterlage.puml&fmt=svg)
+
+![Sonstiges](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Sonstiges.puml&fmt=svg)
+
+##### JAVA Client generieren
+
+```
+java -jar swagger-codegen-cli-3.0.16.jar generate \
+-i https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/swagger.yaml \
+-l java -c codegen-config-file.json -o generated
+```
+
+Beispiel _codegen-config-file.json_: 
+
+```
+{
+  "artifactId": "${CLIENT_ARTIFACT_NAME}",
+  "groupId": "${GROUP_ID}",
+  "library": "retrofit2",
+  "artifactVersion": "${ARTIFACT_VERSION}",
+  "dateLibrary": "java8"
+}
+``` 
 
 ### Kategorien
 
@@ -102,36 +162,14 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Zustimmungserklaerung|Zustimmungserklärung|Zustimmung zur Darlehensaufnahme, Besicherung, Zustimmung des Ehepartners, Objektwechsel, Rangrücktritt, Stillhalteerklärung|  |
 |Sonstiges|Sonstiges| | ist niemals Ergebnis der automatischen Erkennung|
 
-### UML Sequenz-Diagramme
+### FAQs
 
-Beispiele für die Benutzung der API mit den wichtigsten Usecases
+API-Übergreifende FAQs: https://developer.europace.de/faq/
 
-![Dokument](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument.puml&fmt=svg)
+### Autorisierung
 
-![Seite](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Seite.puml&fmt=svg)
+Um die API zu verwenden wird ein Access Token benötigt, was mittels dem OAuth Client-Credentials Flow angefordert wird. Weitere Dokumentation dazu befindet sich hier: https://github.com/europace/authorization-api
 
-![Unterlage](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Unterlage.puml&fmt=svg)
+### Kontakt
 
-![Sonstiges](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Sonstiges.puml&fmt=svg)
-
-
-
-### JAVA Client generieren
-
-```
-java -jar swagger-codegen-cli-3.0.16.jar generate \
--i https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/swagger.yaml \
--l java -c codegen-config-file.json -o generated
-```
-
-##### Beispiel _codegen-config-file.json_: 
-
-```
-{
-  "artifactId": "${CLIENT_ARTIFACT_NAME}",
-  "groupId": "${GROUP_ID}",
-  "library": "retrofit2",
-  "artifactVersion": "${ARTIFACT_VERSION}",
-  "dateLibrary": "java8"
-}
-``` 
+Kontakt für Support: devsupport@europace2.de
