@@ -9,6 +9,10 @@ Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
     + [Beispielaufruf](#beispielaufruf)
     + [UML Sequenz-Diagramme](#uml-sequenz-diagramme)
     + [JAVA Client generieren](#java-client-generieren)
+- [Dokument per URL bereitstellen](#dokument-per-url-bereitstellen)
+    + [1. Signed URL erstellen](#1-signed-url-erstellen)
+    + [2. Dokument in Transferspeicher hochladen](#2-dokument-in-transferspeicher-hochladen)
+    + [3. Dokument bereitstellen](#3-dokument-bereitstellen)
 - [Kategorien](#kategorien)
 - [FAQs](#faqs)
 - [Autorisierung](#autorisierung)
@@ -71,7 +75,7 @@ Dokumente können über eine frei zugängliche URL bereitgestellt werden. Eine s
 
 Die Dokumente müssen PDF- oder Bilddateien sein und eine Maximalgröße von 100 Megabyte nicht überschreiten.
 
-##### 1. Signed URL erstellen:
+##### 1. Signed URL erstellen
 Anfrage
 ```
 curl --location --request POST 'https://api.europace2.de/v1/dokumente/transferspeicher' \
@@ -97,7 +101,8 @@ Antwort
 }
 ``` 
 Die erstellten Urls zum Hoch- und Runterladen sind 60 Minuten gültig und können mehrfach aufgerufen werden.
-##### 2. Dokument in Transferspeicher hochladen:
+
+##### 2. Dokument in Transferspeicher hochladen
 Anfrage
 ``` 
 curl --location --request POST 'https://s3.eu-central-1.amazonaws.com/filecachestack-filecache8e64047f-1sk2qs95dbtr1' \
@@ -114,7 +119,8 @@ curl --location --request POST 'https://s3.eu-central-1.amazonaws.com/filecaches
 ``` 
 Bei der Anfrage werden die Daten aus "uploadData" aus Schritt 1 verwendet. Die "url" bildet das Ziel der Anfrage, die Elemente der Liste "fields" Form-Parameter. Als letzter Parameter 
 wird unter "file" der Pfad zum hochzuladenden Dokument angegeben.
-##### 3. Dokument bereitstellen:
+
+##### 3. Dokument bereitstellen
 Anfrage
 ``` 
 curl --location --request POST 'https://api.europace2.de/v1/dokumente' \
