@@ -8,11 +8,15 @@ paths:
     post:
       summary: Dokument hochladen
       description: |
-        Ein Dokument samt Metadaten per Form-Data hochladen.
+        Ein Dokument samt Metadaten per Url hochladen (bis 100 MB) oder als Form-Data (bis 10 MB).
       operationId: uploadDokument
       requestBody:
         content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DokumentUpload"
           multipart/form-data:
+            deprecated: true
             schema:
               type: object
               properties:
@@ -29,9 +33,6 @@ paths:
               required:
                 - file
                 - vorgangsNummer
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DokumentUpload"
       responses:
         "201":
           description: Dokument erfolgreich hochgeladen
