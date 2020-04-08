@@ -2,13 +2,14 @@ openapi: 3.0.0
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: 2.0.3
+  version: 2.0.4
 paths:
   /dokumente:
     post:
       summary: Dokument hochladen
       description: |
-        Ein Dokument samt Metadaten per Url hochladen (bis 100 MB) oder als Form-Data (bis 10 MB).
+        Ein Dokument samt Metadaten per Url hochladen (bis 100 MB) oder als Form-Data (bis 10 MB)
+        Die Form-Data-Variante ist DEPRECATED.
       operationId: uploadDokument
       requestBody:
         content:
@@ -16,7 +17,6 @@ paths:
             schema:
               $ref: "#/components/schemas/DokumentUpload"
           multipart/form-data:
-            deprecated: true
             schema:
               type: object
               properties:
@@ -563,6 +563,61 @@ paths:
       tags:
         - Seiten
   /dokumente/zuordnungen:
+    get:
+      deprecated: true
+      summary: deprecated - bitte /dokumente/moeglichezuordnungen verwenden --- Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten
+        erhalten.
+      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur
+        Verfügung.
+      operationId: getMoeglicheZuordnungenAlt
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer
+          required: true
+          schema:
+            type: string
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die
+            Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die
+            aktuellen Vorgangsdaten.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MoeglicheZuordnungAlt"
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Vorgang nicht gefunden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unerwarteter Fehler
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth2:
+            - API
+      tags:
+        - Seiten
+  /dokumente/moeglichezuordnungen:
     get:
       summary: Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten
         erhalten.
@@ -1313,9 +1368,14 @@ components:
           type: string
           description: Typ des Bezugsobjekts.
           example: Immobilie
-        bezeichnung:
+        name:
           type: string
-          description: Typ des Bezugsobjekts.
+          description: Name des Bezugsobjekts.
+          example: Finanzierungsobjekt Feldweg 17
+        bezeichnung:
+          deprecated: true
+          type: string
+          description: Name des Bezugsobjekts.
           example: Finanzierungsobjekt Feldweg 17
     Partner:
       type: object
@@ -1368,7 +1428,8 @@ components:
                 - BEZUG_FEHLT
                 - BEZUG_UNGUELTIG
                 - VOLLSTAENDIG
-    MoeglicheZuordnung:
+    MoeglicheZuordnungAlt:
+      deprecated: true
       type: object
       properties:
         kategorie:
@@ -1414,6 +1475,46 @@ components:
                   oberkategorie und oberkategorieZusatz definieren *gemeinsam*
                   die Gruppe.
                 example: Feldweg 17
+    MoeglicheZuordnung:
+      type: object
+      properties:
+        kategorie:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Id der Kategorie (technisch).
+            name:
+              type: string
+              description: Bezeichnung der Kategorie (für Nutzer lesbar).
+            beschreibung:
+              type: string
+              description: optional - detaillierte Beschreibung der Kategorie (für Nutzer lesbar).
+        bezuege:
+          type: array
+          items:
+            type: object
+            description: Mögliche Bezüge für diese Kategorie
+            properties:
+              typ:
+                type: string
+                description: Typ des Bezuges (z.B. immobilie, antragsteller, ...) (technisch)
+              id:
+                type: string
+                description: Id des Bezuges (z.B. immobilie:4711) (technisch)
+              name:
+                type: string
+                description: Anzeigename für diesen Bezug (für Nutzer lesbar)
+              rolle:
+                type: object
+                description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp Immobilie)
+                properties:
+                  typ:
+                    type: string
+                    description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=Immobilie) (technisch)
+                  name:
+                    type: string
+                    description: Anzeigename für diese Rolle (für Nutzer lesbar)
     Error:
       type: object
       properties:
