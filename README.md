@@ -235,6 +235,10 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 
 API-Übergreifende FAQs: https://developer.europace.de/faq/
 
+#### Welche Dateitypen unterstützt die API?
+* Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, BMP) hochladen
+* Auf der Produktanbieter-Seite (Unterlagen an einem Antrag) wird alles in PDF umgewandelt
+
 ### Autorisierung
 
 Um die API zu verwenden wird ein Access Token benötigt, was mittels dem OAuth Client-Credentials Flow angefordert wird. Weitere Dokumentation dazu befindet sich hier: https://github.com/europace/authorization-api
