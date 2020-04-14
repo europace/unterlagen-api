@@ -236,7 +236,7 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 API-Übergreifende FAQs: https://developer.europace.de/faq/
 
 #### Welche Dateitypen unterstützt die API?
-* Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, BMP) hochladen
+* Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, tif) hochladen. BMP und GIF funktionieren nicht.
 * Auf der Produktanbieter-Seite (Unterlagen an einem Antrag) wird alles in PDF umgewandelt
 
 ### Autorisierung
