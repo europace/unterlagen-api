@@ -1,5 +1,10 @@
 # Dokumente API
-Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
+API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte) zu bedienen. Mit dieser API können folgende Aktionen durchgeführt werden:
+* Als Vertrieb kann ein Dokument am Vorgang hochgeladen werden.
+* Als Vertrieb kann ein Dokument kategorisiert werden und somit in eine Unterlage umgewandet werden.
+* Als Verteib können Unterlagen an Anträgen für Produktanbieter freigegeben werden.
+* Als Vertribe und Produktanbieter können freigegebene Unterlagen an einem Antrag abegrufen werden.
+
 
 ### Inhaltsverzeichnis
 
@@ -238,6 +243,9 @@ API-Übergreifende FAQs: https://developer.europace.de/faq/
 #### Welche Dateitypen unterstützt die API?
 * Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, tif) hochladen. BMP und GIF funktionieren nicht.
 * Auf der Produktanbieter-Seite (Unterlagen an einem Antrag) wird alles in PDF umgewandelt
+
+#### Wie kann ich als Produktanbiert eine Datei an einem Antrag hochladen?
+Bitte verwende dafür die [BaufiSmart Dokumenten API](https://github.com/europace/baufismart-dokumente-api)
 
 ### Autorisierung
 
