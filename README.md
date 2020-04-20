@@ -2,8 +2,8 @@
 API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte) zu bedienen. Mit dieser API können folgende Aktionen durchgeführt werden:
 * Als Vertrieb kann ein Dokument am Vorgang hochgeladen werden.
 * Als Vertrieb kann ein Dokument kategorisiert werden und somit in eine Unterlage umgewandet werden.
-* Als Verteib können Unterlagen an Anträgen für Produktanbieter freigegeben werden.
-* Als Vertribe und Produktanbieter können freigegebene Unterlagen an einem Antrag abegrufen werden.
+* Als Vertrieb können Unterlagen an Anträgen für Produktanbieter freigegeben werden.
+* Als Vertrieb und Produktanbieter können freigegebene Unterlagen an einem Antrag abgerufen werden.
 
 
 ### Inhaltsverzeichnis
