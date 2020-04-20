@@ -6,6 +6,7 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 * Als Vertrieb und Produktanbieter können freigegebene Unterlagen an einem Antrag abgerufen werden.
 
 
+
 ### Inhaltsverzeichnis
 
 - [Getting Started](#getting-started)
