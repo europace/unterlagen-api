@@ -255,3 +255,7 @@ Um die API zu verwenden wird ein Access Token benötigt, was mittels dem OAuth C
 ### Kontakt
 
 Kontakt für Support: devsupport@europace2.de
+
+# Nutzungsbedingungen
+Mit der Verwendung dieser API [stimme ich den Nutzungsbedingungen](https://developer.europace.de/terms/) zu.
+
