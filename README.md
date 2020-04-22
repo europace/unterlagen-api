@@ -47,13 +47,13 @@ curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNu
 
 Beispiele für die Benutzung der API mit den wichtigsten Usecases.
 
-![Dokument](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument.puml&fmt=svg)
+![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument.puml&fmt=svg)
 
-![Seite](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Seite.puml&fmt=svg)
+![Seite](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Seite.puml&fmt=svg)
 
-![Unterlage](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Unterlage.puml&fmt=svg)
+![Unterlage](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Unterlage.puml&fmt=svg)
 
-![Sonstiges](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Sonstiges.puml&fmt=svg)
+![Sonstiges](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Sonstiges.puml&fmt=svg)
 
 ##### JAVA Client generieren
 
