@@ -121,13 +121,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Transferspeicher"
           links:
-            /dokumente:
+            UploadWithUrl:
               operationId: uploadDokument
-              parameters:
-                DokumentUpload:
-                  url: '$response.body#/downloadUrl'
-                  anzeigename: zu setzen
-                  vorgangsnummer: zu setzen
+              requestBody:
+                url: '$response.body#/downloadUrl'
               description: >
                 Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die Url unter `UploadData.url` mit `POST` übertragen werden.
         default:
