@@ -308,6 +308,12 @@ paths:
               schema:
                 type: string
                 format: binary
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
