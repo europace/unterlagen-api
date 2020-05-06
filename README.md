@@ -59,7 +59,7 @@ Beispiele für die Benutzung der API mit den wichtigsten Usecases.
 
 ```
 java -jar swagger-codegen-cli-3.0.16.jar generate \
--i https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/swagger.yaml \
+-i https://raw.githubusercontent.com/europace/dokumente-api/master/swagger.yaml \
 -l java -c codegen-config-file.json -o generated
 ```
 
