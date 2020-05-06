@@ -32,7 +32,7 @@ Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europ
 
 ##### API Spezifikation
 
-Die API-Dokumentation kann [hier](https://github.com/europace/dokumente-api/blob/master/swagger.yaml) eingesehen werden.
+Die API-Dokumentation kann [hier](https://europace.github.io/dokumente-api/docs/swggerui.html) eingesehen werden.
 
 ##### Beispielaufruf
 
