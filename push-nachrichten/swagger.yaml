@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Unterlagen Freigaben Webhook API
+  description:
+  version: 1.0.0
+paths:
+  /messages/unterlagenfreigabe:
+    post:
+      summary: Eine Nachricht veröffentlichen
+      operationId: pushMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                produktanbieterId:
+                  type: string
+                message:
+                  $ref: '#/components/schemas/Message'
+                datenkontext:
+                  $ref: '#/components/schemas/Datenkontext'
+              required:
+                - produktanbieterId
+                - message
+      responses:
+        "201":
+          description: Es gibt einen Webhook und dieser wird ansynchron benachrichtigt.
+        "204":
+          description: Es gibt keinen Webhook. Die Nachricht wird nicht verarbeitet.
+  /subscriptions/unterlagenfreigabe:
+    put:
+      summary: Einen Subscriber für Pushnachrichten erstellen oder aktualisieren.
+      operationId: subscribe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                produktanbieterId:
+                  type: string
+                url:
+                  type: string
+                  format: uri
+                  example: https://myserver.com/send/callback/here
+                datenkontext:
+                  $ref: '#/components/schemas/Datenkontext'
+                secret:
+                  type: string
+              required:
+                - produktanbieterId
+                - url
+                - datenkontext
+      callbacks:
+        freigabe:
+          '{$request.body#/url}':
+            post:   # Method
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Message'
+              responses:
+                "200":
+                  description: Nachricht erhalten
+      responses:
+        "201":
+          description: Der Subscriber wurde registriert.
+components:
+  schemas:
+    Datenkontext:
+      type: string
+      enum:
+        - TEST_MODUS
+        - ECHT_GESCHAEFT
+      default: ECHT_GESCHAEFT
+
+    EventTyp:
+      type: string
+      enum:
+        - FREIGABE
+
+    Message:
+      type: object
+      properties:
+        eventTyp:
+          $ref: '#/components/schemas/EventTyp'
+        unterlagen:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unterlage'
+        antragsNummer:
+          type: string
+        externeAntragsNummer:
+          type: string
+      required:
+        - eventTyp
+        - unterlagen
+        - antragsNummer
+
+    Unterlage:
+      type: object
+      properties:
+        metaDatenUrl:
+          type: string
+        statusUrl:
+          type: string
+      required:
+        - metaDatenUrl
+        - statusUrl
