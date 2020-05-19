@@ -22,6 +22,8 @@ Die Nachricht muss innerhalb von 30s mit einem 2xx Status-Code beantwortet werde
  muss noch der Status für die übertragenen Unterlagen auf `FAILED` oder `DELIVERED`
  gesetzt werden (siehe [hier](https://europace.github.io/dokumente-api/docs/swggerui.html#/Freigabe/setFreigegebeneUnterlageStatus))
 
+Zum Testen kann unser Test-Endpunkt unter https://pushnotifications.dokumente.europace2.de/messages/unterlagenfreigabe/test verwendet werden (Details siehe [swagger-definition](swagger.yaml))
+
 ### Besicherung
 Die Webhook-URL muss öffentlich erreichbar sein. Um dich vor Fremdaufrufen zu schützen, kannst du uns bei der Registrierung ein Secret übermitteln. Dieses verwenden wir, 
 um jede Nachricht per HMAC (SHA256) zu signieren. Die Signatur befindet sich im Header `X-Europace-HMAC` und ist Base64 encodiert.

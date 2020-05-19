@@ -3,6 +3,8 @@ info:
   title: Unterlagen Freigaben Webhook API
   description: Api Beschreibung der Webhook API für Unterlagenfreigaben.
   version: 1.0.0
+servers:
+  - url: https://pushnotifications.dokumente.europace2.de
 paths:
   /hinterlegter-webhook-endpunkt:
     post:
@@ -14,9 +16,34 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Message'
+      parameters:
+        - in: header
+          name: X-Europace-HMAC
+          schema:
+            type: string
+          description: SHA256 Signatur der Payload mit dem für den Webhook hinterlegten Secret
       responses:
         "200":
           description: Nachricht erfolgreich entgegengenommen
+  /messages/unterlagenfreigabe/test:
+    post:
+      summary: Einen Testpayload versenden
+      operationId: testMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                secret:
+                  type: string
+              required:
+                - url
+      responses:
+        "200":
+          description: Es wird ein Testpayload an die URL gesendet
 
 components:
   schemas:
