@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Unterlagen Freigaben Webhook API
+  description: Api Beschreibung der Webhook API für Unterlagenfreigaben.
+  version: 1.0.0
+servers:
+  - url: https://pushnotifications.dokumente.europace2.de
+paths:
+  /hinterlegter-webhook-endpunkt:
+    post:
+      summary: Eine Nachricht veröffentlichen
+      description: Platzhalter für die URL, die als Webhook registriert ist. Dieser Endpunkt wird im Fall einer Freigabe von uns aufgerufen und ist hier nur zur Dokumentation des Schemas mit aufgeführt. Der Request muss
+      innerhalb von 30s abgegarbeitet werden und einen 2xx Statuscode zurück liefern. Dein Service ist dafür verantwortlich, den Status der übertragenen Unterlagen auf "DELIVERED" oder "FAILED" zu setzen.
+      operationId: pushMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      parameters:
+        - in: header
+          name: X-Europace-HMAC
+          schema:
+            type: string
+          description: SHA256 Signatur der Payload mit dem für den Webhook hinterlegten Secret
+      responses:
+        "200":
+          description: Nachricht erfolgreich entgegengenommen
+  /messages/unterlagenfreigabe/test:
+    post:
+      summary: Einen Testpayload versenden
+      operationId: testMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                secret:
+                  type: string
+              required:
+                - url
+      responses:
+        "200":
+          description: Es wird ein Testpayload an die URL gesendet
+
+components:
+  schemas:
+    EventTyp:
+      type: string
+      enum:
+        - FREIGABE
+
+    Message:
+      type: object
+      properties:
+        eventTyp:
+          $ref: '#/components/schemas/EventTyp'
+        unterlagen:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unterlage'
+        antragsNummer:
+          type: string
+        externeAntragsNummer:
+          type: string
+      required:
+        - eventTyp
+        - unterlagen
+        - antragsNummer
+
+    Unterlage:
+      type: object
+      properties:
+        metaDatenUrl:
+          type: string
+        statusUrl:
+          type: string
+      required:
+        - metaDatenUrl
+        - statusUrl
