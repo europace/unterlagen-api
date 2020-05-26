@@ -3,6 +3,7 @@ info:
   title: Dokumente API
   description: API rund um Plattformdokumente
   version: 2.0.4
+  termsOfService: https://developer.europace.de/terms/
 paths:
   /dokumente:
     post:
