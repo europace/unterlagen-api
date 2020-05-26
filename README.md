@@ -19,6 +19,7 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
     + [1. Signed URL erstellen](#1-signed-url-erstellen)
     + [2. Dokument in Transferspeicher hochladen](#2-dokument-in-transferspeicher-hochladen)
     + [3. Dokument bereitstellen](#3-dokument-bereitstellen)
+- [Pushnachrichten für Freigaben erhalten](push-nachrichten/README.md)
 - [Kategorien](#kategorien)
 - [FAQs](#faqs)
 - [Autorisierung](#autorisierung)
