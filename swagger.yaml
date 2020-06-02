@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Dokumente API
   description: API rund um Plattformdokumente
-  version: 2.0.4
+  version: 2.0.5
   termsOfService: https://developer.europace.de/terms/
 paths:
   /dokumente:
@@ -1222,7 +1222,7 @@ components:
                 type: string
                 example: Personalausweis
         zuordnung:
-          $ref: "#/components/schemas/ZuordnungMitStatus"
+          $ref: "#/components/schemas/ZuordnungInSeite"
         archiviert:
           type: boolean
           description: Archivierungsstatus der Seite.
@@ -1268,7 +1268,7 @@ components:
           format: date-time
           description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
         zuordnung:
-          $ref: "#/components/schemas/Zuordnung"
+          $ref: "#/components/schemas/ZuordnungInSeitenFreigabe"
     Freigabe:
       type: object
       description: |
@@ -1328,10 +1328,13 @@ components:
           type: string
           description: Media-Type nach https://tools.ietf.org/html/rfc6838.
         kategorie:
-          description: Die Kategorie der Freigabe.
+          deprecated: true
+          description: deprecated - bitte Knoten zuordnung verwenden --- Die Kategorie der Freigabe.
           type: string
         bezug:
-          $ref: "#/components/schemas/Bezugsobjekt"
+          $ref: "#/components/schemas/BezugsobjektAlt"
+        zuordnung:
+          $ref: "#/components/schemas/ZuordnungInUnterlage"
         freigebender:
           $ref: "#/components/schemas/Partner"
         abrufstatus:
@@ -1362,6 +1365,23 @@ components:
         message:
           type: string
     Bezugsobjekt:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id des Bezugsobjekts (innerhalb eines Antrags eindeutig).
+          example: immobilie:4711
+        typ:
+          type: string
+          description: Typ des Bezugsobjekts.
+          example: immobilie
+        name:
+          type: string
+          description: Name des Bezugsobjekts.
+          example: Finanzierungsobjekt Feldweg 17
+    BezugsobjektAlt:
+      deprecated: true
+      description: deprecated - bitte Knoten zuordnung statt bezug verwenden - zu beachten ist, dass der BezugsTyp im neuen Knoten immer klein geschrieben wird (angeglichen an den Standard in der API)
       type: object
       properties:
         id:
@@ -1408,7 +1428,7 @@ components:
         seitenRevision:
           type: string
           description: Revisionsnummer der Dokumentseiten des Vorgangs.
-    Zuordnung:
+    ZuordnungInSeitenFreigabe:
       type: object
       properties:
         kategorie:
@@ -1419,9 +1439,9 @@ components:
           description: Beantwortet die Frage "Worauf bezieht es sich?"
           example: antragsteller:1
           type: string
-    ZuordnungMitStatus:
+    ZuordnungInSeite:
       allOf:
-        - $ref: "#/components/schemas/Zuordnung"
+        - $ref: "#/components/schemas/ZuordnungInSeitenFreigabe"
         - type: object
           properties:
             status:
@@ -1432,6 +1452,15 @@ components:
                 - BEZUG_FEHLT
                 - BEZUG_UNGUELTIG
                 - VOLLSTAENDIG
+    ZuordnungInUnterlage:
+      type: object
+      properties:
+        kategorie:
+          description: Beantwortet die Frage "Was ist es?"
+          example: Krankenversicherungsnachweis
+          type: string
+        bezug:
+          $ref: "#/components/schemas/Bezugsobjekt"
     MoeglicheZuordnungAlt:
       deprecated: true
       type: object
