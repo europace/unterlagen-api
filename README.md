@@ -212,6 +212,7 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Objektfotos|Objektfotos|Objektfotos, Bilder, Photos (innen, außen oder Baufortschritt)|  |
 |Plankarten|Flurkarte, Lageplan|Flurkarte, Lageplan, Bebauungsplan, Fortführungserklärung, BORIS, Bodenrichtwerte, Liegeschaftskarte, Katasterkarte|  |
 |Privatkreditvertrag|Ratenkreditvertrag|Privatkredit, Ratenkreditvertrag oder -Antrag, Neuabschluss und Ablösung von Krediten, Bestehende und Abzulösende Konsumkredite, Leasing, Ratenschutz, RSV|  |
+|Ratenschutzversicherung|Ratenschutz-, Restschuldversicherung|Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV| |
 |Rechnung_Quittung|Rechnungen, Verbrauchsgüterkaufvertrag|Rechnungen zu Bauvorhaben oder Nebenkosten, Betriebskosten, Notarkosten, Erschließungsbeiträge, Maklergebühren, Kaufvertrag für Konsumgüter und Autos|  |
 |Rentenbescheid|Rentenbescheid|Rentenbescheid oder Rentenanpassung der gesetzlichen Altersrente|  |
 |Renteninformation|Renteninformation|Renteninformation zur zukünftigen gesetzlichen Altersrente|  |
