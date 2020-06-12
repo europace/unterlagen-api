@@ -25,7 +25,7 @@ Folgende Schritte sind aus unserer Sicht notwendig, für eine erfolgreiche Verar
 1. Login per Login API, siehe https://github.com/europace/login-api
 2. Abruf der Unterlage Metadaten, siehe `metadatenUrl` in der Nachricht
 3. Abruf der Binärdaten, siehe download link in den Metadaten
-4. In jedem Fall - Setzen des Status FAILED oder DELIVERED (siehe [hier](https://europace.github.io/dokumente-api/docs/swggerui.html#/Freigabe/setFreigegebeneUnterlageStatus), andernfalls ist der Freigabeprozess für den Vertriebsmitarbeiter blockiert
+4. In jedem Fall - Setzen des Status FAILED oder DELIVERED (siehe [hier](https://europace.github.io/unterlagen-api/docs/swggerui.html#/Freigabe/setFreigegebeneUnterlageStatus), andernfalls ist der Freigabeprozess für den Vertriebsmitarbeiter blockiert
 
 Zum Testen kann unser Test-Endpunkt unter https://pushnotifications.dokumente.europace2.de/messages/unterlagenfreigabe/test verwendet werden (Details siehe [swagger-definition](swagger.yaml))
 

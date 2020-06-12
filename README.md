@@ -19,7 +19,7 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
     + [1. Signed URL erstellen](#1-signed-url-erstellen)
     + [2. Dokument in Transferspeicher hochladen](#2-dokument-in-transferspeicher-hochladen)
     + [3. Dokument bereitstellen](#3-dokument-bereitstellen)
-- [Pushnachrichten für Freigaben erhalten](https://github.com/europace/dokumente-api/blob/master/push-nachrichten/README.md)
+- [Pushnachrichten für Freigaben erhalten](https://github.com/europace/unterlagen-api/blob/master/push-nachrichten/README.md)
 - [Kategorien](#kategorien)
 - [FAQs](#faqs)
 - [Autorisierung](#autorisierung)
@@ -33,7 +33,7 @@ Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europ
 
 ##### API Spezifikation
 
-Die API-Dokumentation kann [hier](https://europace.github.io/dokumente-api/docs/swggerui.html) eingesehen werden.
+Die API-Dokumentation kann [hier](https://europace.github.io/unterlagen-api/docs/swggerui.html) eingesehen werden.
 
 ##### Beispielaufruf
 
@@ -48,19 +48,19 @@ curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNu
 
 Beispiele für die Benutzung der API mit den wichtigsten Usecases.
 
-![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Dokument.puml&fmt=svg)
+![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Dokument.puml&fmt=svg)
 
-![Seite](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Seite.puml&fmt=svg)
+![Seite](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Seite.puml&fmt=svg)
 
-![Unterlage](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Unterlage.puml&fmt=svg)
+![Unterlage](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Unterlage.puml&fmt=svg)
 
-![Sonstiges](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hypoport/ep-dokumente-api/master/docs/Sonstiges.puml&fmt=svg)
+![Sonstiges](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Sonstiges.puml&fmt=svg)
 
 ##### JAVA Client generieren
 
 ```
 java -jar swagger-codegen-cli-3.0.16.jar generate \
--i https://raw.githubusercontent.com/europace/dokumente-api/master/swagger.yaml \
+-i https://raw.githubusercontent.com/europace/unterlagen-api/master/swagger.yaml \
 -l java -c codegen-config-file.json -o generated
 ```
 
