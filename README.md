@@ -10,6 +10,7 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 ### Inhaltsverzeichnis
 
 - [Getting Started](#getting-started)
+- [Upgrade Notes](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
 - [Dokumentation](#dokumentation)
     + [API Spezifikation](#api-spezifikation)
     + [Beispielaufruf](#beispielaufruf)
