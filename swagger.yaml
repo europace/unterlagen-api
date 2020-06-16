@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unterlagen API
   description: Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
-  version: 2.0.5
+  version: 2.0.6
   termsOfService: https://developer.europace.de/terms/
 paths:
   /dokumente:
@@ -1268,7 +1268,7 @@ components:
           format: date-time
           description: Gibt das Datum an, an dem das Dokument freigegeben wurde.
         zuordnung:
-          $ref: "#/components/schemas/ZuordnungInSeitenFreigabe"
+          $ref: "#/components/schemas/ZuordnungInSeite"
     Freigabe:
       type: object
       description: |
@@ -1428,7 +1428,7 @@ components:
         seitenRevision:
           type: string
           description: Revisionsnummer der Dokumentseiten des Vorgangs.
-    ZuordnungInSeitenFreigabe:
+    ZuordnungInSeite:
       type: object
       properties:
         kategorie:
@@ -1439,19 +1439,14 @@ components:
           description: Beantwortet die Frage "Worauf bezieht es sich?"
           example: antragsteller:1
           type: string
-    ZuordnungInSeite:
-      allOf:
-        - $ref: "#/components/schemas/ZuordnungInSeitenFreigabe"
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - KATEGORIE_FEHLT
-                - KATEGORIE_UNGUELTIG
-                - BEZUG_FEHLT
-                - BEZUG_UNGUELTIG
-                - VOLLSTAENDIG
+        status:
+          type: string
+          enum:
+            - KATEGORIE_FEHLT
+            - KATEGORIE_UNGUELTIG
+            - BEZUG_FEHLT
+            - BEZUG_UNGUELTIG
+            - VOLLSTAENDIG
     ZuordnungInUnterlage:
       type: object
       properties:
