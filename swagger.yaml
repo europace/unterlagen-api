@@ -1526,7 +1526,7 @@ components:
             properties:
               typ:
                 type: string
-                description: Typ des Bezuges (z.B. immobilie, antragsteller, ...) (technisch)
+                description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
               id:
                 type: string
                 description: Id des Bezuges (z.B. immobilie:4711) (technisch)
@@ -1535,11 +1535,11 @@ components:
                 description: Anzeigename für diesen Bezug (für Nutzer lesbar)
               rolle:
                 type: object
-                description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp Immobilie)
+                description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
                 properties:
                   typ:
                     type: string
-                    description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=Immobilie) (technisch)
+                    description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
                   name:
                     type: string
                     description: Anzeigename für diese Rolle (für Nutzer lesbar)
