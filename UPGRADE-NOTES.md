@@ -16,9 +16,9 @@ Eine Zuordnung besteht im alten Modell aus einer Kategorie und einem *optionalen
 Die Unterlagen-API liefert nun in der Liste der möglichen Zuordnungen immer **mindestens einen Bezug** aus.
 Zuvor gab es Kategorien (z.B. "Beratungsdokument") bei denen dies nicht der Fall war.
 
-Zu diesem Zwecke wird der Bezugstyp "vorhaben" mit der einzig möglichen Ausprägung/Bezug "vorhaben:*" eingeführt.
+Zu diesem Zwecke wird der Bezugstyp "vorhaben" mit der einzig möglichen Ausprägung/Bezug "vorhaben:\*" eingeführt.
 Diesen (nicht konkreten) Bezug nennen wir Stern-Bezug.
-Diese Änderung war notwendig, um ausdrücken zu können, dass eine Seite entweder z.B. dem Vorhaben oder einer Immobilie zugeordnet sein kann (Beispiel: die Kategorie "Saldenmitteilung" hat die möglichen Bezüge "vorhaben:*", "immobilie:123" und "immobilie:456")
+Diese Änderung war notwendig, um ausdrücken zu können, dass eine Seite entweder z.B. dem Vorhaben oder einer Immobilie zugeordnet sein kann (Beispiel: die Kategorie "Saldenmitteilung" hat die möglichen Bezüge "vorhaben:\*", "immobilie:123" und "immobilie:456")
 Es gibt noch weitere Sternbezüge (siehe weiter unten).
 
 ### Konkrete Anpassung in der API
@@ -41,8 +41,8 @@ Um die neuen Bezüge zu verwenden sind folgende Anpassungen notwendig
 
 ### weitere Stern-Bezüge
 Abhängig davon, ob sich die Unterlagenakte auf einen Vorgang in BaufiSmart oder KreditSmart bezieht gibt es noch weitere Stern-Bezüge:
-- BaufiSmart: antragsteller:*
-- KreditSmart: immobilie:*
+- BaufiSmart: antragsteller:\*
+- KreditSmart: immobilie:\*
 
 Möglicherweise werden diese Stern-Bezüge in der Zukunft durch explizite Bezüge (die sich eben auf konkrete Immobilien oder Antragsteller beziehen) ersetzt.
 Dies ist momentan noch nicht geplant.
