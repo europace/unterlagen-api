@@ -50,6 +50,6 @@ Dies ist momentan noch nicht geplant.
 ### Zeithorizont
 Spätestens Ende 2020 werden wir den alten Endpunkt ausbauen, die mit "deprecated" markierten Felder entfernen und die Stern-Bezüge auch ohne Feature-Flipper ausliefern.
 
-Falls Du Dir Unterstützung bei der Umstellung wünschst, so stehen wir gerne mit Rat und Tat (XXXX Support-Mail) zur Seite.
+Falls Du Dir Unterstützung bei der Umstellung wünschst, so stehen wir gerne mit Rat und Tat unter [unterlagen@europace.de](unterlagen@europace.de) zur Seite.
 Auch wenn Du die Umstellung selbständig vollzogen hast, dann freuen wir uns davon zu hören.
 Falls Du Verbesserungsvorschläge zum Vorgehen/Änderungsprozess hast dann interessiert uns das ebenfalls.
