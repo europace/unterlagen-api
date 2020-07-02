@@ -31,7 +31,7 @@ Zum Testen kann unser Test-Endpunkt unter https://pushnotifications.dokumente.eu
 
 ### Besicherung
 Die Webhook-URL muss öffentlich erreichbar sein. Um dich vor Fremdaufrufen zu schützen, kannst du uns bei der Registrierung ein Secret übermitteln. Dieses verwenden wir, 
-um jede Nachricht per HMAC (SHA256) zu signieren. Die Signatur befindet sich im Header `X-Europace-HMAC` und ist Base64 encodiert.
+um jede Nachricht per HMAC (SHA256) zu signieren. Die Signatur befindet sich im Header `X-Europace-HMAC` und ist Hex-encodiert.
 
 In Java könnte die Signatur beispielsweise mit folgenden Methoden überprüft werden:
 ```
@@ -51,7 +51,7 @@ In Java könnte die Signatur beispielsweise mit folgenden Methoden überprüft w
 
   public static boolean matchSignatures(String givenSignature, String secret, String payload) throws UnsupportedEncodingException {
     byte[] hmacSha256 = HMAC.calcHmacSha256(secret.getBytes("UTF-8"), payload.getBytes("UTF-8"));
-    byte[] decoded = Base64.getDecoder().decode(givenSignature);
+    byte[] decoded = DatatypeConverter.parseHexBinary(givenSignature);
     return MessageDigest.isEqual(decoded, hmacSha256);
   }
 ```
