@@ -9,8 +9,7 @@ paths:
   /hinterlegter-webhook-endpunkt:
     post:
       summary: Eine Nachricht veröffentlichen
-      description: Platzhalter für die URL, die als Webhook registriert ist. Dieser Endpunkt wird im Fall einer Freigabe von uns aufgerufen und ist hier nur zur Dokumentation des Schemas mit aufgeführt. Der Request muss
-      innerhalb von 30s abgegarbeitet werden und einen 2xx Statuscode zurück liefern. Dein Service ist dafür verantwortlich, den Status der übertragenen Unterlagen auf "DELIVERED" oder "FAILED" zu setzen.
+      description: "Platzhalter für die URL, die als Webhook registriert ist. Dieser Endpunkt wird im Fall einer Freigabe von uns aufgerufen und ist hier nur zur Dokumentation des Schemas mit aufgeführt. Der Request muss innerhalb von 30s abgegarbeitet werden und einen 2xx Statuscode zurück liefern. Dein Service ist dafür verantwortlich, den Status der übertragenen Unterlagen auf \"DELIVERED\" oder \"FAILED\" zu setzen."
       operationId: pushMessage
       requestBody:
         content:
