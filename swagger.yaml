@@ -675,6 +675,58 @@ paths:
             - API
       tags:
         - Seiten
+  /dokumente/anforderungen:
+    get:
+      summary: Liste aller Unterlagenanforderungen eines Finanzierungsvorschlags
+        erhalten.
+      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur
+        Verfügung.
+      operationId: getAnforderungen
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer des Finanzierungsvorschlags
+          required: true
+          schema:
+            type: string
+        - name: angebotsId
+          in: query
+          description: ID des Finanzierungsvorschlags, zu dem die Unterlagenanforderungen abgerufen werden sollen
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UnterlagenAnforderung"
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Vorgang nicht gefunden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unerwarteter Fehler
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth2:
+            - API
+      tags:
+        - Seiten
   /dokumente/archiv:
     put:
       summary: Seiten ins Archiv verschieben oder aus dem Archiv herausholen
@@ -1543,6 +1595,50 @@ components:
                   name:
                     type: string
                     description: Anzeigename für diese Rolle (für Nutzer lesbar)
+    UnterlagenAnforderung:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id der Unterlagenanforderung (technisch).
+        code:
+          type: string
+          description: produzentenspezifische Bezeichnung der Unterlagenanforderung.
+        text:
+          type: string
+          description: von Produzenten gewählte Beschreibung der Unterlagenanforderung.
+        kurzbeschreibung:
+          type: string
+          description: kurze Zusammenfassung der Unterlagenanforderung.
+        erfuellungskategorien:
+          type: array
+          items:
+            type: string
+            description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
+        # todo: mit Release Bezugsobjekt als eigenen Typ auslagern und hier und in MoeglicheZuordnung verwenden
+        bezug:
+          type: object
+          description: Bezug der Unterlagenanforderung
+          properties:
+            typ:
+              type: string
+              description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
+            id:
+              type: string
+              description: Id des Bezuges (z.B. immobilie:4711) (technisch)
+            name:
+              type: string
+              description: Anzeigename für diesen Bezug (für Nutzer lesbar)
+            rolle:
+              type: object
+              description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
+              properties:
+                typ:
+                  type: string
+                  description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
+                name:
+                  type: string
+                  description: Anzeigename für diese Rolle (für Nutzer lesbar)
     Error:
       type: object
       properties:
