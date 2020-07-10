@@ -675,6 +675,7 @@ paths:
             - API
       tags:
         - Seiten
+  # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
   /dokumente/anforderungen:
     get:
       summary: Liste aller Unterlagenanforderungen eines Finanzierungsvorschlags
