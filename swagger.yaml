@@ -1615,6 +1615,16 @@ components:
           items:
             type: string
             description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
+        produktanbieter:
+          type: object
+          description: Produktanbieter, der die Unterlagenanforderung ausgestellt hat.
+          properties:
+            id:
+              type: string
+              description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
+            beschreibung:
+              type: string
+              description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
         # todo: mit Release Bezugsobjekt als eigenen Typ auslagern und hier und in MoeglicheZuordnung verwenden
         bezug:
           type: object
