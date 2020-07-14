@@ -1276,6 +1276,12 @@ components:
                 example: Personalausweis
         zuordnung:
           $ref: "#/components/schemas/ZuordnungInSeite"
+        anforderungen:
+          type: array
+          description: IDs der erfüllten Unterlagenanforderungen
+          items:
+            type: string
+            example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
         archiviert:
           type: boolean
           description: Archivierungsstatus der Seite.
