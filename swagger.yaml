@@ -476,6 +476,13 @@ paths:
           required: false
           schema:
             type: string
+        - name: finanzierungsVorschlag
+          in: query
+          description: ID eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
+            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Liste der Seiten
