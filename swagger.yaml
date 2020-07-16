@@ -1438,6 +1438,28 @@ components:
           type: string
           description: Name des Bezugsobjekts.
           example: Finanzierungsobjekt Feldweg 17
+    Bezugskategorie:
+      type: object
+      properties:
+        typ:
+          type: string
+          description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
+        id:
+          type: string
+          description: Id des Bezuges (z.B. immobilie:4711) (technisch)
+        name:
+          type: string
+          description: Anzeigename für diesen Bezug (für Nutzer lesbar)
+        rolle:
+          type: object
+          description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
+          properties:
+            typ:
+              type: string
+              description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
+            name:
+              type: string
+              description: Anzeigename für diese Rolle (für Nutzer lesbar)
     BezugsobjektAlt:
       deprecated: true
       description: deprecated - bitte Knoten zuordnung statt bezug verwenden - zu beachten ist, dass der BezugsTyp im neuen Knoten immer klein geschrieben wird (angeglichen an den Standard in der API)
@@ -1579,29 +1601,9 @@ components:
               description: optional - detaillierte Beschreibung der Kategorie (für Nutzer lesbar).
         bezuege:
           type: array
+          description: Mögliche Bezüge für diese Kategorie
           items:
-            type: object
-            description: Mögliche Bezüge für diese Kategorie
-            properties:
-              typ:
-                type: string
-                description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
-              id:
-                type: string
-                description: Id des Bezuges (z.B. immobilie:4711) (technisch)
-              name:
-                type: string
-                description: Anzeigename für diesen Bezug (für Nutzer lesbar)
-              rolle:
-                type: object
-                description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
-                properties:
-                  typ:
-                    type: string
-                    description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
-                  name:
-                    type: string
-                    description: Anzeigename für diese Rolle (für Nutzer lesbar)
+            $ref: "#/components/schemas/Bezugskategorie"
     UnterlagenAnforderung:
       type: object
       properties:
@@ -1623,39 +1625,19 @@ components:
             type: string
             description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
         produktanbieter:
-          type: object
-          description: Produktanbieter, der die Unterlagenanforderung ausgestellt hat.
-          properties:
-            id:
-              type: string
-              description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
-            beschreibung:
-              type: string
-              description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
-        # todo: mit Release Bezugsobjekt als eigenen Typ auslagern und hier und in MoeglicheZuordnung verwenden
+          $ref: "#/components/schemas/Produktanbieter"
         bezug:
-          type: object
-          description: Bezug der Unterlagenanforderung
-          properties:
-            typ:
-              type: string
-              description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
-            id:
-              type: string
-              description: Id des Bezuges (z.B. immobilie:4711) (technisch)
-            name:
-              type: string
-              description: Anzeigename für diesen Bezug (für Nutzer lesbar)
-            rolle:
-              type: object
-              description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
-              properties:
-                typ:
-                  type: string
-                  description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
-                name:
-                  type: string
-                  description: Anzeigename für diese Rolle (für Nutzer lesbar)
+          $ref: "#/components/schemas/Bezugskategorie"
+    Produktanbieter:
+      type: object
+      description: Produktanbieter, der Finanzierungsvorschläge erstellt
+      properties:
+        id:
+          type: string
+          description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
+        beschreibung:
+          type: string
+          description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
     Error:
       type: object
       properties:
