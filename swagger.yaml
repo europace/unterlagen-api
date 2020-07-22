@@ -48,8 +48,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:upload
       tags:
         - Dokumente
     get:
@@ -78,8 +80,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:read
       tags:
         - Dokumente
     delete:
@@ -104,8 +108,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:write
       tags:
         - Vorgang
   /dokumente/transferspeicher:
@@ -135,8 +141,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:upload
       tags:
         - Dokumente
   "/dokumente/{dokumentId}":
@@ -170,8 +178,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - "unterlagen:dokument:read"
       tags:
         - Dokumente
     put:
@@ -203,8 +213,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - "unterlagen:dokument:write"
       tags:
         - Dokumente
     delete:
@@ -227,8 +239,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - "unterlagen:dokument:write"
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/content":
@@ -263,8 +277,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:read
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/preview":
@@ -331,8 +347,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:read
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/kategorisierung":
@@ -362,8 +380,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:upload
       tags:
         - Dokumente
     get:
@@ -404,8 +424,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:upload
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/seiten":
@@ -454,8 +476,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:read
       tags:
         - Seiten
   /dokumente/seiten:
@@ -496,8 +520,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:read
       tags:
         - Seiten
   "/dokumente/zuordnung/{kategorie}":
@@ -562,8 +588,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:write
       tags:
         - Seiten
   /dokumente/zuordnungen:
@@ -617,8 +645,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:read
       tags:
         - Seiten
   /dokumente/moeglichezuordnungen:
@@ -671,8 +701,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:write
       tags:
         - Seiten
   /dokumente/archiv:
@@ -713,8 +745,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:write
       tags:
         - Seiten
   /dokumente/geprueft:
@@ -757,8 +791,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:write
       tags:
         - Seiten
   /dokumente/freigabe:
@@ -790,8 +826,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:freigeben
       tags:
         - Freigabe
     get:
@@ -832,8 +870,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:read
       tags:
         - Freigabe
   /dokumente/freigaben/content:
@@ -864,8 +904,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:read
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}":
@@ -901,8 +943,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:read
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}/content":
@@ -937,8 +981,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:read
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}/status":
@@ -972,8 +1018,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:read
       tags:
         - Freigabe
     post:
@@ -1008,8 +1056,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:write
       tags:
         - Freigabe
   /dokumente/revision:
@@ -1046,21 +1096,38 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:read
       tags:
         - Revision
 servers:
   - url: https://api.europace.de/v1
 components:
   securitySchemes:
-    oauth2:
+    europace_oauth2_legacy:
       type: oauth2
       flows:
         password:
           tokenUrl: https://api.europace.de/login
           scopes:
             API: Authorisation Scope für die gesamte API.
+    europace_oauth2:
+      $ref: 'https://raw.githubusercontent.com/europace/authorization-api/master/europace_security.yaml'
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: "https://api.europace.de/auth/access-token"
+          scopes:
+            unterlagen:dokument:upload: Dokument zum Vorgang hochladen und kategorisieren
+            unterlagen:dokument:read: Dokument zum Vorgang auslesen
+            unterlagen:dokument:write: Dokument zum Vorgang ändern und löschen
+            unterlagen:unterlage:read: Unterlagen eines Vorgangs auslesen
+            unterlagen:unterlage:write: Zuordnung von Unterlagen eines Vorgangs verändern
+            unterlagen:unterlage:freigeben: kategorisierte Seiten eines Vorgangs als Unterlagen freigeben
+            unterlagen:freigabe:read: freigegebene Unterlagen abrufen
+            unterlagen:freigabe:write: Freigegebestatus einer Unterlagen setzen
   schemas:
     Dokument:
       description: >
