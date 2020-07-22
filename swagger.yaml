@@ -51,7 +51,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:upload
+            - unterlagen:dokument:hochladen
       tags:
         - Dokumente
     get:
@@ -83,7 +83,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:read
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
     delete:
@@ -111,7 +111,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:write
+            - unterlagen:dokument:schreiben
       tags:
         - Vorgang
   /dokumente/transferspeicher:
@@ -144,7 +144,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:upload
+            - unterlagen:dokument:hochladen
       tags:
         - Dokumente
   "/dokumente/{dokumentId}":
@@ -181,7 +181,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - "unterlagen:dokument:read"
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
     put:
@@ -216,7 +216,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - "unterlagen:dokument:write"
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
     delete:
@@ -242,7 +242,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - "unterlagen:dokument:write"
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/content":
@@ -280,7 +280,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:read
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/preview":
@@ -350,7 +350,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:read
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/kategorisierung":
@@ -383,7 +383,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:upload
+            - unterlagen:dokument:hochladen
       tags:
         - Dokumente
     get:
@@ -427,7 +427,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:upload
+            - unterlagen:dokument:hochladen
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/seiten":
@@ -479,7 +479,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:read
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/seiten:
@@ -523,7 +523,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:read
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   "/dokumente/zuordnung/{kategorie}":
@@ -591,7 +591,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:write
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/zuordnungen:
@@ -648,7 +648,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:read
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/moeglichezuordnungen:
@@ -704,7 +704,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:write
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/archiv:
@@ -748,7 +748,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:write
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/geprueft:
@@ -794,7 +794,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:write
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/freigabe:
@@ -873,7 +873,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:freigabe:read
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   /dokumente/freigaben/content:
@@ -907,7 +907,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:freigabe:read
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}":
@@ -946,7 +946,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:freigabe:read
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}/content":
@@ -984,7 +984,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:freigabe:read
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}/status":
@@ -1021,7 +1021,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:freigabe:read
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
     post:
@@ -1059,7 +1059,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:freigabe:write
+            - unterlagen:freigabe:schreiben
       tags:
         - Freigabe
   /dokumente/revision:
@@ -1099,7 +1099,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:read
+            - unterlagen:unterlage:lesen
       tags:
         - Revision
 servers:
