@@ -1115,19 +1115,6 @@ components:
             API: Authorisation Scope für die gesamte API.
     europace_oauth2:
       $ref: 'https://raw.githubusercontent.com/europace/authorization-api/master/europace_security.yaml'
-      type: oauth2
-      flows:
-        clientCredentials:
-          tokenUrl: "https://api.europace.de/auth/access-token"
-          scopes:
-            unterlagen:dokument:upload: Dokument zum Vorgang hochladen und kategorisieren
-            unterlagen:dokument:read: Dokument zum Vorgang auslesen
-            unterlagen:dokument:write: Dokument zum Vorgang ändern und löschen
-            unterlagen:unterlage:read: Unterlagen eines Vorgangs auslesen
-            unterlagen:unterlage:write: Zuordnung von Unterlagen eines Vorgangs verändern
-            unterlagen:unterlage:freigeben: kategorisierte Seiten eines Vorgangs als Unterlagen freigeben
-            unterlagen:freigabe:read: freigegebene Unterlagen abrufen
-            unterlagen:freigabe:write: Freigegebestatus einer Unterlagen setzen
   schemas:
     Dokument:
       description: >
