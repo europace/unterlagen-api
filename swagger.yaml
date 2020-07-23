@@ -704,7 +704,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:unterlage:schreiben
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/archiv:
@@ -1098,8 +1098,7 @@ paths:
       security:
         - europace_oauth2_legacy:
             - API
-        - europace_oauth2:
-            - unterlagen:unterlage:lesen
+        - europace_oauth2: []
       tags:
         - Revision
 servers:
