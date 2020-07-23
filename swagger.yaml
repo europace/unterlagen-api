@@ -476,9 +476,9 @@ paths:
           required: false
           schema:
             type: string
-        - name: finanzierungsVorschlag
+        - name: finanzierungsvorschlagsId
           in: query
-          description: ID eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
+          description: Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
             werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert.
           required: false
           schema:
@@ -685,21 +685,18 @@ paths:
   # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
   /dokumente/anforderungen:
     get:
-      summary: Liste aller Unterlagenanforderungen eines Finanzierungsvorschlags
-        erhalten.
-      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur
-        Verfügung.
+      summary: Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
       operationId: getAnforderungen
       parameters:
         - name: vorgangsNummer
           in: query
-          description: Vorgangsnummer des Finanzierungsvorschlags
+          description: Nummer des Vorgangs, aus dem der Finanzierungsvorschlag stammt
           required: true
           schema:
             type: string
-        - name: angebotsId
+        - name: finanzierungsvorschlagsId
           in: query
-          description: ID des Finanzierungsvorschlags, zu dem die Unterlagenanforderungen abgerufen werden sollen
+          description: Id des Finanzierungsvorschlags, zu dem die Unterlagenanforderungen abgerufen werden sollen
           required: true
           schema:
             type: string
@@ -711,7 +708,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UnterlagenAnforderung"
+                  $ref: "#/components/schemas/Unterlagenanforderung"
         "400":
           description: Fehler in den Eingabedaten.
           content:
@@ -1252,7 +1249,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1285,7 +1282,7 @@ components:
           $ref: "#/components/schemas/ZuordnungInSeite"
         anforderungen:
           type: array
-          description: IDs der erfüllten Unterlagenanforderungen
+          description: Ids der erfüllten Unterlagenanforderungen
           items:
             type: string
             example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
@@ -1314,7 +1311,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1354,7 +1351,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1611,7 +1608,7 @@ components:
           description: Mögliche Bezüge für diese Kategorie
           items:
             $ref: "#/components/schemas/Bezugskategorie"
-    UnterlagenAnforderung:
+    Unterlagenanforderung:
       type: object
       properties:
         id:
