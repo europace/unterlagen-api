@@ -51,7 +51,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:hochladen
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
     get:
@@ -144,7 +144,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:hochladen
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
   "/dokumente/{dokumentId}":
@@ -383,7 +383,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:hochladen
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
     get:
@@ -427,7 +427,7 @@ paths:
         - europace_oauth2_legacy:
             - API
         - europace_oauth2:
-            - unterlagen:dokument:hochladen
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/seiten":
