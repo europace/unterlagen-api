@@ -1639,7 +1639,7 @@ components:
         id:
           type: string
           description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
-        beschreibung:
+        bezeichnung:
           type: string
           description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
     Error:
