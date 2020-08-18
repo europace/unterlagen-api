@@ -12,6 +12,8 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 - [Getting Started](#getting-started)
 - [Upgrade Notes](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
     + [Anpassung der Bezugstypen](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
+- [Authentifizierung](#authentifizierung)
+- [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
 - [Dokumentation](#dokumentation)
     + [API Spezifikation](#api-spezifikation)
     + [Beispielaufruf](#beispielaufruf)
@@ -24,12 +26,51 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 - [Pushnachrichten für Freigaben erhalten](https://github.com/europace/unterlagen-api/blob/master/push-nachrichten/README.md)
 - [Kategorien](#kategorien)
 - [FAQs](#faqs)
-- [Autorisierung](#autorisierung)
 - [Kontakt](#kontakt)
+- [Nutzungsbedingungen](#nutzungsbedingungen)
 
 ### Getting Started
 
 Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europace.de/schnellstart/) zu finden.
+
+### Authentifizierung
+
+Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
+
+| Request Header Name | Beschreibung           |
+|---------------------|------------------------|
+| Authorization       | OAuth 2.0 Bearer Token |
+
+
+Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden. 
+Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde, 
+eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
+
+Damit der Client für diese API genutzt werden kann, müssen im Partnermanagement einige der folgenden Berechtigungen aktiviert werden. 
+
+| Name                                     |
+| ---------------------------------------- |
+| **Dokumente lesen** |  
+| **Dokumente schreiben und kategorisieren** |  
+| **Unterlagen lesen** |  
+| **Unterlagen neu zuordnen** |  
+| **Unterlagen freigeben** |  
+| **Freigegebene Unterlagen lesen** |  
+| **Freigegebene Unterlagen aktualisieren** |  
+ 
+Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
+
+Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
+
+### TraceId zur Nachverfolgbarkeit von Requests
+
+Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE 2 System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
+Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional,
+wenn er nicht gesetzt ist, wird eine ID vom System generiert.
+
+| Request Header Name | Beschreibung                    | Beispiel    |
+|---------------------|---------------------------------|-------------|
+| X-TraceId           | eindeutige Id für jeden Request | sys12345678 |
 
 ### Dokumentation
 
@@ -252,14 +293,10 @@ API-Übergreifende FAQs: https://developer.europace.de/faq/
 #### Wie kann ich als Produktanbiert eine Datei an einem Antrag hochladen?
 Bitte verwende dafür die [BaufiSmart Dokumenten API](https://github.com/europace/baufismart-dokumente-api)
 
-### Autorisierung
-
-Um die API zu verwenden wird ein Access Token benötigt, was mittels dem OAuth Client-Credentials Flow angefordert wird. Weitere Dokumentation dazu befindet sich hier: https://github.com/europace/authorization-api
-
 ### Kontakt
 
 Kontakt für Support: devsupport@europace2.de
 
-## Nutzungsbedingungen
+### Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt.
 
