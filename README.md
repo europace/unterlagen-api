@@ -34,33 +34,16 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europace.de/schnellstart/) zu finden.
 
 ### Authentifizierung
+Bitte benutze [![Authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://github.com/europace/authorization-api), um Zugang zur API bekommen.
 
-Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
-
-| Request Header Name | Beschreibung           |
-|---------------------|------------------------|
-| Authorization       | OAuth 2.0 Bearer Token |
-
-
-Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden. 
-Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde, 
-eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
-
-Damit der Client für diese API genutzt werden kann, müssen im Partnermanagement einige der folgenden Berechtigungen aktiviert werden. 
-
-| Name                                     |
-| ---------------------------------------- |
-| **Dokumente lesen** |  
-| **Dokumente schreiben und kategorisieren** |  
-| **Unterlagen lesen** |  
-| **Unterlagen neu zuordnen** |  
-| **Unterlagen freigeben** |  
-| **Freigegebene Unterlagen lesen** |  
-| **Freigegebene Unterlagen aktualisieren** |  
- 
-Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
-
-Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
+Um die API verwenden zu können, benötigt der OAuth2-Client folgende Scopes:
+`unterlagen:dokument:lesen` \
+`unterlagen:dokument:schreiben` \
+`unterlagen:unterlage:lesen` \
+`unterlagen:unterlage:schreiben` \
+`unterlagen:unterlage:freigeben` \
+`unterlagen:freigabe:lesen` \
+`unterlagen:freigabe:schreiben`
 
 ### TraceId zur Nachverfolgbarkeit von Requests
 
@@ -84,7 +67,7 @@ Abrufen der Metadaten zu allen Dokumenten des Vorgangs Z75226:
 
 ```
 curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNummer=Z75226' \
---header 'Authorization: Bearer jwtToken' 
+--header 'Authorization: Bearer jwtToken'
 ```
 
 ##### UML Sequenz-Diagramme
@@ -187,10 +170,10 @@ Zur Bereitstellung wird die frei zugängliche bzw. die "downloadUrl" aus der Ant
 ### Kategorien
 
 Die in der API verwendeten Kategorien sind als String abgebildet und können derzeit die unten stehenden Werte annehmen.
- 
-Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entsprechende Unterlagen benötigt). 
 
-| ID        | Anzeigename           | Beschreibung  | Anmerkung | 
+Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entsprechende Unterlagen benötigt).
+
+| ID        | Anzeigename           | Beschreibung  | Anmerkung |
 | :--- |:---| :---|:---|
 |Abgeschlossenheit|Abgeschlossenheitsbescheinigung|Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan| |
 |Abloesevollmacht|Ablösevollmacht|Ablösevollmacht, Kreditwechselservice (KWS)|  |
@@ -299,4 +282,3 @@ Kontakt für Support: devsupport@europace2.de
 
 ### Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt.
-
