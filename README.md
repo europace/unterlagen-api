@@ -281,4 +281,4 @@ Bitte verwende dafür die [BaufiSmart Dokumenten API](https://github.com/europac
 Kontakt für Support: devsupport@europace2.de
 
 ### Nutzungsbedingungen
-Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt.
+Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt.
