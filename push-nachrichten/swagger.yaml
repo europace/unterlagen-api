@@ -22,6 +22,11 @@ paths:
           schema:
             type: string
           description: SHA256 Signatur der Payload mit dem für den Webhook hinterlegten Secret
+        - in: header
+          name: X-Europace-TraceId
+          schema:
+            type: string
+          description: Diese ID ist für Fehleranalysen und Logging sehr hilfreich. Bitte geben Sie diese bei Supportanfragen mit an.
       responses:
         "200":
           description: Nachricht erfolgreich entgegengenommen
