@@ -22,6 +22,11 @@ paths:
           schema:
             type: string
           description: SHA256 Signatur der Payload mit dem für den Webhook hinterlegten Secret
+        - in: header
+          name: X-Europace-TraceId
+          schema:
+            type: string
+          description: Diese ID ist für Fehleranalysen und Logging sehr hilfreich. Bitte geben Sie diese bei Supportanfragen mit an.
       responses:
         "200":
           description: Nachricht erfolgreich entgegengenommen
@@ -47,6 +52,13 @@ paths:
 
 components:
   schemas:
+    Datenkontext:
+      type: string
+      enum:
+        - TEST_MODUS
+        - ECHT_GESCHAEFT
+      default: ECHT_GESCHAEFT
+
     EventTyp:
       type: string
       enum:
@@ -57,26 +69,37 @@ components:
       properties:
         eventTyp:
           $ref: '#/components/schemas/EventTyp'
+        datenkontext:
+          $ref: '#/components/schemas/Datenkontext'
         unterlagen:
           type: array
           items:
             $ref: '#/components/schemas/Unterlage'
+        produktanbieterId:
+          description: Produktanbieterkennung bei Europace
+          type: string
         antragsNummer:
           type: string
         externeAntragsNummer:
           type: string
       required:
         - eventTyp
+        - datenkontext
         - unterlagen
+        - produktanbieterId
         - antragsNummer
 
     Unterlage:
       type: object
       properties:
+        unterlagenId:
+          description: Id der freigegebenen Unterlage (siehe Unterlagen-API)
+          type: string
         metaDatenUrl:
           type: string
         statusUrl:
           type: string
       required:
+        - unterlagenId
         - metaDatenUrl
         - statusUrl
