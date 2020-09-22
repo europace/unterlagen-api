@@ -31,7 +31,7 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 
 ### Getting Started
 
-Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europace.de/schnellstart/) zu finden.
+Erste Schritte zur Nutzung der Europace APIs sind [hier](https://docs.api.europace.de/baufinanzierung/schnellstart/) zu finden.
 
 ### Authentifizierung
 Bitte benutze [![Authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://github.com/europace/authorization-api), um Zugang zur API bekommen.
@@ -269,14 +269,11 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 
 ### FAQs
 
-API-Übergreifende FAQs: https://developer.europace.de/faq/
+API-Übergreifende FAQs: https://docs.api.europace.de/faq/
 
 #### Welche Dateitypen unterstützt die API?
 * Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, tif) hochladen. BMP und GIF funktionieren nicht.
 * Auf der Produktanbieter-Seite (Unterlagen an einem Antrag) wird alles in PDF umgewandelt
-
-#### Wie kann ich als Produktanbiert eine Datei an einem Antrag hochladen?
-Bitte verwende dafür die [BaufiSmart Dokumenten API](https://github.com/europace/baufismart-dokumente-api)
 
 ### Kontakt
 
