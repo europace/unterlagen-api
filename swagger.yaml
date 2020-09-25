@@ -41,6 +41,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dokument"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang oder falsche Vorgangsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -73,6 +85,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Dokument"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -101,6 +119,18 @@ paths:
       responses:
         "200":
           description: Resourcen erfolgreich gelöscht.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang oder falsche Vorgangsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -134,6 +164,12 @@ paths:
                 url: '$response.body#/downloadUrl'
               description: >
                 Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die Url unter `UploadData.url` mit `POST` übertragen werden.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -165,6 +201,18 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: "#/components/schemas/Dokument"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -206,6 +254,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dokument"
+        
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -232,6 +293,18 @@ paths:
       responses:
         "200":
           description: Dokument erfolgreich gelöscht
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -264,6 +337,18 @@ paths:
               schema:
                 type: string
                 format: binary
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -328,6 +413,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -367,6 +464,18 @@ paths:
       responses:
         "200":
           description: Kategorisierung wurde gestartet
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -411,6 +520,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KategorisierungsStatus"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden oder Kategorisierung noch nicht gestartet.
           content:
@@ -463,6 +584,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Seite"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden.
           content:
@@ -507,6 +640,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Seiten"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang/Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Vorgang nicht gefunden.
           content:
@@ -571,6 +716,18 @@ paths:
           description: Ok
         "400":
           description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
           content:
             application/json:
               schema:
@@ -688,6 +845,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Vorgang nicht gefunden.
           content:
@@ -738,6 +907,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -784,6 +965,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -819,6 +1012,24 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FreigegebeneUnterlage"
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang oder falsche Vorgangsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -863,6 +1074,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FreigegebeneUnterlage"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag oder falsche Antragsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -897,6 +1120,18 @@ paths:
               schema:
                 type: string
                 format: binary
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag oder falsche Antragsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -936,6 +1171,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -968,6 +1215,18 @@ paths:
               schema:
                 type: string
                 format: binary
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -1005,6 +1264,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Abrufstatus"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Freigegebene Unterlage not found.
           content:
@@ -1043,6 +1314,18 @@ paths:
       responses:
         "201":
           description: Keine Rückgabe-Objekte.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Freigegebene Unterlage not found.
           content:
@@ -1083,8 +1366,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Revision"
-        "404":
-          description: Vorgang nicht gefunden.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
           content:
             application/json:
               schema:
