@@ -682,6 +682,13 @@ paths:
           required: false
           schema:
             type: string
+        - name: antragsNummer
+          in: query
+          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang
+            zum Zeitpunkt, als der Antrag angenommen wurde.
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
