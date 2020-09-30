@@ -562,12 +562,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: vorgangsNummer
-          in: query
-          description: Wird Pflichtfeld - bitte anpassen --  Vorgangsnummer des Dokuments.
-          required: false
-          schema:
-            type: string
         - name: antragsNummer
           in: query
           description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang
@@ -686,12 +680,6 @@ paths:
           in: query
           description: Der Bezug, der den Seiten zugeordnet werden soll.
           required: false
-          schema:
-            type: string
-        - name: vorgangsNummer
-          in: query
-          description: Vorgangsnummer der zugeordneten Seiten.
-          required: true
           schema:
             type: string
         - name: antragsNummer
