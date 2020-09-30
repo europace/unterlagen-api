@@ -41,6 +41,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dokument"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang oder falsche Vorgangsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -48,8 +60,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
     get:
@@ -71,6 +85,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Dokument"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -78,8 +98,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
     delete:
@@ -97,6 +119,18 @@ paths:
       responses:
         "200":
           description: Resourcen erfolgreich gelöscht.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang oder falsche Vorgangsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -104,8 +138,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Vorgang
   /dokumente/transferspeicher:
@@ -128,6 +164,12 @@ paths:
                 url: '$response.body#/downloadUrl'
               description: >
                 Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die Url unter `UploadData.url` mit `POST` übertragen werden.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -135,8 +177,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
   "/dokumente/{dokumentId}":
@@ -157,6 +201,18 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: "#/components/schemas/Dokument"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -170,8 +226,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
     put:
@@ -196,6 +254,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dokument"
+        
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -203,8 +274,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
     delete:
@@ -220,6 +293,18 @@ paths:
       responses:
         "200":
           description: Dokument erfolgreich gelöscht
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -227,8 +312,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/content":
@@ -250,6 +337,18 @@ paths:
               schema:
                 type: string
                 format: binary
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -263,8 +362,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/preview":
@@ -312,6 +413,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -331,8 +444,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:lesen
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/kategorisierung":
@@ -349,6 +464,18 @@ paths:
       responses:
         "200":
           description: Kategorisierung wurde gestartet
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -362,8 +489,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
     get:
@@ -391,6 +520,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KategorisierungsStatus"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden oder Kategorisierung noch nicht gestartet.
           content:
@@ -404,8 +545,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:dokument:schreiben
       tags:
         - Dokumente
   "/dokumente/{dokumentId}/seiten":
@@ -417,12 +560,6 @@ paths:
           in: path
           description: Unique identifier des Dokuments.
           required: true
-          schema:
-            type: string
-        - name: vorgangsNummer
-          in: query
-          description: Wird Pflichtfeld - bitte anpassen --  Vorgangsnummer des Dokuments.
-          required: false
           schema:
             type: string
         - name: antragsNummer
@@ -441,6 +578,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Seite"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden.
           content:
@@ -454,8 +603,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/seiten:
@@ -490,6 +641,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Seiten"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang/Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Vorgang nicht gefunden.
           content:
@@ -503,8 +666,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   "/dokumente/zuordnung/{kategorie}":
@@ -522,12 +687,6 @@ paths:
           in: query
           description: Der Bezug, der den Seiten zugeordnet werden soll.
           required: false
-          schema:
-            type: string
-        - name: vorgangsNummer
-          in: query
-          description: Vorgangsnummer der zugeordneten Seiten.
-          required: true
           schema:
             type: string
         - name: antragsNummer
@@ -556,6 +715,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Kategorie/Bezug nicht gefunden.
           content:
@@ -569,8 +740,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/zuordnungen:
@@ -624,8 +797,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/moeglichezuordnungen:
@@ -665,6 +840,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Vorgang nicht gefunden.
           content:
@@ -678,8 +865,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
@@ -763,6 +952,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -770,8 +971,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/geprueft:
@@ -807,6 +1010,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -814,8 +1029,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:schreiben
       tags:
         - Seiten
   /dokumente/freigabe:
@@ -840,6 +1057,24 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FreigegebeneUnterlage"
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang oder falsche Vorgangsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -847,8 +1082,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:freigeben
       tags:
         - Freigabe
     get:
@@ -882,6 +1119,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FreigegebeneUnterlage"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag oder falsche Antragsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -889,8 +1138,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   /dokumente/freigaben/content:
@@ -914,6 +1165,18 @@ paths:
               schema:
                 type: string
                 format: binary
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag oder falsche Antragsnummer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -921,8 +1184,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}":
@@ -951,6 +1216,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unerwarteter Fehler
           content:
@@ -958,8 +1235,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}/content":
@@ -981,6 +1260,18 @@ paths:
               schema:
                 type: string
                 format: binary
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Dokument nicht gefunden
           content:
@@ -994,8 +1285,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
   "/dokumente/freigabe/{id}/status":
@@ -1016,6 +1309,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Abrufstatus"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Freigegebene Unterlage not found.
           content:
@@ -1029,8 +1334,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:lesen
       tags:
         - Freigabe
     post:
@@ -1052,6 +1359,18 @@ paths:
       responses:
         "201":
           description: Keine Rückgabe-Objekte.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Antrag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Freigegebene Unterlage not found.
           content:
@@ -1065,8 +1384,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:freigabe:schreiben
       tags:
         - Freigabe
   /dokumente/revision:
@@ -1090,8 +1411,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Revision"
-        "404":
-          description: Vorgang nicht gefunden.
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
           content:
             application/json:
               schema:
@@ -1103,21 +1424,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2: []
       tags:
         - Revision
 servers:
   - url: https://api.europace.de/v1
 components:
   securitySchemes:
-    oauth2:
+    europace_oauth2_legacy:
       type: oauth2
       flows:
         password:
           tokenUrl: https://api.europace.de/login
           scopes:
             API: Authorisation Scope für die gesamte API.
+    europace_oauth2:
+      $ref: 'https://raw.githubusercontent.com/europace/authorization-api/master/europace_security.yaml'
   schemas:
     Dokument:
       description: >

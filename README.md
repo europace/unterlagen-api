@@ -12,6 +12,8 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 - [Getting Started](#getting-started)
 - [Upgrade Notes](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
     + [Anpassung der Bezugstypen](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
+- [Authentifizierung](#authentifizierung)
+- [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
 - [Dokumentation](#dokumentation)
     + [API Spezifikation](#api-spezifikation)
     + [Beispielaufruf](#beispielaufruf)
@@ -24,12 +26,36 @@ API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/section
 - [Pushnachrichten für Freigaben erhalten](https://github.com/europace/unterlagen-api/blob/master/push-nachrichten/README.md)
 - [Kategorien](#kategorien)
 - [FAQs](#faqs)
-- [Autorisierung](#autorisierung)
 - [Kontakt](#kontakt)
+- [Nutzungsbedingungen](#nutzungsbedingungen)
 
 ### Getting Started
 
-Erste Schritte zur Nutzung der Europace APIs sind [hier](https://developer.europace.de/schnellstart/) zu finden.
+Erste Schritte zur Nutzung der Europace APIs sind [hier](https://docs.api.europace.de/baufinanzierung/schnellstart/) zu finden.
+
+### Authentifizierung
+Bitte benutze [![Authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://github.com/europace/authorization-api), um Zugang zur API bekommen.
+
+Um die API verwenden zu können, benötigt der OAuth2-Client folgende Scopes:
+| Scope                             | API Use case |
+|-----------------------------------|---------------------------------|
+| `unterlagen:dokument:lesen`       | als Vertrieb, Abruf der Metadaten und des Inhalts hochgeladener Dokumente. |
+| `unterlagen:dokument:schreiben`   | als Vertrieb, Hochladen von Dokumenten und Anstoßen der Kategorisierung. Die Kategorisierung muß angestoßen werden, damit nachfolgend die erkannten Unterlagen (kategorisierter Inhalt) freigegeben werden können. Weiterhin das Aktualisieren der Metadaten und Löschen hochgeladener Dokumente.|
+| `unterlagen:unterlage:lesen`      | als Vertrieb, Abruf der Unterlagen(Kategorisierungsinformationen) und der Zuordnungsinformationen zum Vorgang|
+| `unterlagen:unterlage:schreiben`  | als Vertrieb, Ändern der Unterlagenkategorie und Zuordnung im Vorgang (Antragsteller, Immobilie, Vorhaben)|
+| `unterlagen:unterlage:freigeben`  | als Vertrieb, Freigabe der Unterlagen für einen Antrag|
+| `unterlagen:freigabe:lesen`       | als Vertrieb und Kreditbetrieb, Abruf der Metadaten und des Inhalts freigegebener Unterlagen zu einem Antrag|
+| `unterlagen:freigabe:schreiben`   | als Kreditbetrieb, nach Verarbeitung der Pushbenachrichtigung einer neuen Freigabe, den Verarbeitungsstatus (Freigabestatus) setzen|
+
+### TraceId zur Nachverfolgbarkeit von Requests
+
+Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE 2 System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
+Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional,
+wenn er nicht gesetzt ist, wird eine ID vom System generiert.
+
+| Request Header Name | Beschreibung                    | Beispiel    |
+|---------------------|---------------------------------|-------------|
+| X-TraceId           | eindeutige Id für jeden Request | sys12345678 |
 
 ### Dokumentation
 
@@ -43,7 +69,7 @@ Abrufen der Metadaten zu allen Dokumenten des Vorgangs Z75226:
 
 ```
 curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNummer=Z75226' \
---header 'Authorization: Bearer jwtToken' 
+--header 'Authorization: Bearer jwtToken'
 ```
 
 ##### UML Sequenz-Diagramme
@@ -146,10 +172,10 @@ Zur Bereitstellung wird die frei zugängliche bzw. die "downloadUrl" aus der Ant
 ### Kategorien
 
 Die in der API verwendeten Kategorien sind als String abgebildet und können derzeit die unten stehenden Werte annehmen.
- 
-Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entsprechende Unterlagen benötigt). 
 
-| ID        | Anzeigename           | Beschreibung  | Anmerkung | 
+Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entsprechende Unterlagen benötigt).
+
+| ID        | Anzeigename           | Beschreibung  | Anmerkung |
 | :--- |:---| :---|:---|
 |Abgeschlossenheit|Abgeschlossenheitsbescheinigung|Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan| |
 |Abloesevollmacht|Ablösevollmacht|Ablösevollmacht, Kreditwechselservice (KWS)|  |
@@ -243,23 +269,15 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 
 ### FAQs
 
-API-Übergreifende FAQs: https://developer.europace.de/faq/
+API-Übergreifende FAQs: https://docs.api.europace.de/faq/
 
 #### Welche Dateitypen unterstützt die API?
 * Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, tif) hochladen. BMP und GIF funktionieren nicht.
 * Auf der Produktanbieter-Seite (Unterlagen an einem Antrag) wird alles in PDF umgewandelt
 
-#### Wie kann ich als Produktanbiert eine Datei an einem Antrag hochladen?
-Bitte verwende dafür die [BaufiSmart Dokumenten API](https://github.com/europace/baufismart-dokumente-api)
-
-### Autorisierung
-
-Um die API zu verwenden wird ein Access Token benötigt, was mittels dem OAuth Client-Credentials Flow angefordert wird. Weitere Dokumentation dazu befindet sich hier: https://github.com/europace/authorization-api
-
 ### Kontakt
 
 Kontakt für Support: devsupport@europace2.de
 
-## Nutzungsbedingungen
-Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt.
-
+### Nutzungsbedingungen
+Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt.
