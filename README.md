@@ -108,7 +108,9 @@ Beispiel _codegen-config-file.json_:
 Dokumente können über eine frei zugängliche URL bereitgestellt werden. Eine solche URL kann wie in Schritt 3 gezeigt direkt verwendet werden. Alternativ kann über den Endpunkt
 /dokumente/transferspeicher ein temporärer Speicher erstellt werden, der eine signed URL generiert. Das wird in Schritt 1 und 2 demonstriert.
 
-Die Dokumente müssen PDF- oder Bilddateien sein und eine Maximalgröße von 100 Megabyte nicht überschreiten.
+#### Wichtig
+- Nach dem Hochladen muss das Dokument kategorisiert werden, damit es in der Unterlagenakte zu Verfügung steht und darüber letztlich an den Produktanbieter freigegeben werden kann. Hierzu muss der Endpunkt `https://api.europace2.de/v1/dokumente/{dokumentId}/kategorisierung` aufgerufen werden.
+- Die Dokumente müssen PDF- oder Bilddateien sein und eine Maximalgröße von 100 Megabyte nicht überschreiten.
 
 ##### 1. Signed URL erstellen
 Anfrage
