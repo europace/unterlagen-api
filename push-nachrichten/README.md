@@ -29,6 +29,10 @@ Folgende Schritte sind aus unserer Sicht notwendig, für eine erfolgreiche Verar
 
 Zum Testen kann unser Test-Endpunkt unter https://pushnotifications.dokumente.europace2.de/messages/unterlagenfreigabe/test verwendet werden (Details siehe [swagger-definition](swagger.yaml))
 
+#### Fehlerhandling
+Kann die Pushnachricht nicht zugestellt werden, wird dem Nutzer in der Unterlagenakte ein allgemeiner Fehler "Die Unterlagen konnten nicht an den Produktanbieter übertragen werden. Versuche es bitte später erneut." angezeigt. 
+Nach Möglichkeit sollte bei Fehlerszenarien auf Empängerseite aber immer der API Endpunkt zum setzen des Status mit FAILED aufgerufen werden, um dem Nutzer hilfreichere Fehlermeldungen anzuzeigen.
+
 ### Besicherung
 Die Webhook-URL muss öffentlich erreichbar sein. Um dich vor Fremdaufrufen zu schützen, kannst du uns bei der Registrierung ein Secret übermitteln. Dieses verwenden wir, 
 um jede Nachricht per HMAC (SHA256) zu signieren. Die Signatur befindet sich im Header `X-Europace-HMAC` und ist Hex-encodiert.
