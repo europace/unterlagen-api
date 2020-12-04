@@ -1944,10 +1944,6 @@ components:
         text:
           type: string
           description: von Produzenten gewählte Beschreibung der Unterlagenanforderung.
-        kurzbeschreibung:
-          deprecated: true
-          type: string
-          description: kurze Zusammenfassung der Unterlagenanforderung.
         kurzbezeichnung:
           type: string
           description: kurze Zusammenfassung der Unterlagenanforderung.
