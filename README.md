@@ -44,6 +44,7 @@ Erste Schritte zur Nutzung der Europace APIs sind [hier](https://docs.api.europa
 Bitte benutze [![Authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://github.com/europace/authorization-api), um Zugang zur API bekommen.
 
 Um die API verwenden zu können, benötigt der OAuth2-Client folgende Scopes:
+
 | Scope                             | API Use case |
 |-----------------------------------|---------------------------------|
 | `unterlagen:dokument:lesen`       | als Vertrieb, Abruf der Metadaten und des Inhalts hochgeladener Dokumente. |
