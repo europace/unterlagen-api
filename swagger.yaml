@@ -1663,10 +1663,14 @@ components:
       properties:
         antragsNummer:
           type: string
+          description: Antrag, für den die Freigabe erfolgen soll
         seiten:
           type: array
           items:
             $ref: "#/components/schemas/DokumentefreigabeSeiten"
+        finanzierungsvorschlagsId:
+          type: string
+          description: Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
