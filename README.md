@@ -1,9 +1,16 @@
 # Unterlagen API
+
+### Scope der API
+Die Übertragung der Unterlagen des Verbrauchers zum Produktanbieter.
+
+### wichtigste Use Cases
 API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte) zu bedienen. Mit dieser API können folgende Aktionen durchgeführt werden:
 * Als Vertrieb kann ein Dokument am Vorgang hochgeladen werden.
 * Als Vertrieb kann ein Dokument kategorisiert werden und somit in eine Unterlage umgewandet werden.
 * Als Vertrieb können Unterlagen an Anträgen für Produktanbieter freigegeben werden.
 * Als Vertrieb und Produktanbieter können freigegebene Unterlagen an einem Antrag abgerufen werden.
+  * Hinweis zu Antragsdokumenten in Baufismart: nicht abrufbar sind Antragsdokumente wie z.b. die Kreditentscheidungsinformation oder die Selbstauskunft zum Antrag. Diese Dokumente können per https://github.com/europace/baufismart-antraege-api abgerufen werden.
+
 
 
 
@@ -37,6 +44,7 @@ Erste Schritte zur Nutzung der Europace APIs sind [hier](https://docs.api.europa
 Bitte benutze [![Authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://github.com/europace/authorization-api), um Zugang zur API bekommen.
 
 Um die API verwenden zu können, benötigt der OAuth2-Client folgende Scopes:
+
 | Scope                             | API Use case |
 |-----------------------------------|---------------------------------|
 | `unterlagen:dokument:lesen`       | als Vertrieb, Abruf der Metadaten und des Inhalts hochgeladener Dokumente. |
