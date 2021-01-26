@@ -665,6 +665,53 @@ paths:
             - unterlagen:unterlage:lesen
       tags:
         - Seiten
+    put:
+      summary: Sortierung der Seiten Ändern
+      description: Seiten werden werden in der angegeben Reihenfolge gespeichert. Es kann die Liste aller Seiten oder auch eine Teilliste davon übergeben werden. Bei einer Teilliste wird die Position in der Gesamtliste durch die erste Seite der Teilliste bestimmt.
+      operationId: setzeReihenfolge
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SeitenReferenz"
+        description: Die Seiten-Referenzen der Seiten, die in dieser Reihenfolge gespeichert werden sollen.
+        required: true
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unerwarteter Fehler
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - europace_oauth2_legacy:
+            - API
+        - europace_oauth2:
+            - unterlagen:unterlage:schreiben
+      tags:
+        - Seiten
   "/dokumente/zuordnung/{kategorie}":
     put:
       summary: Zuordnung (Kategorie und Bezug) für mehrere Seiten setzen
@@ -679,13 +726,6 @@ paths:
         - name: bezug
           in: query
           description: Der Bezug, der den Seiten zugeordnet werden soll.
-          required: false
-          schema:
-            type: string
-        - name: antragsNummer
-          in: query
-          description: z.T. beziehen sich die Angaben in der Seite auf Angaben im Vorgang
-            zum Zeitpunkt, als der Antrag angenommen wurde.
           required: false
           schema:
             type: string
