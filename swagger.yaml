@@ -1072,7 +1072,7 @@ paths:
       tags:
         - Freigabe
     get:
-      summary: Metadaten aller freigegebener Unterlagen (in einem Zeitraum) laden
+      summary: Metadaten aller freigegebener Unterlagen (in einem Zeitraum) laden. Die Liste enthält sowohl erfolgreich als auch fehlgeschlagene Freigaben. Dazu bitte den Abrufstatus der freigegebenen Unterlage prüfen.
       operationId: getFreigaben
       parameters:
         - name: antragsNummer
