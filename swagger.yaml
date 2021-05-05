@@ -1533,12 +1533,6 @@ components:
             - IN_PROGRESS
             - DONE
             - ERROR
-        progress:
-          type: integer
-          format: int32
-          deprecated: true
-          description: |
-            deprecated - bitte feld status verwenden -- Dieses Feld ist zur Löschung vorgesehen. progress 0 entspricht status NEW, progress 100 entspricht status DONE.
         meldung:
           type: string
           description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt
