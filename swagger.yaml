@@ -160,7 +160,7 @@ paths:
           links:
             UploadWithUrl:
               operationId: uploadDokument
-              requestBody:
+              parameters:
                 url: '$response.body#/downloadUrl'
               description: >
                 Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die Url unter `UploadData.url` mit `POST` übertragen werden.
