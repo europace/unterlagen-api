@@ -254,7 +254,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dokument"
-        
+
         "401":
           description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
           content:
@@ -1409,7 +1409,7 @@ paths:
       security:
         - europace_oauth2_legacy:
             - API
-        - europace_oauth2: []
+        - europace_oauth2: [ ]
       tags:
         - Revision
 servers:
