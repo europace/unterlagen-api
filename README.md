@@ -187,11 +187,11 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 
 | ID        | Anzeigename           | Beschreibung  | Anmerkung |
 | :--- |:---| :---|:---|
-|Abgeschlossenheit|Abgeschlossenheitsbescheinigung|Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan| |
+|Abgeschlossenheit|Abgeschlossenheitsbescheinigung|Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan|  |
 |Abloesevollmacht|Ablösevollmacht|Ablösevollmacht, Kreditwechselservice (KWS)|  |
 |Abtretung|Abtretungen|Abtretungsanzeige, Abtretung von Bausparverträgen, Bauträger-Finanzierungsbestätigungen, Gehaltsabtretungen, Kraftfahrzeuge (KFZ-Brief), Lebensversicherungen, Mietforderungen, Rückgewähransprüche|  |
 |Altersvorsorge|Private oder betriebliche Altersvorsorge|Renten- und Lebensversicherungen, Betriebsrenten und Pensionsfonds|  |
-|Anmeldebestaetigung|Anmeldebestätigung Meldeamt|Anmeldebestätigung vom Einwohnermeldeamt, Ersatzformulare, Geburts- und Sterbeurkunden, Erbschein|  |
+|Anmeldebestaetigung|Anmeldebestätigung Meldeamt|Anmeldebestätigung vom Einwohnermeldeamt, Ersatzformulare, Geburts- und Sterbeurkunden, Erbschein, Erklärung zur Selbstnutzung|  |
 |Anschriftenaenderung|Formular Anschriftenänderung|Formular zur Anschriftenänderung, Ummeldung, Einzug|  |
 |Ausweis|Ausweisdokument, Reisepass|Personalausweis, Ausweisdokument, Reisepass, Aufenthaltstitel, Niederlassungserlaubnis|  |
 |BWA|BWA, Bilanz, GuV|BWA, Bilanz, GuV oder E/A-Rechnung, EÜR, Jahresabschluss, Überschuss, Gewinn/Verlust Rechnung, Handelsregisterauszug|  |
@@ -200,7 +200,7 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Baugenehmigung|Baugenehmigung|Baugenehmigung, Baustellenschild, Baubeginnanzeige, Anzeige über Baufertigstellung, Bauherrenerklärung, Gebührenbescheid, Genehmigungsfreistellung|  |
 |Baulasten|Baulastenverzeichnis|Auskunft aus dem oder Eintragung in das Baulastenverzeichnis, Altlasten|  |
 |Bauplan|Bauplan, Grundriss|Baupläne, Grundrisse, Ansichten, Entwürfe, Bauzeichnung, Schnitt|  |
-|Baurechtsauskunft|Baurechtliche Auskunft|Baurechtliche Auskunft, Auflagen, Baurechtsnachweis, Wasserrecht, B-Plan Änderung|  |
+|Baurechtsauskunft|Baurechtliche Auskunft|Baurechtliche Auskunft, Einholung von Auskünften, Auflagen, Baurechtsnachweis, Wasserrecht, B-Plan Änderung|  |
 |Bauspar_Jahreskontoauszug|Jahreskontoauszug zum Bausparvertrag|Jahreskontoauszug, Eigenkapitalnachweis Bausparen|  |
 |Bausparantrag|Neuer Bausparantrag|Bausparen, Neuabschluss BSV Antrag|  |
 |Bausparvertrag|Bestehender Bausparvertrag|Bestehender Bausparvertrag, Zuteilungsschreiben, Bausparurkunde, Jahreskontoauszug|  |
@@ -214,7 +214,8 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Darlehensantrag|Immobiliendarlehens-Antrag oder -Vertrag|Antrag für Immobiliendarlehen, Prolongation, Zinsanpassung, Konditionsänderung, Baufinanzierungsantrag, Bestehender Altvertrag oder Angebot, auch von Fremdbanken, Drittmittel, Bestandsvertrag|  |
 |ESM|Europäisches Standardisiertes Merkblatt|Europäisches Standardisiertes Merkblatt, ESIS|  |
 |Ehevertrag|Ehevertrag|Gütertrennung, Ehevertrag, Heiratssurkunde|  |
-|Einkommensteuer|Einkommensteuer|Lohn- und Einkommensteuer, Steuerbescheid, Steuererklärung, EkSt|  |
+|Einkommensteuer|Einkommensteuer|Lohn- und Einkommensteuer, Steuererklärung, EkSt|  |
+|Einkommensteuerbescheid|Einkommensteuerbescheid|Einkommensteuerbescheid, EkSt Bescheid, Lohnsteuerbescheid, Festsetzung|  |
 |Elterngeldbescheid|Elterngeldbescheid|Elterngeldbescheid, Antrag auf Elterngeld, Baukindergeld|  |
 |Empfangsbestaetigung|Empfangsbestätigung|Empfangsbestätigung für ESIS, DVV/VVI, Merkblätter, u.a.|  |
 |Energieausweis|Energieausweis|Energieausweis EnEV, Gebäudepass|  |
@@ -235,11 +236,11 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Grunderwerbsteuer|Grunderwerbsteuer, Grundsteuer|Steuerbescheid zur Grunderwerbsteuer, Grundsteuerbescheid|  |
 |Grundschuldbestellung|Grundschuldbestellung oder Löschung|Grundschuldbestellungsurkunde oder Grundschuldbrief, vollstreckbar, Aufgebotsverfahren, Löschungsbewilligung, Pfandfreigabe, Treuhandauftrag, Schuldanerkenntnis, Schuldversprechen|  |
 |Inkasso|Kündigung, Forderung|Inkasso, Mahnung, Forderung, Kündigung, §489 BGB, Vorfälligkeit, Zwangsversteigerung|  |
-|Kaufvertrag|Notarieller Immobilien-Kaufvertrag|Notarieller Kaufvertrag (Urkunde oder Entwurf), Anlagen und Begleitnotizen zum Kaufvertrag, Tauschvertrag, Schenkungsurkunde, Übertragungsvertrag|  |
-|KfW_Antrag|KfW Antrag|Antrag KfW Fördermittel, Wohneigentumsförderung, inkl. KfW Beiblatt zur Baufinanzierung|  |
+|Kaufvertrag|Notarieller Immobilien-Kaufvertrag|Notarieller Kaufvertrag (Urkunde oder Entwurf), Anlagen und Begleitnotizen zum Kaufvertrag, Tauschvertrag, Schenkungsurkunde, Übertragungsvertrag, Kaufabsichtserklärung|  |
+|KfW_Antrag|KfW Antrag|Antrag KfW Fördermittel, Wohneigentumsförderung, inkl. KfW Beiblatt zur Baufinanzierung, Einwilligungserklärung|  |
 |KfW_Antragsbestaetigung|KfW Bestätigung zum Antrag (online)|Formular KfW Bestätigung zum Antrag, Onlinebestätigung|  |
 |KfW_Durchfuehrungsbestaetigung|KfW Bestätigung nach Durchführung|Formular KfW Bestätigung nach Durchführung, Durchführungsbestätigung|  |
-|Kontoauszug|Kontoauszug, Finanzstatus|Kontoauszug zu Girokonten, Kreditkarten, Depots, Portfolios oder Darlehen, Finanzstatus, Kreditkartenumsatz, Schenkungen, Eigenkapitalnachweis|  |
+|Kontoauszug|Kontoauszug, Finanzstatus, Eigenkapital|Kontoauszug zu Girokonten, Kreditkarten, Depots, Portfolios oder Darlehen, Finanzstatus, Kreditkartenumsatz, Schenkungen, Eigenkapitalnachweis|  |
 |Kostenaufstellung|Kostenaufstellung|Aufstellung der Bau- oder Modernisierungskosten, Eigenleistungen, Angebote, Kostenvoranschlag, Reservierungsvereinbarung|  |
 |Krankenversicherungsnachweis|Krankenversicherungsnachweis|Nachweis zur Privaten Krankenversicherung, Änderungsmitteilung, Bescheinigung, Versicherungsschein|  |
 |Leerseite|Leerseite|Seite ohne Inhalt|  |
@@ -250,18 +251,18 @@ Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entspr
 |Objektfotos|Objektfotos|Objektfotos, Bilder, Photos (innen, außen oder Baufortschritt)|  |
 |Plankarten|Flurkarte, Lageplan|Flurkarte, Lageplan, Bebauungsplan, Fortführungserklärung, BORIS, Bodenrichtwerte, Liegeschaftskarte, Katasterkarte|  |
 |Privatkreditvertrag|Ratenkreditvertrag|Privatkredit, Ratenkreditvertrag oder -Antrag, Neuabschluss und Ablösung von Krediten, Bestehende und Abzulösende Konsumkredite, Leasing, Ratenschutz, RSV|  |
-|Ratenschutzversicherung|Ratenschutz-, Restschuldversicherung|Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV| |
+|Ratenschutzversicherung|Ratenschutz-, Restschuldversicherung| Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV|  |
 |Rechnung_Quittung|Rechnungen, Verbrauchsgüterkaufvertrag|Rechnungen zu Bauvorhaben oder Nebenkosten, Betriebskosten, Notarkosten, Erschließungsbeiträge, Maklergebühren, Kaufvertrag für Konsumgüter und Autos|  |
 |Rentenbescheid|Rentenbescheid|Rentenbescheid oder Rentenanpassung der gesetzlichen Altersrente|  |
 |Renteninformation|Renteninformation|Renteninformation zur zukünftigen gesetzlichen Altersrente|  |
 |Saldenmitteilung|Ablöseschreiben, Saldenmitteilung|Saldenmitteilung, Zinsbescheinigung, Valutenbescheinigung, Ablöseinformation|  |
 |Scheidungsbeschluss|Scheidungsbeschluss|Scheidungsurteil oder Beschluss|  |
 |Scheidungsfolgevereinbarung|Scheidungsfolgevereinbarung|Notarielle Scheidungsfolgevereinbarung (Urkunde oder Entwurf), Trennungsvereinbarung|  |
-|Selbstauskunft|Selbstauskunft, Schufa|Selbstauskunft, Erfassungsbogen, Datenschutzklausel und Einwilligung zu Auskünften, Schufa, Datenschutzhinweise|  |
-|Sicherungsvereinbarung|Sicherungsvereinbarung für Grundschuld|Formular Sicherungsvereinbarung für Grundschuld, Abtretung der Rückgewähransprüche|  |
+|Selbstauskunft|Selbstauskunft, Schufa|Selbstauskunft, Erfassungsbogen, Datenschutzklausel, Einwilligung zu Auskünften und Werbung, Schufa, Datenschutzhinweise, Bankauskunft|  |
 |SEPA_Mandat|SEPA Lastschriftmandat|SEPA-Lastschriftmandat|  |
-|Sonstige_Einnahmen|Sonstige Einnahmen|Sonstige Einnahmen (Waisenrente, Pflegegeld, Einspeisevergütung, u.a.)|  |
-|Teilungserklaerung|Notarielle Teilungserklärung|Notarielle Teilungserklärung (Urkunde oder Entwurf), Anlagen, Neufassung, Abschrift, Vollmacht|  |
+|Sicherungsvereinbarung|Sicherungsvereinbarung für Grundschuld|Formular Sicherungsvereinbarung für Grundschuld, Abtretung der Rückgewähransprüche|  |
+|Sonstige_Einnahmen|Sonstige Einnahmen|Sonstige Einnahmen (Waisenrente, Krankengeld, Pflegegeld, Einspeisevergütung, u.a.)|  |
+|Teilungserklaerung|Notarielle Teilungserklärung|Notarielle Teilungserklärung (Urkunde oder Entwurf), Anlagen (Pläne, Verwaltervertrag, Mieteraufstellung, Eigentümerversammlung, Wirtschaftsplan), Neufassung, Abschrift, Vollmacht|  |
 |Uebergabeprotokoll|Übergabeprotokoll|Übergabeprotokoll an Produktanbieter|  |
 |Ueberweisungsbeleg|Überweisungsbeleg|Überweisungsbeleg oder Kontoumsatzdetails, Einzahlungsbeleg, Buchungsnachweis, Ausdruck Online Banking|  |
 |Unterhaltsnachweis|Unterhaltsnachweis|Unterhaltsnachweis, Beschluss, Urkunde, amtliches Schreiben, Jugendamt, persönliche Erklärung zum Unterhalt, Kindergeldbescheid|  |

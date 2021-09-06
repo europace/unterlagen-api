@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unterlagen API
   description: Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
-  version: 2.0.8
+  version: 2.0.13
   termsOfService: https://developer.europace.de/terms/
 paths:
   /dokumente:
@@ -31,6 +31,9 @@ paths:
                 vorgangsNummer:
                   description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
                   type: string
+                mitKategorisierung:
+                  description: Das Setzen dieses Feldes auf true bewirkt, das nach dem erfolgreichen Hochladen des Dokuments die Kategorisierung automatisch gestartet wird. Dadurch wird der zusätzliche Aufruf von "POST /dokumente/{dokumentId}/kategorisierung" überflüssig.
+                  type: boolean
               required:
                 - file
                 - vorgangsNummer
@@ -160,7 +163,7 @@ paths:
           links:
             UploadWithUrl:
               operationId: uploadDokument
-              requestBody:
+              parameters:
                 url: '$response.body#/downloadUrl'
               description: >
                 Die `downloadUrl` kann als `url` in `POST /dokumente` verwendet werden. Vorher muss das Dokument an die Url unter `UploadData.url` mit `POST` übertragen werden.
@@ -452,7 +455,8 @@ paths:
         - Dokumente
   "/dokumente/{dokumentId}/kategorisierung":
     post:
-      summary: Kategorisierung eines Dokuments anstoßen
+      deprecated: true
+      summary: deprecated - bitte setzen sie beim Hochladen des Dokuments das Flag "mitKategorisierung" auf true --- Kategorisierung eines Dokuments anstoßen
       operationId: starteKategorisierung
       parameters:
         - name: dokumentId
@@ -1129,7 +1133,7 @@ paths:
       tags:
         - Freigabe
     get:
-      summary: Metadaten aller freigegebener Unterlagen (in einem Zeitraum) laden
+      summary: Metadaten aller freigegebener Unterlagen (in einem Zeitraum) laden. Die Liste enthält sowohl erfolgreich als auch fehlgeschlagene Freigaben. Dazu bitte den Abrufstatus der freigegebenen Unterlage prüfen.
       operationId: getFreigaben
       parameters:
         - name: antragsNummer
@@ -1545,6 +1549,9 @@ components:
         vorgangsNummer:
           description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
           type: string
+        mitKategorisierung:
+          description: Das Setzen dieses Feldes auf true bewirkt, das nach dem erfolgreichen Hochladen des Dokuments die Kategorisierung automatisch gestartet. Dadurch wird der zusätzliche Aufruf von "POST /dokumente/{dokumentId}/kategorisierung" überflüssig.
+          type: boolean
         url:
           description: Frei zugängliche URL zum Dokument. Kann z.B. mit 'POST /dokumente/transferspeicher' erstellt werden.
           type: string
@@ -1590,11 +1597,6 @@ components:
             - IN_PROGRESS
             - DONE
             - ERROR
-        progress:
-          type: integer
-          format: int32
-          description: |
-            Progress Wert in Prozent 0 - 100
         meldung:
           type: string
           description: Eine Meldung für den Nutzer, die den Grund für den Status beschreibt
