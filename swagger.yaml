@@ -31,6 +31,9 @@ paths:
                 vorgangsNummer:
                   description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
                   type: string
+                mitKategorisierung:
+                  description: Das Setzen dieses Feldes auf true bewirkt, das nach dem erfolgreichen Hochladen des Dokuments die Kategorisierung automatisch gestartet wird. Dadurch wird der zusätzliche Aufruf von "POST /dokumente/{dokumentId}/kategorisierung" überflüssig.
+                  type: boolean
               required:
                 - file
                 - vorgangsNummer
@@ -452,7 +455,8 @@ paths:
         - Dokumente
   "/dokumente/{dokumentId}/kategorisierung":
     post:
-      summary: Kategorisierung eines Dokuments anstoßen
+      deprecated: true
+      summary: deprecated - bitte setzen sie beim Hochladen des Dokuments das Flag "mitKategorisierung" auf true --- Kategorisierung eines Dokuments anstoßen
       operationId: starteKategorisierung
       parameters:
         - name: dokumentId
@@ -1488,6 +1492,9 @@ components:
         vorgangsNummer:
           description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
           type: string
+        mitKategorisierung:
+          description: Das Setzen dieses Feldes auf true bewirkt, das nach dem erfolgreichen Hochladen des Dokuments die Kategorisierung automatisch gestartet. Dadurch wird der zusätzliche Aufruf von "POST /dokumente/{dokumentId}/kategorisierung" überflüssig.
+          type: boolean
         url:
           description: Frei zugängliche URL zum Dokument. Kann z.B. mit 'POST /dokumente/transferspeicher' erstellt werden.
           type: string
