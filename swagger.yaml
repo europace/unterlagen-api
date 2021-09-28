@@ -1424,7 +1424,7 @@ components:
       type: oauth2
       flows:
         password:
-          tokenUrl: https://api.europace.de/login
+          tokenUrl: https://api.europace2.de/login
           scopes:
             API: Authorisation Scope für die gesamte API.
     europace_oauth2:
