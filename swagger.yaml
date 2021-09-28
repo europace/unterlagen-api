@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unterlagen API
   description: Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
-  version: 2.0.13
+  version: 2.0.14
   termsOfService: https://docs.api.europace.de/nutzungsbedingungen/
 paths:
   /dokumente:
@@ -31,6 +31,9 @@ paths:
                 vorgangsNummer:
                   description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
                   type: string
+                mitKategorisierung:
+                  description: Das Setzen dieses Feldes auf true bewirkt, das nach dem erfolgreichen Hochladen des Dokuments die Kategorisierung automatisch gestartet wird. Dadurch wird der zusätzliche Aufruf von "POST /dokumente/{dokumentId}/kategorisierung" überflüssig.
+                  type: boolean
               required:
                 - file
                 - vorgangsNummer
@@ -254,7 +257,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dokument"
-
+        
         "401":
           description: Authentifizierung fehlgeschlagen durch z.b. fehlender/ungültiger Authorization Header
           content:
@@ -452,7 +455,8 @@ paths:
         - Dokumente
   "/dokumente/{dokumentId}/kategorisierung":
     post:
-      summary: Kategorisierung eines Dokuments anstoßen
+      deprecated: true
+      summary: deprecated - bitte setzen sie beim Hochladen des Dokuments das Flag "mitKategorisierung" auf true --- Kategorisierung eines Dokuments anstoßen
       operationId: starteKategorisierung
       parameters:
         - name: dokumentId
@@ -1409,7 +1413,7 @@ paths:
       security:
         - europace_oauth2_legacy:
             - API
-        - europace_oauth2: [ ]
+        - europace_oauth2: []
       tags:
         - Revision
 servers:
@@ -1420,7 +1424,7 @@ components:
       type: oauth2
       flows:
         password:
-          tokenUrl: https://api.europace2.de/login
+          tokenUrl: https://api.europace.de/login
           scopes:
             API: Authorisation Scope für die gesamte API.
     europace_oauth2:
@@ -1488,6 +1492,9 @@ components:
         vorgangsNummer:
           description: Vorgangsnummer, dem das Dokument zugeordnet werden soll.
           type: string
+        mitKategorisierung:
+          description: Das Setzen dieses Feldes auf true bewirkt, das nach dem erfolgreichen Hochladen des Dokuments die Kategorisierung automatisch gestartet. Dadurch wird der zusätzliche Aufruf von "POST /dokumente/{dokumentId}/kategorisierung" überflüssig.
+          type: boolean
         url:
           description: Frei zugängliche URL zum Dokument. Kann z.B. mit 'POST /dokumente/transferspeicher' erstellt werden.
           type: string
