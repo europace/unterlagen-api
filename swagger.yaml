@@ -921,7 +921,7 @@ paths:
   /dokumente/anforderungen:
     get:
       summary: Nur für Baufismart. Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
-      Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
+        Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
       operationId: getAnforderungen
       parameters:
         - name: vorgangsNummer
@@ -1718,10 +1718,9 @@ components:
         finanzierungsvorschlagsId:
           type: string
           description: optional - Kann bei Baufismart Vorgängen angegeben werden. Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll.
-          Durch Angabe dieser ID kann sich bei der Freigabe der Bezug der Seiten ändern, wenn die Unterlagenanforderungen
-          die Seiten in einem anderen Bezug erwarten.
-          Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden.
-          required: false
+            Durch Angabe dieser ID kann sich bei der Freigabe der Bezug der Seiten ändern, wenn die Unterlagenanforderungen
+            die Seiten in einem anderen Bezug erwarten.
+            Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden.
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
