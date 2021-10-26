@@ -634,7 +634,8 @@ paths:
         - name: finanzierungsvorschlagsId
           in: query
           description: Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
-            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert.
+            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert. Weiterhin kann der Bezug einer Seite geändert
+            zurück geliefert werden, wenn die Unterlagenanforderungen die Seite in einem anderen Bezug erwarten.
           required: false
           schema:
             type: string
@@ -961,8 +962,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/archiv:
@@ -1648,7 +1651,7 @@ components:
           $ref: "#/components/schemas/ZuordnungInSeite"
         anforderungen:
           type: array
-          description: Ids der erfüllten Unterlagenanforderungen
+          description: "Ids der erfüllten Unterlagenanforderungen. Die Anforderungen zu den IDs können mit folgendem Endpunkt ermittelt werden: /dokumente/anforderungen"
           items:
             type: string
             example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
@@ -1712,7 +1715,9 @@ components:
             $ref: "#/components/schemas/DokumentefreigabeSeiten"
         finanzierungsvorschlagsId:
           type: string
-          description: Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll
+          description: optionale - Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll.
+          Durch Angabe dieser ID kann sich bei der Freigabe der Bezug der Seiten ändern, wenn die Unterlagenanforderungen
+          die Seiten in einem anderen Bezug erwarten.
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
