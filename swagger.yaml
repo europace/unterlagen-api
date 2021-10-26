@@ -1995,10 +1995,10 @@ components:
           description: Id der Unterlagenanforderung (technisch).
         code:
           type: string
-          description: produzentenspezifische Bezeichnung der Unterlagenanforderung.
+          description: produktanbieterspezifische Bezeichnung der Unterlagenanforderung.
         text:
           type: string
-          description: von Produzenten gewählte Beschreibung der Unterlagenanforderung.
+          description: vom Produktanbieter gewählte Beschreibung der Unterlagenanforderung.
         kurzbezeichnung:
           type: string
           description: kurze Zusammenfassung der Unterlagenanforderung.
@@ -2020,7 +2020,7 @@ components:
           description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
         bezeichnung:
           type: string
-          description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
+          description: für Menschen lesbare Bezeichnung des Produktanbieters (z.B. DSL Bank)
     Error:
       type: object
       properties:
