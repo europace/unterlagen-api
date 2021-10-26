@@ -631,6 +631,13 @@ paths:
           required: false
           schema:
             type: string
+        - name: finanzierungsvorschlagsId
+          in: query
+          description: Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
+            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Liste der Seiten
@@ -906,6 +913,56 @@ paths:
             - API
         - europace_oauth2:
             - unterlagen:unterlage:lesen
+      tags:
+        - Seiten
+  # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
+  /dokumente/anforderungen:
+    get:
+      summary: Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      operationId: getAnforderungen
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Nummer des Vorgangs, aus dem der Finanzierungsvorschlag stammt
+          required: true
+          schema:
+            type: string
+        - name: finanzierungsvorschlagsId
+          in: query
+          description: Id des Finanzierungsvorschlags, zu dem die Unterlagenanforderungen abgerufen werden sollen
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unterlagenanforderung"
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Vorgang nicht gefunden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unerwarteter Fehler
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth2:
+            - API
       tags:
         - Seiten
   /dokumente/archiv:
@@ -1558,7 +1615,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1589,6 +1646,12 @@ components:
                 example: Personalausweis
         zuordnung:
           $ref: "#/components/schemas/ZuordnungInSeite"
+        anforderungen:
+          type: array
+          description: Ids der erfüllten Unterlagenanforderungen
+          items:
+            type: string
+            example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
         archiviert:
           type: boolean
           description: Archivierungsstatus der Seite.
@@ -1614,7 +1677,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1642,10 +1705,14 @@ components:
       properties:
         antragsNummer:
           type: string
+          description: Antrag, für den die Freigabe erfolgen soll
         seiten:
           type: array
           items:
             $ref: "#/components/schemas/DokumentefreigabeSeiten"
+        finanzierungsvorschlagsId:
+          type: string
+          description: Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
@@ -1654,7 +1721,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1745,6 +1812,28 @@ components:
           type: string
           description: Name des Bezugsobjekts.
           example: Finanzierungsobjekt Feldweg 17
+    Bezugskategorie:
+      type: object
+      properties:
+        typ:
+          type: string
+          description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
+        id:
+          type: string
+          description: Id des Bezuges (z.B. immobilie:4711) (technisch)
+        name:
+          type: string
+          description: Anzeigename für diesen Bezug (für Nutzer lesbar)
+        rolle:
+          type: object
+          description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
+          properties:
+            typ:
+              type: string
+              description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
+            name:
+              type: string
+              description: Anzeigename für diese Rolle (für Nutzer lesbar)
     BezugsobjektAlt:
       deprecated: true
       description: deprecated - bitte Knoten zuordnung statt bezug verwenden - zu beachten ist, dass der BezugsTyp im neuen Knoten immer klein geschrieben wird (angeglichen an den Standard in der API)
@@ -1886,29 +1975,43 @@ components:
               description: optional - detaillierte Beschreibung der Kategorie (für Nutzer lesbar).
         bezuege:
           type: array
+          description: Mögliche Bezüge für diese Kategorie
           items:
-            type: object
-            description: Mögliche Bezüge für diese Kategorie
-            properties:
-              typ:
-                type: string
-                description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
-              id:
-                type: string
-                description: Id des Bezuges (z.B. immobilie:4711) (technisch)
-              name:
-                type: string
-                description: Anzeigename für diesen Bezug (für Nutzer lesbar)
-              rolle:
-                type: object
-                description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
-                properties:
-                  typ:
-                    type: string
-                    description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
-                  name:
-                    type: string
-                    description: Anzeigename für diese Rolle (für Nutzer lesbar)
+            $ref: "#/components/schemas/Bezugskategorie"
+    Unterlagenanforderung:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id der Unterlagenanforderung (technisch).
+        code:
+          type: string
+          description: produzentenspezifische Bezeichnung der Unterlagenanforderung.
+        text:
+          type: string
+          description: von Produzenten gewählte Beschreibung der Unterlagenanforderung.
+        kurzbezeichnung:
+          type: string
+          description: kurze Zusammenfassung der Unterlagenanforderung.
+        erfuellungskategorien:
+          type: array
+          items:
+            type: string
+            description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
+        produktanbieter:
+          $ref: "#/components/schemas/Produktanbieter"
+        bezug:
+          $ref: "#/components/schemas/Bezugskategorie"
+    Produktanbieter:
+      type: object
+      description: Produktanbieter, der Finanzierungsvorschläge erstellt
+      properties:
+        id:
+          type: string
+          description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
+        bezeichnung:
+          type: string
+          description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
     Error:
       type: object
       properties:
