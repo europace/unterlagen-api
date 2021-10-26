@@ -616,7 +616,6 @@ paths:
   /dokumente/seiten:
     get:
       summary: Metadaten zu allen Seiten eines Vorgangs laden
-      description: Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
       operationId: getSeiten
       parameters:
         - name: vorgangsNummer
@@ -637,6 +636,7 @@ paths:
           description: Nur für Baufismart. Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
             werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert. Weiterhin kann der Bezug einer Seite geändert
             zurück geliefert werden, wenn die Unterlagenanforderungen die Seite in einem anderen Bezug erwarten.
+            Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
           required: false
           schema:
             type: string
