@@ -631,6 +631,15 @@ paths:
           required: false
           schema:
             type: string
+        - name: finanzierungsvorschlagsId
+          in: query
+          description: Nur für Baufismart. Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
+            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert. Weiterhin kann der Bezug einer Seite geändert
+            zurück geliefert werden, wenn die Unterlagenanforderungen die Seite in einem anderen Bezug erwarten.
+            Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Liste der Seiten
@@ -885,6 +894,59 @@ paths:
                 $ref: "#/components/schemas/Error"
         "403":
           description: Authorisierung fehlgeschlagen durch z.b. fehlende Berechtigung auf den Vorgang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Vorgang nicht gefunden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unerwarteter Fehler
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - europace_oauth2_legacy:
+            - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
+      tags:
+        - Seiten
+  # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
+  /dokumente/anforderungen:
+    get:
+      summary: Nur für Baufismart. Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
+      operationId: getAnforderungen
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Nummer des Vorgangs, aus dem der Finanzierungsvorschlag stammt
+          required: true
+          schema:
+            type: string
+        - name: finanzierungsvorschlagsId
+          in: query
+          description: Id des Finanzierungsvorschlags, zu dem die Unterlagenanforderungen abgerufen werden sollen
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unterlagenanforderung"
+        "400":
+          description: Fehler in den Eingabedaten.
           content:
             application/json:
               schema:
@@ -1558,7 +1620,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1589,6 +1651,12 @@ components:
                 example: Personalausweis
         zuordnung:
           $ref: "#/components/schemas/ZuordnungInSeite"
+        anforderungen:
+          type: array
+          description: "Ids der erfüllten Unterlagenanforderungen. Die Anforderungen zu den IDs können mit folgendem Endpunkt ermittelt werden: /dokumente/anforderungen"
+          items:
+            type: string
+            example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
         archiviert:
           type: boolean
           description: Archivierungsstatus der Seite.
@@ -1614,7 +1682,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1642,10 +1710,18 @@ components:
       properties:
         antragsNummer:
           type: string
+          description: Antrag, für den die Freigabe erfolgen soll
         seiten:
           type: array
           items:
             $ref: "#/components/schemas/DokumentefreigabeSeiten"
+        finanzierungsvorschlagsId:
+          type: string
+          description: optional - Kann bei Baufismart Vorgängen angegeben werden. Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll.
+          Durch Angabe dieser ID kann sich bei der Freigabe der Bezug der Seiten ändern, wenn die Unterlagenanforderungen
+          die Seiten in einem anderen Bezug erwarten.
+          Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden.
+          required: false
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
@@ -1654,7 +1730,7 @@ components:
       properties:
         dokumentId:
           type: string
-          description: ID des referenzierten Dokuments.
+          description: Id des referenzierten Dokuments.
         seite:
           type: integer
           format: int32
@@ -1745,6 +1821,28 @@ components:
           type: string
           description: Name des Bezugsobjekts.
           example: Finanzierungsobjekt Feldweg 17
+    Bezugskategorie:
+      type: object
+      properties:
+        typ:
+          type: string
+          description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
+        id:
+          type: string
+          description: Id des Bezuges (z.B. immobilie:4711) (technisch)
+        name:
+          type: string
+          description: Anzeigename für diesen Bezug (für Nutzer lesbar)
+        rolle:
+          type: object
+          description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
+          properties:
+            typ:
+              type: string
+              description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
+            name:
+              type: string
+              description: Anzeigename für diese Rolle (für Nutzer lesbar)
     BezugsobjektAlt:
       deprecated: true
       description: deprecated - bitte Knoten zuordnung statt bezug verwenden - zu beachten ist, dass der BezugsTyp im neuen Knoten immer klein geschrieben wird (angeglichen an den Standard in der API)
@@ -1886,29 +1984,43 @@ components:
               description: optional - detaillierte Beschreibung der Kategorie (für Nutzer lesbar).
         bezuege:
           type: array
+          description: Mögliche Bezüge für diese Kategorie
           items:
-            type: object
-            description: Mögliche Bezüge für diese Kategorie
-            properties:
-              typ:
-                type: string
-                description: Typ des Bezuges (z.B. immobilie, antragsteller, vorhaben, verbindlichkeit) (technisch). (verbindlichkeit wird in einem zukünftigen Release umbenannt zu ratenkredit)
-              id:
-                type: string
-                description: Id des Bezuges (z.B. immobilie:4711) (technisch)
-              name:
-                type: string
-                description: Anzeigename für diesen Bezug (für Nutzer lesbar)
-              rolle:
-                type: object
-                description: optionale Rolle dieses Bezuges - eine Rolle gruppiert Bezugsobjekte des gleichen Bezugtyps (z.B. bei Bezugstyp immobilie)
-                properties:
-                  typ:
-                    type: string
-                    description: Typ dieser Rolle (z.B. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technisch)
-                  name:
-                    type: string
-                    description: Anzeigename für diese Rolle (für Nutzer lesbar)
+            $ref: "#/components/schemas/Bezugskategorie"
+    Unterlagenanforderung:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id der Unterlagenanforderung (technisch).
+        code:
+          type: string
+          description: produktanbieterspezifische Bezeichnung der Unterlagenanforderung.
+        text:
+          type: string
+          description: vom Produktanbieter gewählte Beschreibung der Unterlagenanforderung.
+        kurzbezeichnung:
+          type: string
+          description: kurze Zusammenfassung der Unterlagenanforderung.
+        erfuellungskategorien:
+          type: array
+          items:
+            type: string
+            description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
+        produktanbieter:
+          $ref: "#/components/schemas/Produktanbieter"
+        bezug:
+          $ref: "#/components/schemas/Bezugskategorie"
+    Produktanbieter:
+      type: object
+      description: Produktanbieter, der Finanzierungsvorschläge erstellt
+      properties:
+        id:
+          type: string
+          description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
+        bezeichnung:
+          type: string
+          description: für Menschen lesbare Bezeichnung des Produktanbieters (z.B. DSL Bank)
     Error:
       type: object
       properties:
