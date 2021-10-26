@@ -616,6 +616,7 @@ paths:
   /dokumente/seiten:
     get:
       summary: Metadaten zu allen Seiten eines Vorgangs laden
+      description: Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
       operationId: getSeiten
       parameters:
         - name: vorgangsNummer
@@ -633,7 +634,7 @@ paths:
             type: string
         - name: finanzierungsvorschlagsId
           in: query
-          description: Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
+          description: Nur für Baufismart. Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
             werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert. Weiterhin kann der Bezug einer Seite geändert
             zurück geliefert werden, wenn die Unterlagenanforderungen die Seite in einem anderen Bezug erwarten.
           required: false
@@ -919,7 +920,8 @@ paths:
   # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
   /dokumente/anforderungen:
     get:
-      summary: Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      summary: Nur für Baufismart. Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
       operationId: getAnforderungen
       parameters:
         - name: vorgangsNummer
@@ -1651,7 +1653,7 @@ components:
           $ref: "#/components/schemas/ZuordnungInSeite"
         anforderungen:
           type: array
-          description: "Ids der erfüllten Unterlagenanforderungen. Die Anforderungen zu den IDs können mit folgendem Endpunkt ermittelt werden: /dokumente/anforderungen"
+          description: "Ids der erfüllten Unterlagenanforderungen."
           items:
             type: string
             example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
@@ -1715,9 +1717,11 @@ components:
             $ref: "#/components/schemas/DokumentefreigabeSeiten"
         finanzierungsvorschlagsId:
           type: string
-          description: optionale - Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll.
+          description: optional - Kann bei Baufismart Vorgängen angegeben werden. Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll.
           Durch Angabe dieser ID kann sich bei der Freigabe der Bezug der Seiten ändern, wenn die Unterlagenanforderungen
           die Seiten in einem anderen Bezug erwarten.
+          Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden.
+          required: false
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
