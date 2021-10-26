@@ -2006,7 +2006,7 @@ components:
           type: array
           items:
             type: string
-            description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
+            description: aktuell nur in wenigen Fallkonstellationen umgesetzt. Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
         produktanbieter:
           $ref: "#/components/schemas/Produktanbieter"
         bezug:
