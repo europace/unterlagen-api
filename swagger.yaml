@@ -633,8 +633,10 @@ paths:
             type: string
         - name: finanzierungsvorschlagsId
           in: query
-          description: Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
-            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert.
+          description: Nur für Baufismart. Id eines Finanzierungsvorschlag aus dem zugehörigen Vorgang. Wenn vorhanden,
+            werden die Unterlagenanforderungen des Finanzierungsvorschlags geliefert. Weiterhin kann der Bezug einer Seite geändert
+            zurück geliefert werden, wenn die Unterlagenanforderungen die Seite in einem anderen Bezug erwarten.
+            Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
           required: false
           schema:
             type: string
@@ -918,7 +920,8 @@ paths:
   # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
   /dokumente/anforderungen:
     get:
-      summary: Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      summary: Nur für Baufismart. Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
       operationId: getAnforderungen
       parameters:
         - name: vorgangsNummer
@@ -961,8 +964,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - oauth2:
+        - europace_oauth2_legacy:
             - API
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
       tags:
         - Seiten
   /dokumente/archiv:
@@ -1648,7 +1653,7 @@ components:
           $ref: "#/components/schemas/ZuordnungInSeite"
         anforderungen:
           type: array
-          description: Ids der erfüllten Unterlagenanforderungen
+          description: "aktuell nur in wenigen Fallkonstellationen umgesetzt. Ids der erfüllten Unterlagenanforderungen. Die Anforderungen zu den IDs können mit folgendem Endpunkt ermittelt werden: /dokumente/anforderungen"
           items:
             type: string
             example: pe.dsl.azv.finanzierungsloesung.rente.gesetzlich:antragsteller:1
@@ -1712,7 +1717,11 @@ components:
             $ref: "#/components/schemas/DokumentefreigabeSeiten"
         finanzierungsvorschlagsId:
           type: string
-          description: Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll
+          description: optional - Kann bei Baufismart Vorgängen angegeben werden. Id des Finanzierungsvorschlags, für den die Freigabe erfolgen soll.
+          Durch Angabe dieser ID kann sich bei der Freigabe der Bezug der Seiten ändern, wenn die Unterlagenanforderungen
+          die Seiten in einem anderen Bezug erwarten.
+          Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden.
+          required: false
     #   wird benötigt, hat aber den gleichen Inhalt wie SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
@@ -1986,10 +1995,10 @@ components:
           description: Id der Unterlagenanforderung (technisch).
         code:
           type: string
-          description: produzentenspezifische Bezeichnung der Unterlagenanforderung.
+          description: produktanbieterspezifische Bezeichnung der Unterlagenanforderung.
         text:
           type: string
-          description: von Produzenten gewählte Beschreibung der Unterlagenanforderung.
+          description: vom Produktanbieter gewählte Beschreibung der Unterlagenanforderung.
         kurzbezeichnung:
           type: string
           description: kurze Zusammenfassung der Unterlagenanforderung.
@@ -1997,7 +2006,7 @@ components:
           type: array
           items:
             type: string
-            description: Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
+            description: aktuell nur in wenigen Fallkonstellationen umgesetzt. Unterlagenkategorie, durch die die Unterlagenanforderung erfüllt wird.
         produktanbieter:
           $ref: "#/components/schemas/Produktanbieter"
         bezug:
@@ -2011,7 +2020,7 @@ components:
           description: Id des Produktanbieters (z.B. DSL_BANK) (technisch)
         bezeichnung:
           type: string
-          description: Bezeichnung des Produktanbieters (z.B. DSL Bank) (für Nutzer lesbar)
+          description: für Menschen lesbare Bezeichnung des Produktanbieters (z.B. DSL Bank)
     Error:
       type: object
       properties:
