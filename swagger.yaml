@@ -920,7 +920,7 @@ paths:
   # dieser Endpunkt befindet sich aktuell in Entwicklung und sollte noch nicht für den Produktivbetrieb verwendet werden
   /dokumente/anforderungen:
     get:
-      summary: Nur für Baufismart. Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten.
+      summary: Nur für Baufismart. Liste aller Unterlagenanforderungen zu einem Finanzierungsvorschlag erhalten. Das Ergebnis beinhaltet sowohl die Anforderungen der Produktanbieter als auch die Anforderungen des Vertriebs.
         Die FinanzierungsvorschlagId kann beispielsweise aus der Vorgänge API https://github.com/europace/baufismart-vorgaenge-api ausgelesen werden
       operationId: getAnforderungen
       parameters:
@@ -1988,6 +1988,7 @@ components:
             $ref: "#/components/schemas/Bezugskategorie"
     Unterlagenanforderung:
       type: object
+      description: Bei Unterlagenanforderungen des Vertriebs sind nur die Felder id und text gefüllt.
       properties:
         id:
           type: string
