@@ -64,7 +64,7 @@ _HMAC (SHA256)-Signierung Beispiel_:
 
 Die Nachricht:
 ```
-{"antragsNummer":"TR7VDV/1/1","externeAntragsNummer":"abc-123","unterlagen":[{"metaDatenUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54","statusUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54/status"}]}
+{"eventTyp": "FREIGABE","datenkontext": "ECHT_GESCHAEFT","antragsNummer":"TR7VDV/1/1","externeAntragsNummer":"abc-123","produktanbieterId": "MUSTERBANK","unterlagen":[{"metaDatenUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54","statusUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54/status"}]}
 ```
 
 wird mit dem Secret:
@@ -73,7 +73,7 @@ habc
 ```
 signiert. Die korrekte Signatur ist:
 ```
-71651c35267722fbe87e13a417b2314968aec9f4a5084e4d1285fe92302c74b4
+3178371400DF2CEF25405EE326BF4FEF7A9ED4BF4CCFA74C5D7C3709CE781B80
 ```
 
 ### Retry-Mechanismus
