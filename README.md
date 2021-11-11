@@ -49,7 +49,7 @@ Um die API verwenden zu können, benötigt der OAuth2-Client folgende Scopes:
 |-----------------------------------|---------------------------------|
 | `unterlagen:dokument:lesen`       | als Vertrieb, Abruf der Metadaten und des Inhalts hochgeladener Dokumente. |
 | `unterlagen:dokument:schreiben`   | als Vertrieb, Hochladen von Dokumenten und Anstoßen der Kategorisierung. Die Kategorisierung muß angestoßen werden, damit nachfolgend die erkannten Unterlagen (kategorisierter Inhalt) freigegeben werden können. Weiterhin das Aktualisieren der Metadaten und Löschen hochgeladener Dokumente.|
-| `unterlagen:unterlage:lesen`      | als Vertrieb, Abruf der Unterlagen(Kategorisierungsinformationen) und der Zuordnungsinformationen zum Vorgang|
+| `unterlagen:unterlage:lesen`      | als Vertrieb, Abruf der Unterlagen(Kategorisierungsinformationen) und der Zuordnungsinformationen zum Vorgang. Abruf der Unterlagenanforderungen.|
 | `unterlagen:unterlage:schreiben`  | als Vertrieb, Ändern der Unterlagenkategorie und Zuordnung im Vorgang (Antragsteller, Immobilie, Vorhaben)|
 | `unterlagen:unterlage:freigeben`  | als Vertrieb, Freigabe der Unterlagen für einen Antrag|
 | `unterlagen:freigabe:lesen`       | als Vertrieb und Kreditbetrieb, Abruf der Metadaten und des Inhalts freigegebener Unterlagen zu einem Antrag|
