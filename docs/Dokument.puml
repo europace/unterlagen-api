@@ -5,7 +5,7 @@ participant Client as c
 participant "Dokumente API" as api
 
 == Upload des Dokuments und Start der Kategorisierung ==
-c -> api: POST /dokumente?mitKategorisierung=true...
+c -> api: POST /dokumente  {vorgangsNummer, mitKategorisierung=true, url,anzeigename}
 note right: Dokument wird ggf in PDF gewandelt
 api --> c: 201 Created (Dokument)
 
