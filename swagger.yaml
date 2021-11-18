@@ -9,7 +9,7 @@ paths:
     post:
       summary: Dokument hochladen
       description: |
-        Ein Dokument samt Metadaten per Url hochladen (bis 100 MB) oder als Form-Data (bis 10 MB). Nach dem Hochladen muss das Dokument kategorisiert werden, damit es in der Unterlagenakte zu Verfügung steht und darüber letztlich an den Produktanbieter freigegeben werden kann. Hierzu muss der Endpunkt dokumente/{dokumentId}/kategorisierung aufgerufen werden.
+        Ein Dokument samt Metadaten per Url hochladen (bis 100 MB) oder als Form-Data (bis 10 MB). Nach dem Hochladen muss das Dokument kategorisiert werden, damit es in der Unterlagenakte zu Verfügung steht und darüber letztlich an den Produktanbieter freigegeben werden kann. Hierzu kann vorzugsweise der Requestparameter mitKategorisierung=true gesetzt werden. Ohne diesen Requestparameter muss der Endpunkt dokumente/{dokumentId}/kategorisierung aufgerufen werden - was aber deprecated ist.
         Die Form-Data-Variante ist DEPRECATED.
       operationId: uploadDokument
       requestBody:
