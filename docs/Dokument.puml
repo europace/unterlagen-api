@@ -4,14 +4,10 @@ title die wichtigsten Interaktionen mit Dokumenten
 participant Client as c
 participant "Dokumente API" as api
 
-== Upload des Dokuments ==
-c -> api: POST /dokumente
+== Upload des Dokuments und Start der Kategorisierung ==
+c -> api: POST /dokumente?mitKategorisierung=true...
 note right: Dokument wird ggf in PDF gewandelt
 api --> c: 201 Created (Dokument)
-
-== Kategorisierung des Dokuments starten ==
-c -> api: POST /dokumente/{dokumentId}/kategorisierung
-api --> c: 200 OK
 
 == Kategorisierungsstatus des Dokuments abfragen ==
 loop
