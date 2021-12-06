@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unterlagen API
   description: Europace-API rund um hochgeladene Dokumente und freigegebene Unterlagen.
-  version: 2.0.14
+  version: 2.0.15
   termsOfService: https://docs.api.europace.de/nutzungsbedingungen/
 paths:
   /dokumente:
@@ -1482,13 +1482,6 @@ servers:
   - url: https://api.europace2.de/v1
 components:
   securitySchemes:
-    europace_oauth2_legacy:
-      type: oauth2
-      flows:
-        password:
-          tokenUrl: https://api.europace2.de/login
-          scopes:
-            API: Authorisation Scope für die gesamte API.
     europace_oauth2:
       $ref: 'https://raw.githubusercontent.com/europace/authorization-api/master/europace_security.yaml'
   schemas:
