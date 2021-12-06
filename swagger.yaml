@@ -63,8 +63,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -101,8 +99,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:lesen
       tags:
@@ -141,8 +137,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -180,8 +174,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -229,8 +221,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:lesen
       tags:
@@ -277,8 +267,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -315,8 +303,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -365,8 +351,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:lesen
       tags:
@@ -447,8 +431,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:lesen
       tags:
@@ -493,8 +475,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -549,8 +529,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:dokument:schreiben
       tags:
@@ -607,8 +585,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:lesen
       tags:
@@ -672,8 +648,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:lesen
       tags:
@@ -719,8 +693,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:schreiben
       tags:
@@ -786,8 +758,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:schreiben
       tags:
@@ -843,8 +813,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:lesen
       tags:
@@ -911,8 +879,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:lesen
       tags:
@@ -964,8 +930,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:lesen
       tags:
@@ -1020,8 +984,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:schreiben
       tags:
@@ -1078,8 +1040,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:schreiben
       tags:
@@ -1131,8 +1091,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:unterlage:freigeben
       tags:
@@ -1187,8 +1145,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:freigabe:lesen
       tags:
@@ -1233,8 +1189,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:freigabe:lesen
       tags:
@@ -1284,8 +1238,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:freigabe:lesen
       tags:
@@ -1334,8 +1286,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:freigabe:lesen
       tags:
@@ -1383,8 +1333,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:freigabe:lesen
       tags:
@@ -1433,8 +1381,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2:
             - unterlagen:freigabe:schreiben
       tags:
@@ -1473,8 +1419,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
-        - europace_oauth2_legacy:
-            - API
         - europace_oauth2: []
       tags:
         - Revision
