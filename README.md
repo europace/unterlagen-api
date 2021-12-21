@@ -9,7 +9,7 @@ Provide transfer of the customer proofs to the advisor and product provider.
 ![consumerLoan](https://img.shields.io/badge/-consumerLoan-lightblue)
 
 [![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://docs.api.europace.de/common/authentifizierung/)
-[![GitHub release](https://img.shields.io/github/v/release/europace/baufismart-dokumente-api)](https://github.com/europace/unterlagen-api/releases)
+[![GitHub release](https://img.shields.io/github/v/release/europace/unterlagen-api)](https://github.com/europace/unterlagen-api/releases)
 
 ## Documentation
 [![YAML](https://img.shields.io/badge/OAS-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html)
