@@ -1,26 +1,26 @@
 @startuml
-title die wichtigsten Interaktionen mit Seiten
+title the most important interactions with pages
 
 participant Client as c
-participant "Dokumente API" as api
+participant "Unterlagen API" as api
 
-== Metadaten aller Seiten eines Dokuments liefern ==
+== get metadata of all pages of a document ==
 c -> api: GET /dokumente/{dokumentId}/seiten
 api --> c: 200 OK
 
-== Metadaten aller Seiten eines Vorgangs liefern ==
+== get metadata of all pages of an operation ==
 c -> api: GET /dokumente/seiten vorgangsNummer
 api --> c: 200 OK
 
-== Seiten ins Archiv verschieben ==
+== move pages to archive ==
 c -> api: PUT /dokumente/archiv (seiten)
 api --> c: 200 OK
 
-== Seiten als geprüft markieren ==
+== mark pages as checked ==
 c -> api: PUT /dokumente/archiv (seiten)
 api --> c: 200 OK
 
-== Seiten zuordnen (Kategorie und Bezug setzen) ==
+== assign pages (category and set assignment) ==
 c -> api: PUT /dokumente/zuordnung/{kategorie} (bezug, seiten)
 api --> c: 200 OK
 
