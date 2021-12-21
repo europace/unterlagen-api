@@ -1,132 +1,66 @@
 # Unterlagen API
 
-### Scope der API
-Die Übertragung der Unterlagen des Verbrauchers zum Produktanbieter.
+Provide transfer of the customer proofs to the advisor and product provider.
 
-### wichtigste Use Cases
-API um die [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte) zu bedienen. Mit dieser API können folgende Aktionen durchgeführt werden:
-* Als Vertrieb kann ein Dokument am Vorgang hochgeladen werden und durch Starten der Kategorisierung in eine Unterlage umgewandelt werden.
-* Als Vertrieb können Unterlagen an Anträgen für Produktanbieter freigegeben werden.
-* Als Vertrieb und Produktanbieter können freigegebene Unterlagen an einem Antrag abgerufen werden.
-  * Hinweis zu Antragsdokumenten in Baufismart: nicht abrufbar sind Antragsdokumente wie z.b. die Kreditentscheidungsinformation oder die Selbstauskunft zum Antrag. Diese Dokumente können per https://github.com/europace/baufismart-antraege-api abgerufen werden.
+---- 
+![advisor](https://img.shields.io/badge/-advisor-lightblue)
+![loanProvider](https://img.shields.io/badge/-loanProvider-lightblue)
+![mortgageLoan](https://img.shields.io/badge/-mortgageLoan-lightblue)
+![consumerLoan](https://img.shields.io/badge/-consumerLoan-lightblue)
+
+[![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://docs.api.europace.de/common/authentifizierung/)
+[![GitHub release](https://img.shields.io/github/v/release/europace/unterlagen-api)](https://github.com/europace/unterlagen-api/releases)
+
+## Documentation
+[![YAML](https://img.shields.io/badge/OAS-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html)
+[![YAML](https://img.shields.io/badge/OAS-YAML-lightgrey)](https://raw.githubusercontent.com/europace/unterlagen-api/master/swagger.yaml)
+
+### Use Cases
+API to operate [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte). This API can be used to perform the following actions:
+* As sales, a document can be uploaded to the process and converted to a document by starting the categorization.
+* As sales, documents can be released on applications for loan providers.
+* As sales and product providers, released documents can be retrieved at the application.
+> Note: \
+> Application documents such as the "Kreditentscheidunginformation" or the "Selbstauskunft" cannot be retrieved.
+> These documents are available at [Antraege API](https://docs.api.europace.de/baufinanzierung/antraege/antraege-api/).
+
+## Quick Start
+To help you test our APIs and your use case as quickly as possible, we've put together a [Postman Collection](https://docs.api.europace.de/baufinanzierung/quickstart/) for you.
+
+### authentication
+Please use [![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://docs.api.europace.de/common/authentifizierung/authorization-api/) to get access to the API. The OAuth2 client requires the following scopes:
+
+| Scope                             | API Use case                      |
+|-----------------------------------|-----------------------------------|
+| `unterlagen:dokument:lesen`       | as advisor, get metadata and uploaded document. |
+| `unterlagen:dokument:schreiben`   | as advisor, upload documents and start categorization. Categorization is mandatory to release categorized documents to loan providers. Furthermore, updating metadata and deleting uploaded documents.|
+| `unterlagen:unterlage:lesen`      | as advisor, get categorization information and the assignment information in the case. Get Unterlagenanforderungen (list of needed proofs).|
+| `unterlagen:unterlage:schreiben`  | as advisor, changing the Unterlagenkategorie and assignment in the case (customer, mortgage, solution)|
+| `unterlagen:unterlage:freigeben`  | as advisor, share documents for an application|
+| `unterlagen:freigabe:lesen`       | as advisor and loan officer, retrieving the metadata and released documents for an application.|
+| `unterlagen:freigabe:schreiben`   | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).|
 
 
+## Dokumente
 
-
-### Inhaltsverzeichnis
-
-- [Getting Started](#getting-started)
-- [Upgrade Notes](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
-    + [Anpassung der Bezugstypen](https://github.com/europace/unterlagen-api/blob/master/UPGRADE-NOTES.md)
-- [Authentifizierung](#authentifizierung)
-- [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
-- [Dokumentation](#dokumentation)
-    + [API Spezifikation](#api-spezifikation)
-    + [Beispielaufruf](#beispielaufruf)
-    + [UML Sequenz-Diagramme](#uml-sequenz-diagramme)
-    + [JAVA Client generieren](#java-client-generieren)
-- [Dokument per URL bereitstellen](#dokument-per-url-bereitstellen)
-    + [1. Signed URL erstellen](#1-signed-url-erstellen)
-    + [2. Dokument in Transferspeicher hochladen](#2-dokument-in-transferspeicher-hochladen)
-    + [3. Dokument bereitstellen](#3-dokument-bereitstellen)
-- [Pushnachrichten für Freigaben erhalten](https://github.com/europace/unterlagen-api/blob/master/push-nachrichten/README.md)
-- [Kategorien](#kategorien)
-- [FAQs](#faqs)
-- [Kontakt](#kontakt)
-- [Nutzungsbedingungen](#nutzungsbedingungen)
-
-### Getting Started
-
-Erste Schritte zur Nutzung der Europace APIs sind [hier](https://docs.api.europace.de/baufinanzierung/schnellstart/) zu finden.
-
-### Authentifizierung
-Bitte benutze [![Authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://github.com/europace/authorization-api), um Zugang zur API bekommen.
-
-Um die API verwenden zu können, benötigt der OAuth2-Client folgende Scopes:
-
-| Scope                             | API Use case |
-|-----------------------------------|---------------------------------|
-| `unterlagen:dokument:lesen`       | als Vertrieb, Abruf der Metadaten und des Inhalts hochgeladener Dokumente. |
-| `unterlagen:dokument:schreiben`   | als Vertrieb, Hochladen von Dokumenten und Anstoßen der Kategorisierung. Die Kategorisierung muß angestoßen werden, damit nachfolgend die erkannten Unterlagen (kategorisierter Inhalt) freigegeben werden können. Weiterhin das Aktualisieren der Metadaten und Löschen hochgeladener Dokumente.|
-| `unterlagen:unterlage:lesen`      | als Vertrieb, Abruf der Unterlagen(Kategorisierungsinformationen) und der Zuordnungsinformationen zum Vorgang. Abruf der Unterlagenanforderungen.|
-| `unterlagen:unterlage:schreiben`  | als Vertrieb, Ändern der Unterlagenkategorie und Zuordnung im Vorgang (Antragsteller, Immobilie, Vorhaben)|
-| `unterlagen:unterlage:freigeben`  | als Vertrieb, Freigabe der Unterlagen für einen Antrag|
-| `unterlagen:freigabe:lesen`       | als Vertrieb und Kreditbetrieb, Abruf der Metadaten und des Inhalts freigegebener Unterlagen zu einem Antrag|
-| `unterlagen:freigabe:schreiben`   | als Kreditbetrieb, nach Verarbeitung der Pushbenachrichtigung einer neuen Freigabe, den Verarbeitungsstatus (Freigabestatus) setzen|
-
-### TraceId zur Nachverfolgbarkeit von Requests
-
-Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE 2 System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
-Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional,
-wenn er nicht gesetzt ist, wird eine ID vom System generiert.
-
-| Request Header Name | Beschreibung                    | Beispiel    |
-|---------------------|---------------------------------|-------------|
-| X-TraceId           | eindeutige Id für jeden Request | sys12345678 |
-
-### Dokumentation
-
-##### API Spezifikation
-
-Die API-Dokumentation kann [hier](https://europace.github.io/unterlagen-api/docs/swggerui.html) eingesehen werden.
-
-##### Beispielaufruf
-
-Abrufen der Metadaten zu allen Dokumenten des Vorgangs Z75226:
-
-```
-curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNummer=Z75226' \
---header 'Authorization: Bearer jwtToken'
-```
-
-##### UML Sequenz-Diagramme
-
-Beispiele für die Benutzung der API mit den wichtigsten Usecases.
-
+Overview of processing documents:
 ![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Dokument.puml&fmt=svg)
 
-![Seite](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Seite.puml&fmt=svg)
+### How to add documents to a case
+To work with documents, the unterlagen api needs a public reachable document ressource url. 
 
-![Unterlage](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Unterlage.puml&fmt=svg)
+If you have already a cloud ressource, you can directly use it like shown in step 3. If you have not, please use the europace temporary cloud storage `/dokumente/transferspeicher` which create a presigned url shown in step 1 and 2.
 
-![Sonstiges](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Sonstiges.puml&fmt=svg)
-
-##### JAVA Client generieren
-
-```
-java -jar swagger-codegen-cli-3.0.16.jar generate \
--i https://raw.githubusercontent.com/europace/unterlagen-api/master/swagger.yaml \
--l java -c codegen-config-file.json -o generated
-```
-
-Beispiel _codegen-config-file.json_:
-
-```
-{
-  "artifactId": "${CLIENT_ARTIFACT_NAME}",
-  "groupId": "${GROUP_ID}",
-  "library": "retrofit2",
-  "artifactVersion": "${ARTIFACT_VERSION}",
-  "dateLibrary": "java8"
-}
-```
-
-### Dokument per URL bereitstellen
-Dokumente können über eine frei zugängliche URL bereitgestellt werden. Eine solche URL kann wie in Schritt 3 gezeigt direkt verwendet werden. Alternativ kann über den Endpunkt
-/dokumente/transferspeicher ein temporärer Speicher erstellt werden, der eine signed URL generiert. Das wird in Schritt 1 und 2 demonstriert.
-
-#### Wichtig
-- Nach dem Hochladen muss das Dokument kategorisiert werden, damit es in der Unterlagenakte zu Verfügung steht und darüber letztlich an den Produktanbieter freigegeben werden kann. Hierzu muss der Endpunkt `https://api.europace2.de/v1/dokumente/{dokumentId}/kategorisierung` aufgerufen werden.
-- Die Dokumente müssen PDF- oder Bilddateien sein und eine Maximalgröße von 100 Megabyte nicht überschreiten.
-
-##### 1. Signed URL erstellen
-Anfrage
+#### How to use cloud storage (Tranferspeicher)
+##### Step 1: create presigned url
+example request:
 ```
 curl --location --request POST 'https://api.europace2.de/v1/dokumente/transferspeicher' \
 --header 'Authorization: Bearer jwtToken'
 ```
-Antwort
-```
+
+example response:
+``` json
 {
     "uploadData": {
         "url": "https://s3.eu-central-1.amazonaws.com/filecachestack-filecache8e64047f-1sk2qs95dbtr1",
@@ -144,11 +78,18 @@ Antwort
     "downloadUrl": "https://filecachestack-filecache8e64047f-1sk2qs95dbtr1.s3.eu-central-1.amazonaws.com/9a7ac6f2-2666-4d37-97e7-83ed8ba45184?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Credential&X-Amz-Date=20200221T123511Z&X-Amz-Expires=900&X-Amz-Security-Token=Security-Token&X-Amz-SignedHeaders=host"
 }
 ```
-Die erstellten Urls zum Hoch- und Runterladen sind 60 Minuten gültig und können mehrfach aufgerufen werden.
 
-##### 2. Dokument in Transferspeicher hochladen
-Anfrage
-```
+The created urls for uploading and downloading are valid for 60 minutes and can be accessed multiple times.
+
+##### Step 2: upload document file to europace cloud storage
+Requirements:
+* you can upload PDF and image files (JPG, PNG, tif). BMP and GIF did'nt work
+* the maximum file-size is 100 megabytes
+
+The request uses the data from "uploadData" from step 1. The "url" forms the target of the request, the elements of the "fields" list form parameters. The last parameter "file" is the path to the document to be uploaded.
+
+example request:
+``` sh
 curl --location --request POST 'https://s3.eu-central-1.amazonaws.com/filecachestack-filecache8e64047f-1sk2qs95dbtr1' \
 --header 'Content-Type: multipart/form-data; boundary=--------------------------198537869835208851079266' \
 --form 'key=9a7ac6f2-2666-4d37-97e7-83ed8ba45184' \
@@ -161,12 +102,20 @@ curl --location --request POST 'https://s3.eu-central-1.amazonaws.com/filecaches
 --form 'X-Amz-Signature=90758c081db7d8f3ac92c0c41a8becc308c074291994e6f48ea99321ba93c9ee' \
 --form 'file=@/Pfad/zum/Dokument.pdf'
 ```
-Bei der Anfrage werden die Daten aus "uploadData" aus Schritt 1 verwendet. Die "url" bildet das Ziel der Anfrage, die Elemente der Liste "fields" Form-Parameter. Als letzter Parameter
-wird unter "file" der Pfad zum hochzuladenden Dokument angegeben.
 
-##### 3. Dokument bereitstellen
-Anfrage
-```
+#### Step 3: deploy document to unterlagen api
+The freely accessible ressource url or the "downloadUrl" from  response of step 1 is used for deployment.
+
+Requirements:
+* API User has scope `unterlagen:dokument:schreiben`
+* document is freely accessible with ressource url
+
+Parameters:
+* anzeigename: filename in the frontend
+* vorgangsNummer: case id, where the document will add
+
+example request:
+``` sh
 curl --location --request POST 'https://api.europace2.de/v1/dokumente' \
 --header 'Authorization: Bearer jwtToken' \
 --header 'Content-Type: application/json' \
@@ -176,118 +125,177 @@ curl --location --request POST 'https://api.europace2.de/v1/dokumente' \
 	"url" : "https://filecachestack-filecache8e64047f-1sk2qs95dbtr1.s3.eu-central-1.amazonaws.com/9a7ac6f2-2666-4d37-97e7-83ed8ba45184?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Credential&X-Amz-Date=20200221T123511Z&X-Amz-Expires=900&X-Amz-Security-Token=Security-Token&X-Amz-SignedHeaders=host"
 }'
 ```
-Zur Bereitstellung wird die frei zugängliche bzw. die "downloadUrl" aus der Antwort aus Schritt 1 verwendet.
 
-### Kategorien
+### How to get documents of a case
 
-Die in der API verwendeten Kategorien sind als String abgebildet und können derzeit die unten stehenden Werte annehmen.
+Requirements:
+* API user has scope `unterlagen:dokument:lesen`
+* the case is accessible for API user
 
-Alle Kategorien können manuell gesetzt werden (sofern der Vorgang/Antrag entsprechende Unterlagen benötigt).
+Get metadata for all documents of case Z75226.
+Example request:
+```
+curl --location --request GET 'https://api.europace2.de/v1/dokumente/?vorgangsNummer=Z75226' \
+--header 'Authorization: Bearer access-token'
+```
+Example Response:
+``` json
+[
+    {
+        "id": "61c0c61a8b34173cc62e7896",
+        "schluessel": "149934dcb4937c9b8ac038b64a7515c966c5c78194c6dc7bd118eaea9f9fee7aa18c022a7c617d05b0b07e7105a8be251bef09029220761cde925089956286",
+        "anzeigename": "2016_Muster_Einkommensteuerbescheid",
+        "filename": "2016_Muster_Einkommensteuerbescheid.pdf",
+        "erstellungsdatum": "2021-12-20T19:06:18.756+01:00",
+        "type": "application/pdf",
+        "size": 126066,
+        "vorgangsNummer": "KX64LP",
+        "verschluesselt": false,
+        "kategorisierungsStatus": {
+            "status": "DONE"
+        },
+        "_links": {
+            "self": {
+                "href": "https://api.europace2.de/v1/dokumente/61c0c61a8b34173cc62e7896",
+                "type": "application/json"
+            },
+            "preview": {
+                "href": "https://api.europace2.de/v1/dokumente/61c0c61a8b34173cc62e7896/preview?page={page}{&size}",
+                "type": "image/jpeg"
+            },
+            "kategorisierung": {
+                "href": "https://api.europace2.de/v1/dokumente/61c0c61a8b34173cc62e7896/kategorisierung",
+                "type": "application/json"
+            },
+            "download": {
+                "href": "https://api.europace2.de/v1/dokumente/61c0c61a8b34173cc62e7896/content",
+                "type": "application/pdf"
+            },
+            "publicDownload": {
+                "href": "https://www.europace2.de/dokumentenverwaltung/download/?id=149934dcb4937c9b8ac038b64a7515c966c5c78194c6dc7bd118eaea9f9fee7aa18c022a7c617d05b0b07e7105a8be251bef09029220761cde925089956286",
+                "type": "application/pdf"
+            }
+        }
+    },
+    ...
+]
+```
 
-| ID        | Anzeigename           | Beschreibung  | Anmerkung |
-| :--- |:---| :---|:---|
-|Abgeschlossenheit|Abgeschlossenheitsbescheinigung|Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan|  |
-|Abloesevollmacht|Ablösevollmacht|Ablösevollmacht, Kreditwechselservice (KWS)|  |
-|Abtretung|Abtretungen|Abtretungsanzeige, Abtretung von Bausparverträgen, Bauträger-Finanzierungsbestätigungen, Gehaltsabtretungen, Kraftfahrzeuge (KFZ-Brief), Lebensversicherungen, Mietforderungen, Rückgewähransprüche|  |
-|Altersvorsorge|Private oder betriebliche Altersvorsorge|Renten- und Lebensversicherungen, Betriebsrenten und Pensionsfonds|  |
-|Anmeldebestaetigung|Anmeldebestätigung Meldeamt|Anmeldebestätigung vom Einwohnermeldeamt, Ersatzformulare, Geburts- und Sterbeurkunden, Erbschein, Erklärung zur Selbstnutzung|  |
-|Anschriftenaenderung|Formular Anschriftenänderung|Formular zur Anschriftenänderung, Ummeldung, Einzug|  |
-|Ausweis|Ausweisdokument, Reisepass|Personalausweis, Ausweisdokument, Reisepass, Aufenthaltstitel, Niederlassungserlaubnis|  |
-|BWA|BWA, Bilanz, GuV|BWA, Bilanz, GuV oder E/A-Rechnung, EÜR, Jahresabschluss, Überschuss, Gewinn/Verlust Rechnung, Handelsregisterauszug|  |
-|Bauantrag|Bauantrag, Bauanzeige|Antrag oder Anzeige für Baugenehmigung, Bauantrag, Baugesuch|  |
-|Baubeschreibung|Baubeschreibung|Baubeschreibung, Objektbeschreibung, Leistungsbeschreibung|  |
-|Baugenehmigung|Baugenehmigung|Baugenehmigung, Baustellenschild, Baubeginnanzeige, Anzeige über Baufertigstellung, Bauherrenerklärung, Gebührenbescheid, Genehmigungsfreistellung|  |
-|Baulasten|Baulastenverzeichnis|Auskunft aus dem oder Eintragung in das Baulastenverzeichnis, Altlasten|  |
-|Bauplan|Bauplan, Grundriss|Baupläne, Grundrisse, Ansichten, Entwürfe, Bauzeichnung, Schnitt|  |
-|Baurechtsauskunft|Baurechtliche Auskunft|Baurechtliche Auskunft, Einholung von Auskünften, Auflagen, Baurechtsnachweis, Wasserrecht, B-Plan Änderung|  |
-|Bauspar_Jahreskontoauszug|Jahreskontoauszug zum Bausparvertrag|Jahreskontoauszug, Eigenkapitalnachweis Bausparen|  |
-|Bausparantrag|Neuer Bausparantrag|Bausparen, Neuabschluss BSV Antrag|  |
-|Bausparvertrag|Bestehender Bausparvertrag|Bestehender Bausparvertrag, Zuteilungsschreiben, Bausparurkunde, Jahreskontoauszug|  |
-|Begleitschreiben|Begleitschreiben, Schriftverkehr|Anschreiben, Übergabeschreiben an Pooler, E-Mails, Informationen an Produktanbieter|  |
-|Beratungsdokument|Beratungsdokumente für Vertrieb|Checklisten, Deckblätter und Inhaltsverzeichnisse, andere Vertriebs-Dokumente|  |
-|Beratungsprotokoll|Beratungsprotokoll, Ratenschutz|Beratungsprotokolle, Beratungsdokumentation, Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV|  |
-|Berechnungen|Bauwerksberechnungen, Wohnfläche|Bauwerksberechnungen, Wohnfläche oder Kubatur, Umbauter Raum|  |
-|Besichtigungsauftrag|Auftrag Objektbesichtigung|Auftrag zur Objektbesichtigung, Gutachtenauftrag, Bewertungsauftrag|  |
-|Besichtigungsbericht|Besichtigungsbericht|Besichtigungsbericht, Besichtigungsprotokoll|  |
-|DVV_VVI|DVV / VVI|Darlehensvermittlungsvertrag und Vorvertragliche Informationen, §491a BGB|  |
-|Darlehensantrag|Immobiliendarlehens-Antrag oder -Vertrag|Antrag für Immobiliendarlehen, Prolongation, Zinsanpassung, Konditionsänderung, Baufinanzierungsantrag, Bestehender Altvertrag oder Angebot, auch von Fremdbanken, Drittmittel, Bestandsvertrag|  |
-|ESM|Europäisches Standardisiertes Merkblatt|Europäisches Standardisiertes Merkblatt, ESIS|  |
-|Ehevertrag|Ehevertrag|Gütertrennung, Ehevertrag, Heiratssurkunde|  |
-|Einkommensteuer|Einkommensteuer|Lohn- und Einkommensteuer, Steuererklärung, EkSt|  |
-|Einkommensteuerbescheid|Einkommensteuerbescheid|Einkommensteuerbescheid, EkSt Bescheid, Lohnsteuerbescheid, Festsetzung|  |
-|Elterngeldbescheid|Elterngeldbescheid|Elterngeldbescheid, Antrag auf Elterngeld, Baukindergeld|  |
-|Empfangsbestaetigung|Empfangsbestätigung|Empfangsbestätigung für ESIS, DVV/VVI, Merkblätter, u.a.|  |
-|Energieausweis|Energieausweis|Energieausweis EnEV, Gebäudepass|  |
-|Erbbaurechtsvertrag|Erbbaurechtsvertrag|Erbbaurechtsvertrag oder Erklärung zum Erbrecht|  |
-|Erlaeuterungsprotokoll|Erläuterungsprotokoll|Erläuterungsprotokoll, Erläuterungen zur Darlehensvermittlung|  |
-|Eroeffnung_Girokonto|Eröffnung Girokonto|Kontoeröffnungen Girokonto, Gehaltskonto|  |
-|Erschliessung|Erschließungsnachweis|Bescheinigung zu Erschließungsbeiträgen, Erschließungsbestätigung, Anliegerbeiträge, Wasser, Gas, Telekom|  |
-|Expose|Exposé|Exposé, Zusammenfassung|  |
-|Faelligkeitsmitteilung|Fälligkeitsmitteilung Notar|Fälligkeitsmitteilung des Notars|  |
-|Finanzierungsvorschlag|Finanzierungsvorschlag|unverbindlicher Finanzierungsvorschlag, Finanzierungsangebot des Vertriebes|  |
+## Pages, shares, categorization, assignments and preview images
+
+As follows you will get an overview of methods and model. For further details please take a look at the [Open API Specification](https://europace.github.io/unterlagen-api/docs/swggerui.html)
+### Pages
+![Seite](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Seite.puml&fmt=svg)
+
+### Shares and download application documents
+![Unterlage](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Unterlage.puml&fmt=svg)
+
+### Categorization, assignments and preview images
+![Sonstiges](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Sonstiges.puml&fmt=svg)
+
+
+## Table of categories
+
+The categories used in the API are mapped as strings and can currently take the values below.
+
+All categories can be set manually (if the Vorgang/Antrag requires a Unterlagen).
+
+|ID                         |Anzeigename                        |Beschreibung                                       |Description                                    | 
+|:------------------------- |:----------------------------------|:--------------------------------------------------|:----------------------------------------------|
+|Abgeschlossenheit          |Abgeschlossenheitsbescheinigung    |Abgeschlossenheitsbescheinigung, Abgeschlossenheitsbestätigung, Antrag auf Abgeschlossenheit, Aufteilungsplan|  |
+|Abloesevollmacht           |Ablösevollmacht                    |Ablösevollmacht, Kreditwechselservice (KWS)        |  |
+|Abtretung                  |Abtretungen                        |Abtretungsanzeige, Abtretung von Bausparverträgen, Bauträger-Finanzierungsbestätigungen, Gehaltsabtretungen, Kraftfahrzeuge (KFZ-Brief), Lebensversicherungen, Mietforderungen, Rückgewähransprüche|  |
+|Altersvorsorge             |Private oder betriebliche Altersvorsorge|Renten- und Lebensversicherungen, Betriebsrenten und Pensionsfonds|  |
+|Anmeldebestaetigung        |Anmeldebestätigung Meldeamt        |Anmeldebestätigung vom Einwohnermeldeamt, Ersatzformulare, Geburts- und Sterbeurkunden, Erbschein, Erklärung zur Selbstnutzung|  |
+|Anschriftenaenderung       |Formular Anschriftenänderung       |Formular zur Anschriftenänderung, Ummeldung, Einzug|  |
+|Ausweis                    |Ausweisdokument, Reisepass         |Personalausweis, Ausweisdokument, Reisepass, Aufenthaltstitel, Niederlassungserlaubnis|  |
+|BWA                        |BWA, Bilanz, GuV                   |BWA, Bilanz, GuV oder E/A-Rechnung, EÜR, Jahresabschluss, Überschuss, Gewinn/Verlust Rechnung, Handelsregisterauszug|  |
+|Bauantrag                  |Bauantrag, Bauanzeige              |Antrag oder Anzeige für Baugenehmigung, Bauantrag, Baugesuch|  |
+|Baubeschreibung            |Baubeschreibung                    |Baubeschreibung, Objektbeschreibung, Leistungsbeschreibung|  |
+|Baugenehmigung             |Baugenehmigung                     |Baugenehmigung, Baustellenschild, Baubeginnanzeige, Anzeige über Baufertigstellung, Bauherrenerklärung, Gebührenbescheid, Genehmigungsfreistellung|  |
+|Baulasten                  |Baulastenverzeichnis               |Auskunft aus dem oder Eintragung in das Baulastenverzeichnis, Altlasten|  |
+|Bauplan                    |Bauplan, Grundriss                 |Baupläne, Grundrisse, Ansichten, Entwürfe, Bauzeichnung, Schnitt|  |
+|Baurechtsauskunft          |Baurechtliche Auskunft             |Baurechtliche Auskunft, Einholung von Auskünften, Auflagen, Baurechtsnachweis, Wasserrecht, B-Plan Änderung|  |
+|Bauspar_Jahreskontoauszug  |Jahreskontoauszug zum Bausparvertrag|Jahreskontoauszug, Eigenkapitalnachweis Bausparen |  |
+|Bausparantrag              |Neuer Bausparantrag                |Bausparen, Neuabschluss BSV Antrag                 |  |
+|Bausparvertrag             |Bestehender Bausparvertrag         |Bestehender Bausparvertrag, Zuteilungsschreiben, Bausparurkunde, Jahreskontoauszug|  |
+|Begleitschreiben           |Begleitschreiben, Schriftverkehr   |Anschreiben, Übergabeschreiben an Pooler, E-Mails, Informationen an Produktanbieter|  |
+|Beratungsdokument          |Beratungsdokumente für Vertrieb    |Checklisten, Deckblätter und Inhaltsverzeichnisse, andere Vertriebs-Dokumente|  |
+|Beratungsprotokoll         |Beratungsprotokoll, Ratenschutz    |Beratungsprotokolle, Beratungsdokumentation, Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV|  |
+|Berechnungen               |Bauwerksberechnungen, Wohnfläche   |Bauwerksberechnungen, Wohnfläche oder Kubatur, Umbauter Raum|  |
+|Besichtigungsauftrag       |Auftrag Objektbesichtigung         |Auftrag zur Objektbesichtigung, Gutachtenauftrag, Bewertungsauftrag|  |
+|Besichtigungsbericht       |Besichtigungsbericht               |Besichtigungsbericht, Besichtigungsprotokoll       |  |
+|DVV_VVI                    |DVV / VVI                          |Darlehensvermittlungsvertrag und Vorvertragliche Informationen, §491a BGB|  |
+|Darlehensantrag            |Immobiliendarlehens-Antrag oder -Vertrag|Antrag für Immobiliendarlehen, Prolongation, Zinsanpassung, Konditionsänderung, Baufinanzierungsantrag, Bestehender Altvertrag oder Angebot, auch von Fremdbanken, Drittmittel, Bestandsvertrag|  |
+|ESM                        |Europäisches Standardisiertes Merkblatt|Europäisches Standardisiertes Merkblatt, ESIS  |  |
+|Ehevertrag                 |Ehevertrag                         |Gütertrennung, Ehevertrag, Heiratssurkunde         |  |
+|Einkommensteuer            |Einkommensteuer                    |Lohn- und Einkommensteuer, Steuererklärung, EkSt   |  |
+|Einkommensteuerbescheid    |Einkommensteuerbescheid            |Einkommensteuerbescheid, EkSt Bescheid, Lohnsteuerbescheid, Festsetzung|  |
+|Elterngeldbescheid         |Elterngeldbescheid                 |Elterngeldbescheid, Antrag auf Elterngeld, Baukindergeld|  |
+|Empfangsbestaetigung       |Empfangsbestätigung                |Empfangsbestätigung für ESIS, DVV/VVI, Merkblätter, u.a.|  |
+|Energieausweis             |Energieausweis                     |Energieausweis EnEV, Gebäudepass                   |  |
+|Erbbaurechtsvertrag        |Erbbaurechtsvertrag                |Erbbaurechtsvertrag oder Erklärung zum Erbrecht    |  |
+|Erlaeuterungsprotokoll     |Erläuterungsprotokoll              |Erläuterungsprotokoll, Erläuterungen zur Darlehensvermittlung|  |
+|Eroeffnung_Girokonto       |Eröffnung Girokonto                |Kontoeröffnungen Girokonto, Gehaltskonto           |  |
+|Erschliessung              |Erschließungsnachweis              |Bescheinigung zu Erschließungsbeiträgen, Erschließungsbestätigung, Anliegerbeiträge, Wasser, Gas, Telekom|  |
+|Expose                     |Exposé                             |Exposé, Zusammenfassung                            |  |
+|Faelligkeitsmitteilung     |Fälligkeitsmitteilung Notar        |Fälligkeitsmitteilung des Notars                   |  |
+|Finanzierungsvorschlag     |Finanzierungsvorschlag             |unverbindlicher Finanzierungsvorschlag, Finanzierungsangebot des Vertriebes|  |
 |Finanzierungsvorschlag_Antwort|Antwortschreiben zum Finanzierungsvorschlag|Antwortschreiben zum Finanzierungsvorschlag|  |
-|Finanzierungszusage|Finanzierungszusage|Finanzierungszusage - auch vorläufig, Drittmittel-Bestätigung, Kreditbestätigung, Förderzusage, Genehmigungsschreiben, Darlehenszusage, Grundsatzzusage, Vollvalutierungsbestätigung|  |
-|Foerderdarlehen|Förderdarlehen, -Antrag, -Zusage|Neuer oder Bestehender Antrag, Vertrag oder Angebot für Förderdarlehen, Landesbanken, Investitionsbanken, Förderzusage|  |
-|Freistellungsvereinbarung|Freistellungsvereinbarung Bauträger|Freistellungsvereinbarung Bauträger, Freistellungserklärung, Freigabeversprechen, §3 MaBV, Globalfreistellung|  |
-|Gebaeudeversicherung|Gebäudeversicherung|Jahresrechnung, Nachtrag oder Vertrag zur Wohngebäudeversicherung, Nachweis des Versicherungsschutzes, Rohbau- oder Feuerversicherung, Haftpflicht|  |
-|Gehaltsabrechnung|Lohn/Gehaltsabrechnung|Lohn/Gehaltsabrechnung oder Bezügemitteilung, Rentenabrechnung, Sold, Einkommensnachweis|  |
-|Grundbuchauszug|Grundbuchauszug|Grundbuchauszug, Auskunftseinwilligung, Eintragungsbekanntmachung, Erbbaugrundbuch, Mitteilungen vom Grundbuchamt/Amtsgericht|  |
-|Grunderwerbsteuer|Grunderwerbsteuer, Grundsteuer|Steuerbescheid zur Grunderwerbsteuer, Grundsteuerbescheid|  |
-|Grundschuldbestellung|Grundschuldbestellung oder Löschung|Grundschuldbestellungsurkunde oder Grundschuldbrief, vollstreckbar, Aufgebotsverfahren, Löschungsbewilligung, Pfandfreigabe, Treuhandauftrag, Schuldanerkenntnis, Schuldversprechen|  |
-|Inkasso|Kündigung, Forderung|Inkasso, Mahnung, Forderung, Kündigung, §489 BGB, Vorfälligkeit, Zwangsversteigerung|  |
-|Kaufvertrag|Notarieller Immobilien-Kaufvertrag|Notarieller Kaufvertrag (Urkunde oder Entwurf), Anlagen und Begleitnotizen zum Kaufvertrag, Tauschvertrag, Schenkungsurkunde, Übertragungsvertrag, Kaufabsichtserklärung|  |
-|KfW_Antrag|KfW Antrag|Antrag KfW Fördermittel, Wohneigentumsförderung, inkl. KfW Beiblatt zur Baufinanzierung, Einwilligungserklärung|  |
-|KfW_Antragsbestaetigung|KfW Bestätigung zum Antrag (online)|Formular KfW Bestätigung zum Antrag, Onlinebestätigung|  |
+|Finanzierungszusage        |Finanzierungszusage                |Finanzierungszusage - auch vorläufig, Drittmittel-Bestätigung, Kreditbestätigung, Förderzusage, Genehmigungsschreiben, Darlehenszusage, Grundsatzzusage, Vollvalutierungsbestätigung|  |
+|Foerderdarlehen            |Förderdarlehen, -Antrag, -Zusage   |Neuer oder Bestehender Antrag, Vertrag oder Angebot für Förderdarlehen, Landesbanken, Investitionsbanken, Förderzusage|  |
+|Freistellungsvereinbarung  |Freistellungsvereinbarung Bauträger|Freistellungsvereinbarung Bauträger, Freistellungserklärung, Freigabeversprechen, §3 MaBV, Globalfreistellung|  |
+|Gebaeudeversicherung       |Gebäudeversicherung                |Jahresrechnung, Nachtrag oder Vertrag zur Wohngebäudeversicherung, Nachweis des Versicherungsschutzes, Rohbau- oder Feuerversicherung, Haftpflicht|  |
+|Gehaltsabrechnung          |Lohn/Gehaltsabrechnung             |Lohn/Gehaltsabrechnung oder Bezügemitteilung, Rentenabrechnung, Sold, Einkommensnachweis|  |
+|Grundbuchauszug            |Grundbuchauszug                    |Grundbuchauszug, Auskunftseinwilligung, Eintragungsbekanntmachung, Erbbaugrundbuch, Mitteilungen vom Grundbuchamt/Amtsgericht|  |
+|Grunderwerbsteuer          |Grunderwerbsteuer, Grundsteuer     |Steuerbescheid zur Grunderwerbsteuer, Grundsteuerbescheid|  |
+|Grundschuldbestellung      |Grundschuldbestellung oder Löschung|Grundschuldbestellungsurkunde oder Grundschuldbrief, vollstreckbar, Aufgebotsverfahren, Löschungsbewilligung, Pfandfreigabe, Treuhandauftrag, Schuldanerkenntnis, Schuldversprechen|  |
+|Inkasso                    |Kündigung, Forderung               |Inkasso, Mahnung, Forderung, Kündigung, §489 BGB, Vorfälligkeit, Zwangsversteigerung|  |
+|Kaufvertrag                |Notarieller Immobilien-Kaufvertrag |Notarieller Kaufvertrag (Urkunde oder Entwurf), Anlagen und Begleitnotizen zum Kaufvertrag, Tauschvertrag, Schenkungsurkunde, Übertragungsvertrag, Kaufabsichtserklärung|  |
+|KfW_Antrag                 |KfW Antrag                         |Antrag KfW Fördermittel, Wohneigentumsförderung, inkl. KfW Beiblatt zur Baufinanzierung, Einwilligungserklärung|  |
+|KfW_Antragsbestaetigung    |KfW Bestätigung zum Antrag (online)|Formular KfW Bestätigung zum Antrag, Onlinebestätigung|  |
 |KfW_Durchfuehrungsbestaetigung|KfW Bestätigung nach Durchführung|Formular KfW Bestätigung nach Durchführung, Durchführungsbestätigung|  |
-|Kontoauszug|Kontoauszug, Finanzstatus, Eigenkapital|Kontoauszug zu Girokonten, Kreditkarten, Depots, Portfolios oder Darlehen, Finanzstatus, Kreditkartenumsatz, Schenkungen, Eigenkapitalnachweis|  |
-|Kostenaufstellung|Kostenaufstellung|Aufstellung der Bau- oder Modernisierungskosten, Eigenleistungen, Angebote, Kostenvoranschlag, Reservierungsvereinbarung|  |
-|Krankenversicherungsnachweis|Krankenversicherungsnachweis|Nachweis zur Privaten Krankenversicherung, Änderungsmitteilung, Bescheinigung, Versicherungsschein|  |
-|Leerseite|Leerseite|Seite ohne Inhalt|  |
-|Legitimationspruefung|Formular Legitimationsprüfung|Legitimationsprüfung, Identitätsprüfung|  |
-|Lohnsteuerbescheinigung|Lohnsteuerbescheinigung|Ausdruck der elektronischen Lohnsteuerbescheinigung|  |
-|Mietvertrag|Mietvertrag|Mietvertrag, Vermietungsbestätigung, Pacht|  |
-|Nachrangdarlehen|Privatdarlehen, -Antrag, -Zusage|Antrag, Angebot für nachrangige Darlehen, Kreditbestätigung Nachrangdarlehen, Privatdarlehenvertrag|  |
-|Objektfotos|Objektfotos|Objektfotos, Bilder, Photos (innen, außen oder Baufortschritt)|  |
-|Plankarten|Flurkarte, Lageplan|Flurkarte, Lageplan, Bebauungsplan, Fortführungserklärung, BORIS, Bodenrichtwerte, Liegeschaftskarte, Katasterkarte|  |
-|Privatkreditvertrag|Ratenkreditvertrag|Privatkredit, Ratenkreditvertrag oder -Antrag, Neuabschluss und Ablösung von Krediten, Bestehende und Abzulösende Konsumkredite, Leasing, Ratenschutz, RSV|  |
-|Ratenschutzversicherung|Ratenschutz-, Restschuldversicherung| Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV|  |
-|Rechnung_Quittung|Rechnungen, Verbrauchsgüterkaufvertrag|Rechnungen zu Bauvorhaben oder Nebenkosten, Betriebskosten, Notarkosten, Erschließungsbeiträge, Maklergebühren, Kaufvertrag für Konsumgüter und Autos|  |
-|Rentenbescheid|Rentenbescheid|Rentenbescheid oder Rentenanpassung der gesetzlichen Altersrente|  |
-|Renteninformation|Renteninformation|Renteninformation zur zukünftigen gesetzlichen Altersrente|  |
-|Saldenmitteilung|Ablöseschreiben, Saldenmitteilung|Saldenmitteilung, Zinsbescheinigung, Valutenbescheinigung, Ablöseinformation|  |
-|Scheidungsbeschluss|Scheidungsbeschluss|Scheidungsurteil oder Beschluss|  |
-|Scheidungsfolgevereinbarung|Scheidungsfolgevereinbarung|Notarielle Scheidungsfolgevereinbarung (Urkunde oder Entwurf), Trennungsvereinbarung|  |
-|Selbstauskunft|Selbstauskunft, Schufa|Selbstauskunft, Erfassungsbogen, Datenschutzklausel, Einwilligung zu Auskünften und Werbung, Schufa, Datenschutzhinweise, Bankauskunft|  |
-|SEPA_Mandat|SEPA Lastschriftmandat|SEPA-Lastschriftmandat|  |
-|Sicherungsvereinbarung|Sicherungsvereinbarung für Grundschuld|Formular Sicherungsvereinbarung für Grundschuld, Abtretung der Rückgewähransprüche|  |
-|Sonstige_Einnahmen|Sonstige Einnahmen|Sonstige Einnahmen (Waisenrente, Krankengeld, Pflegegeld, Einspeisevergütung, u.a.)|  |
-|Teilungserklaerung|Notarielle Teilungserklärung|Notarielle Teilungserklärung (Urkunde oder Entwurf), Anlagen (Pläne, Verwaltervertrag, Mieteraufstellung, Eigentümerversammlung, Wirtschaftsplan), Neufassung, Abschrift, Vollmacht|  |
-|Uebergabeprotokoll|Übergabeprotokoll|Übergabeprotokoll an Produktanbieter|  |
-|Ueberweisungsbeleg|Überweisungsbeleg|Überweisungsbeleg oder Kontoumsatzdetails, Einzahlungsbeleg, Buchungsnachweis, Ausdruck Online Banking|  |
-|Unterhaltsnachweis|Unterhaltsnachweis|Unterhaltsnachweis, Beschluss, Urkunde, amtliches Schreiben, Jugendamt, persönliche Erklärung zum Unterhalt, Kindergeldbescheid|  |
-|Unterlage_Arbeitgeber|Arbeitgeber Unterlagen|Dokument vom Arbeitgeber, Arbeitsvertrag, Bescheinigung Elternzeit, Ernennungsurkunde, Weiterbeschäftigung|  |
-|Vermittlerabfrage|Vermittlerabfrage|Vermittlerabfrage|  |
-|Vermoegensuebersicht|Vermögensübersicht|Vermögensaufstellung, Vermögensübersicht, Immobilienaufstellung|  |
-|Werkvertrag|Werkvertrag, Bauvertrag|Werkvertrag, Bauvertrag, Bauwerkvertrag, Architektenvertrag, Bauträgervertrag, Freistellung Steuerabzug §48 EStG|  |
-|Wertgutachten|Wertgutachten|Vollgutachten, Kurzgutachten, Objektbewertung|  |
-|Wertindikation|Wertindikation|Formular Wertindikation Sprengnetter|  |
-|Zahlungsabruf|Zahlungsabruf und Baufortschritt|Zahlungsabruf, Baufortschrittsanzeige, Bautenstandsbericht, Bauprotokoll, Auszahlungsanweisung, Verwendungsnachweis, Erklärung zur Sofortigen Auszahlung|  |
-|Zahlungsplan|Zahlungsplan|Zahlungsplan, Zahlplan, Teilzahlungen, Auszahlungsplan|  |
-|Zustellungsvollmacht|Zustellungsvollmacht|Formular Zustellungsvollmacht|  |
-|Zustimmungserklaerung|Zustimmungserklärung|Zustimmung zur Darlehensaufnahme, Besicherung, Zustimmung des Ehepartners, Objektwechsel, Rangrücktritt, Stillhalteerklärung|  |
-|Sonstiges|Sonstiges| | ist niemals Ergebnis der automatischen Erkennung|
+|Kontoauszug                |Kontoauszug, Finanzstatus, Eigenkapital|Kontoauszug zu Girokonten, Kreditkarten, Depots, Portfolios oder Darlehen, Finanzstatus, Kreditkartenumsatz, Schenkungen, Eigenkapitalnachweis|  |
+|Kostenaufstellung          |Kostenaufstellung                  |Aufstellung der Bau- oder Modernisierungskosten, Eigenleistungen, Angebote, Kostenvoranschlag, Reservierungsvereinbarung|  |
+|Krankenversicherungsnachweis|Krankenversicherungsnachweis      |Nachweis zur Privaten Krankenversicherung, Änderungsmitteilung, Bescheinigung, Versicherungsschein|  |
+|Leerseite                  |Leerseite                          |Seite ohne Inhalt                                  |  |
+|Legitimationspruefung      |Formular Legitimationsprüfung      |Legitimationsprüfung, Identitätsprüfung            |  |
+|Lohnsteuerbescheinigung    |Lohnsteuerbescheinigung            |Ausdruck der elektronischen Lohnsteuerbescheinigung|  |
+|Mietvertrag|Mietvertrag    |Mietvertrag, Vermietungsbestätigung, Pacht                                             |  |
+|Nachrangdarlehen           |Privatdarlehen, -Antrag, -Zusage   |Antrag, Angebot für nachrangige Darlehen, Kreditbestätigung Nachrangdarlehen, Privatdarlehenvertrag|  |
+|Objektfotos                |Objektfotos                        |Objektfotos, Bilder, Photos (innen, außen oder Baufortschritt)|  |
+|Plankarten                 |Flurkarte, Lageplan                |Flurkarte, Lageplan, Bebauungsplan, Fortführungserklärung, BORIS, Bodenrichtwerte, Liegeschaftskarte, Katasterkarte|  |
+|Privatkreditvertrag        |Ratenkreditvertrag|Privatkredit, Ratenkreditvertrag oder -Antrag, Neuabschluss und Ablösung von Krediten, Bestehende und Abzulösende Konsumkredite, Leasing, Ratenschutz, RSV|  |
+|Ratenschutzversicherung    |Ratenschutz-, Restschuldversicherung| Ratenschutzversicherung, Restschuldversicherung, Restkreditversicherung, RSV|  |
+|Rechnung_Quittung          |Rechnungen, Verbrauchsgüterkaufvertrag|Rechnungen zu Bauvorhaben oder Nebenkosten, Betriebskosten, Notarkosten, Erschließungsbeiträge, Maklergebühren, Kaufvertrag für Konsumgüter und Autos|  |
+|Rentenbescheid             |Rentenbescheid                     |Rentenbescheid oder Rentenanpassung der gesetzlichen Altersrente|  |
+|Renteninformation          |Renteninformation                  |Renteninformation zur zukünftigen gesetzlichen Altersrente|  |
+|Saldenmitteilung           |Ablöseschreiben, Saldenmitteilung  |Saldenmitteilung, Zinsbescheinigung, Valutenbescheinigung, Ablöseinformation|  |
+|Scheidungsbeschluss        |Scheidungsbeschluss                |Scheidungsurteil oder Beschluss                    |  |
+|Scheidungsfolgevereinbarung|Scheidungsfolgevereinbarung        |Notarielle Scheidungsfolgevereinbarung (Urkunde oder Entwurf), Trennungsvereinbarung|  |
+|Selbstauskunft             |Selbstauskunft, Schufa             |Selbstauskunft, Erfassungsbogen, Datenschutzklausel, Einwilligung zu Auskünften und Werbung, Schufa, Datenschutzhinweise, Bankauskunft|  |
+|SEPA_Mandat                |SEPA Lastschriftmandat             |SEPA-Lastschriftmandat                             |  |
+|Sicherungsvereinbarung     |Sicherungsvereinbarung für Grundschuld|Formular Sicherungsvereinbarung für Grundschuld, Abtretung der Rückgewähransprüche|  |
+|Sonstige_Einnahmen         |Sonstige Einnahmen                 |Sonstige Einnahmen (Waisenrente, Krankengeld, Pflegegeld, Einspeisevergütung, u.a.)|  |
+|Teilungserklaerung         |Notarielle Teilungserklärung       |Notarielle Teilungserklärung (Urkunde oder Entwurf), Anlagen (Pläne, Verwaltervertrag, Mieteraufstellung, Eigentümerversammlung, Wirtschaftsplan), Neufassung, Abschrift, Vollmacht|  |
+|Uebergabeprotokoll         |Übergabeprotokoll                  |Übergabeprotokoll an Produktanbieter               |  |
+|Ueberweisungsbeleg         |Überweisungsbeleg                  |Überweisungsbeleg oder Kontoumsatzdetails, Einzahlungsbeleg, Buchungsnachweis, Ausdruck Online Banking|  |
+|Unterhaltsnachweis         |Unterhaltsnachweis                 |Unterhaltsnachweis, Beschluss, Urkunde, amtliches Schreiben, Jugendamt, persönliche Erklärung zum Unterhalt, Kindergeldbescheid|  |
+|Unterlage_Arbeitgeber      |Arbeitgeber Unterlagen             |Dokument vom Arbeitgeber, Arbeitsvertrag, Bescheinigung Elternzeit, Ernennungsurkunde, Weiterbeschäftigung|  |
+|Vermittlerabfrage          |Vermittlerabfrage                  |Vermittlerabfrage                                  |  |
+|Vermoegensuebersicht       |Vermögensübersicht                 |Vermögensaufstellung, Vermögensübersicht, Immobilienaufstellung|  |
+|Werkvertrag                |Werkvertrag, Bauvertrag|Werkvertrag, Bauvertrag, Bauwerkvertrag, Architektenvertrag, Bauträgervertrag, Freistellung Steuerabzug §48 EStG|  |
+|Wertgutachten              |Wertgutachten                      |Vollgutachten, Kurzgutachten, Objektbewertung      |  |
+|Wertindikation             |Wertindikation                     |Formular Wertindikation Sprengnetter               |  |
+|Zahlungsabruf              |Zahlungsabruf und Baufortschritt   |Zahlungsabruf, Baufortschrittsanzeige, Bautenstandsbericht, Bauprotokoll, Auszahlungsanweisung, Verwendungsnachweis, Erklärung zur Sofortigen Auszahlung|  |
+|Zahlungsplan               |Zahlungsplan                       |Zahlungsplan, Zahlplan, Teilzahlungen, Auszahlungsplan|  |
+|Zustellungsvollmacht       |Zustellungsvollmacht               |Formular Zustellungsvollmacht                      |  |
+|Zustimmungserklaerung      |Zustimmungserklärung               |Zustimmung zur Darlehensaufnahme, Besicherung, Zustimmung des Ehepartners, Objektwechsel, Rangrücktritt, Stillhalteerklärung|  |
+|Sonstiges                  |Sonstiges                          |note: is never the result of automatic detection   |  |
 
-### FAQs
 
-API-Übergreifende FAQs: https://docs.api.europace.de/faq/
+## Support
+If you have any questions or problems, please contact helpdesk@europace2.de.
 
-#### Welche Dateitypen unterstützt die API?
-* Der Vertrieb kann PDF- und Bilder-Dateien (JPG, PNG, tif) hochladen. BMP und GIF funktionieren nicht.
-* Auf der Produktanbieter-Seite (Unterlagen an einem Antrag) wird alles in PDF umgewandelt
-
-### Kontakt
-
-Kontakt für Support: devsupport@europace2.de
-
-### Nutzungsbedingungen
-Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt.
+## Terms of use
+The APIs are provided under the following [Terms of Use](https://docs.api.europace.de/terms/).

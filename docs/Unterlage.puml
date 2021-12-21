@@ -1,30 +1,30 @@
 @startuml
-title die wichtigsten Interaktionen mit freigebenen Unterlagen
+title the most important interactions with shared documents
 
 participant Client as c
-participant "Dokumente API" as api
+participant "Unterlagen API" as api
 
-== Freigabe von Unterlagen ==
+== sharing of documents ==
 c -> api: POST /dokumente/freigabe (antragsNummer, seiten)
 api --> c: 201 CREATED
 
-== Metadaten zu Unterlagen abrufen ==
+== get metadata of document ==
 c -> api: GET /dokumente/freigabe/{id}
 api --> c: 200 OK
 
-== Metadaten zu allen Unterlagen eines Antrags abrufen ==
+== get metadata for all documents in an application ==
 c -> api: GET /dokumente/freigabe (antragsNummer)
 api --> c: 200 OK
 
-== Inhalt einer Unterlage abrufen ==
+== get the contents of a document ==
 c -> api: GET /dokumente/freigabe/{id}/content
 api --> c: 200 OK
 
-== Inhalt aller Unterlage eines Antrags abrufen ==
+== get content of all documents of an application ==
 c -> api: GET /dokumente/freigaben/content (antragsNummer)
 api --> c: 200 OK
 
-== Abrufstatus einer Unterlage ermitteln\nIst die Unterlage beim Produktanbieter angekommen? ==
+== get the retrieval state of a document \n Has the document arrived at the product provider? ==
 c -> api: GET /dokumente/freigabe/{id}/status
 api --> c: 200 OK
 

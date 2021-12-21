@@ -1,18 +1,18 @@
 @startuml
-title weitere Interaktionen mit der API
+title other interactions with the API
 
 participant Client as c
-participant "Dokumente API" as api
+participant "Unterlagen API" as api
 
-== Preview einer Seite als JPEG abrufen ==
+== preview of a page as JPEG ==
 c -> api: GET /dokumente/{dokumentId}/preview (dokumentId, seite, [small|large])
 api --> c: 200 OK
 
-== mögliche Zuordnungen (Kategorie, Bezug) für Vorgang/Antrag ermitteln ==
+== get determine possible assignments (category, reference)  \n for case/application ==
 c -> api: GET /dokumente/zuordnungen (vorgangsNummer, antragsNummer)
 api --> c: 200 OK
 
-== Synchron bleiben\naktuelle Revisionen der Resourcen ermitteln\n die Resourcen Dokument und Seite führen eine Revision\nhat sie sich geändert, so kann dies Trigger für eine erneute Synchronisierung sein ==
+== Stay synchronous\determine current revisions of \n resources\the document and page resources keep a \n revision\has it changed, this can be a trigger for  \n resynchronization ==
 c -> api: GET /dokumente/revision
 api --> c: 200 OK
 
