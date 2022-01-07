@@ -1761,6 +1761,12 @@ components:
           $ref: "#/components/schemas/Produktanbieter"
         bezug:
           $ref: "#/components/schemas/Bezugskategorie"
+        liegtVor:
+          type: boolean
+          description: is true if this needed proof is set to be available by the advisor.
+        ausgeblendet:
+          type: boolean
+          description: is true if the needed proof is hided by the advisor.
     Produktanbieter:
       type: object
       description: loan provider
