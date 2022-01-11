@@ -25,7 +25,7 @@ API to operate [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sec
 > These documents are available at [Antraege API](https://docs.api.europace.de/baufinanzierung/antraege/antraege-api/).
 
 ## Quick Start
-To help you test our APIs and your use case as quickly as possible, we've put together a [Postman Collection](https://docs.api.europace.de/baufinanzierung/quickstart/) for you.
+To help you test our APIs and your use case as quickly as possible, we've put together a [Postman Collection](https://docs.api.europace.de/common/quickstart/) for you.
 
 ### authentication
 Please use [![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://docs.api.europace.de/common/authentifizierung/authorization-api/) to get access to the API. The OAuth2 client requires the following scopes:
