@@ -1,6 +1,6 @@
 # Unterlagen API
 
-Provide transfer of the customer proofs to the advisor and product provider.
+Provide transfer of the customer proofs to the advisor and loan provider.
 
 ---- 
 ![advisor](https://img.shields.io/badge/-advisor-lightblue)
@@ -19,7 +19,7 @@ Provide transfer of the customer proofs to the advisor and product provider.
 API to operate [digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte). This API can be used to perform the following actions:
 * As sales, a document can be uploaded to the process and converted to a document by starting the categorization.
 * As sales, documents can be released on applications for loan providers.
-* As sales and product providers, released documents can be retrieved at the application.
+* As sales and loan providers, released documents can be retrieved at the application.
 > Note: \
 > Application documents such as the "Kreditentscheidunginformation" or the "Selbstauskunft" cannot be retrieved.
 > These documents are available at [Antraege API](https://docs.api.europace.de/baufinanzierung/antraege/antraege-api/).
