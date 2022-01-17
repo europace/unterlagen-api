@@ -717,6 +717,61 @@ paths:
             - unterlagen:unterlage:schreiben
       tags:
         - Seiten
+  /dokumente/zuordnungen:
+    get:
+      deprecated: true
+      summary: deprecated - bitte /dokumente/moeglichezuordnungen verwenden --- Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten
+        erhalten.
+      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur
+        Verfügung.
+      operationId: getMoeglicheZuordnungenAlt
+      parameters:
+        - name: vorgangsNummer
+          in: query
+          description: Vorgangsnummer
+          required: true
+          schema:
+            type: string
+        - name: antragsNummer
+          in: query
+          description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die
+            Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die
+            aktuellen Vorgangsdaten.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MoeglicheZuordnungAlt"
+        "400":
+          description: Fehler in den Eingabedaten.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Vorgang nicht gefunden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unerwarteter Fehler
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - europace_oauth2:
+            - unterlagen:unterlage:lesen
+      tags:
+        - Seiten
   /dokumente/moeglichezuordnungen:
     get:
       summary: list of all possible assignments (category and reference) of pages
@@ -1592,6 +1647,8 @@ components:
           deprecated: true
           description: deprecated - please use zuordnung --- the category of the share
           type: string
+        bezug:
+          $ref: "#/components/schemas/BezugsobjektAlt"
         zuordnung:
           $ref: "#/components/schemas/ZuordnungInUnterlage"
         freigebender:
@@ -1660,6 +1717,28 @@ components:
             name:
               type: string
               description: name of the document in the frontend
+    BezugsobjektAlt:
+      deprecated: true
+      description: deprecated - bitte Knoten zuordnung statt bezug verwenden - zu beachten ist, dass der BezugsTyp im neuen Knoten immer klein geschrieben wird (angeglichen an den Standard in der API)
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id des Bezugsobjekts (innerhalb eines Antrags eindeutig).
+          example: Immobilie:4711
+        typ:
+          type: string
+          description: Typ des Bezugsobjekts.
+          example: Immobilie
+        name:
+          type: string
+          description: Name des Bezugsobjekts.
+          example: Finanzierungsobjekt Feldweg 17
+        bezeichnung:
+          deprecated: true
+          type: string
+          description: Name des Bezugsobjekts.
+          example: Finanzierungsobjekt Feldweg 17
     Partner:
       type: object
       properties:
@@ -1716,6 +1795,53 @@ components:
           type: string
         bezug:
           $ref: "#/components/schemas/Bezugsobjekt"
+    MoeglicheZuordnungAlt:
+      deprecated: true
+      type: object
+      properties:
+        kategorie:
+          type: string
+          description: Technische Bezeichnung der Kategorie.
+        label:
+          type: string
+          description: Für den Nutzer sichtbare Bezeichnung der Kategorie.
+        beschreibung:
+          type: string
+          description: Eine nähere Beschreibung, was mit der Kategorie erfasst werden soll
+            (optional).
+        hinweistext:
+          type: string
+          description: Ein Hinweistext, der dem Nutzer für Unterlagen in dieser Kategorie
+            angezeigt werden soll (optional, kann Markdown-Formatierung
+            verwenden).
+        bezuege:
+          type: array
+          items:
+            type: object
+            description: Mögliche Bezugsobjekte für diese Kategorie
+            required:
+              - op
+              - path
+            properties:
+              bezug:
+                type: string
+                description: Id des Bezuges
+              label:
+                type: string
+                description: Anzeigename für diesen Bezug
+              oberkategorie:
+                type: string
+                description: Anzeigename der Gruppe, in die die Seiten gehören, für die
+                  diese Zuordnung ausgewählt wurde. Wird ggf. mit
+                  oberkategorieZusatz ergänzt.
+                example: Zusatzsicherheit
+              oberkategorieZusatz:
+                type: string
+                description: Zusätzliche Detailangaben zu der Gruppe, in die die Seiten
+                  gehören, für die diese Zuordnung gewählt wurde. Optional.
+                  oberkategorie und oberkategorieZusatz definieren *gemeinsam*
+                  die Gruppe.
+                example: Feldweg 17
     MoeglicheZuordnung:
       type: object
       properties:
