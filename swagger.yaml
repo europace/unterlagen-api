@@ -720,23 +720,19 @@ paths:
   /dokumente/zuordnungen:
     get:
       deprecated: true
-      summary: deprecated - bitte /dokumente/moeglichezuordnungen verwenden --- Liste aller mögliche Zuordnungen (Kategorie und Bezug) von Seiten
-        erhalten.
-      description: Welche Zuordnungen stehen in diesem Vorgang/Antrag für Seiten zur
-        Verfügung.
+      summary: deprecated - please use  /dokumente/moeglichezuordnungen
       operationId: getMoeglicheZuordnungenAlt
       parameters:
         - name: vorgangsNummer
           in: query
-          description: Vorgangsnummer
+          description: unique identifier of a case
           required: true
           schema:
             type: string
         - name: antragsNummer
           in: query
-          description: Antragsnummer - spezifischere Zuordnungen - z.B. werden die
-            Vorgangsdaten zum Zeitpunkt der Antrags-Annahme verwendet statt die
-            aktuellen Vorgangsdaten.
+          description: unique identifier of an application - more specific allocations - e.g. the
+            data at the time of application acceptance are used instead of the current transaction data
           required: false
           schema:
             type: string
@@ -750,19 +746,19 @@ paths:
                 items:
                   $ref: "#/components/schemas/MoeglicheZuordnungAlt"
         "400":
-          description: Fehler in den Eingabedaten.
+          description: error in the input data
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "404":
-          description: Vorgang nicht gefunden.
+          description:  case not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         default:
-          description: Unerwarteter Fehler
+          description: unexpected error
           content:
             application/json:
               schema:
@@ -1706,7 +1702,7 @@ components:
           description: unique identifier of assignment (z.B. immobilie:4711) (technisch)
         name:
           type: string
-          description: name of the document in the frontend
+          description: name of the category in the frontend
         rolle:
           type: object
           description: optional assignement role - a role groups assignement objects of the same assignement type (e.g. for assignement type immobilie)
@@ -1716,28 +1712,28 @@ components:
               description: assignment type of role (e.g. finanzierungsobjekt, bestandsobjekt, zusatzsicherheit wenn bezugsTyp=immobilie) (technical)
             name:
               type: string
-              description: name of the document in the frontend
+              description: name of this role in the frontend
     BezugsobjektAlt:
       deprecated: true
-      description: deprecated - bitte Knoten zuordnung statt bezug verwenden - zu beachten ist, dass der BezugsTyp im neuen Knoten immer klein geschrieben wird (angeglichen an den Standard in der API)
+      description: deprecated - please use property zuordnung instead of bezug
       type: object
       properties:
         id:
           type: string
-          description: Id des Bezugsobjekts (innerhalb eines Antrags eindeutig).
+          description: unique identifier of assignment (technical)
           example: Immobilie:4711
         typ:
           type: string
-          description: Typ des Bezugsobjekts.
+          description: type of assignment (technical).
           example: Immobilie
         name:
           type: string
-          description: Name des Bezugsobjekts.
+          description: name of related object
           example: Finanzierungsobjekt Feldweg 17
         bezeichnung:
           deprecated: true
           type: string
-          description: Name des Bezugsobjekts.
+          description: name of related object
           example: Finanzierungsobjekt Feldweg 17
     Partner:
       type: object
@@ -1801,46 +1797,38 @@ components:
       properties:
         kategorie:
           type: string
-          description: Technische Bezeichnung der Kategorie.
+          description: unique identifier of categories (technical)
         label:
           type: string
-          description: Für den Nutzer sichtbare Bezeichnung der Kategorie.
+          description: category name
         beschreibung:
           type: string
-          description: Eine nähere Beschreibung, was mit der Kategorie erfasst werden soll
+          description: description of category
             (optional).
         hinweistext:
           type: string
-          description: Ein Hinweistext, der dem Nutzer für Unterlagen in dieser Kategorie
-            angezeigt werden soll (optional, kann Markdown-Formatierung
-            verwenden).
+          description: additional hints, cann contain markdown formatted text
         bezuege:
           type: array
           items:
             type: object
-            description: Mögliche Bezugsobjekte für diese Kategorie
-            required:
-              - op
-              - path
+            description: possible assignments
             properties:
               bezug:
                 type: string
-                description: Id des Bezuges
+                description: unique identifier of assignment (technical)
+                example: immobilie:4711
               label:
                 type: string
-                description: Anzeigename für diesen Bezug
+                description: the name of the role and the name of the assignment
+                example: Immobilie - Feldweg 17
               oberkategorie:
                 type: string
-                description: Anzeigename der Gruppe, in die die Seiten gehören, für die
-                  diese Zuordnung ausgewählt wurde. Wird ggf. mit
-                  oberkategorieZusatz ergänzt.
-                example: Zusatzsicherheit
+                description: the name of the role of this assignement
+                example: Immobilie
               oberkategorieZusatz:
                 type: string
-                description: Zusätzliche Detailangaben zu der Gruppe, in die die Seiten
-                  gehören, für die diese Zuordnung gewählt wurde. Optional.
-                  oberkategorie und oberkategorieZusatz definieren *gemeinsam*
-                  die Gruppe.
+                description: name of assignment object
                 example: Feldweg 17
     MoeglicheZuordnung:
       type: object
