@@ -1,0 +1,22 @@
+@startuml
+title overview to get shared proofs instantly
+
+participant Client as c
+participant "Unterlagen Push API" as p_api
+participant "Authorization API" as a_api
+participant "Unterlagen API" as u_api
+
+p_api -> c: POST notification-message
+c -> p_api: 200 ok (within 30s)
+
+c -> a_api: login to get access token
+a_api -> c: access token
+ 
+loop unterlagen
+    c -> u_api: 1. get metadata (metaDatenUrl)
+    u_api -> c: metadata
+    c -> u_api: 2. get document (metadata:_links.download)
+    u_api -> c: binary document
+    c -> u_api: 3. set receive state (DELIVERED)
+    u_api -> c: 201 state created
+end
