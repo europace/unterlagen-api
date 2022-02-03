@@ -252,4 +252,8 @@ example-response:
 201 state created
 ```
 
+## Support
+If you have any questions or problems, please contact helpdesk@europace2.de.
 
+## Terms of use
+The APIs are provided under the following [Terms of Use](https://docs.api.europace.de/terms/).
