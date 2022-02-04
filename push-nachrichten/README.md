@@ -32,7 +32,7 @@ Please use [![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](h
 If you want to get notifications for your shared proofs as loan provider, we have to register your webhook-adress on europace. For registration please send an email to <a href="mailto:devsupport@europace2.de?subject=register unterlagen-push-api&body=Hello,%0D%0Aplease%20register%20a%20webhook%20for%20the%20Unterlagen-Push-API.%0D%0A%0D%0AWebhook-URI:%0D%0AproduktanbieterId%20or%20bank-name:%0D%0Asecret%20(API-KEY)%20(optional):%0D%0Atechnical%20contact-email-adress:%0D%0A%0D%0AThanks%20and%20best%20regards,">devsupport@europace2.de</a> with the following informations:
 1. your webhook-uri we can call for notification (public)
 2. your produktanbieterId or bank-name (we find the id for you)
-3. maybe a secret (api-key) to secure your endpoint ([Webhook protection](#webhookprotection))
+3. maybe a secret (api-key) to secure your endpoint ([Webhook protection](#webhook-protection-optional))
 4. technical contact (email-adress)
 
 ## Usecase overview 
