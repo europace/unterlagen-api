@@ -64,7 +64,7 @@ For each successful share, your webhook url is called by us.
 ```
 
 ### Webhook timeout
-The request must be answered within 30s with a 2xx status code, so that we evaluate the webhook call as successful. If the webhook does not respond within the timeout, there is **one** retry after 60s. If that retry failing again, the state is set to `FAILED` on all documents that should be transferred and the user will see the error "Die Unterlagen konnten nicht an den Produktanbieter übertragen werden. Versuche es bitte später erneut.". 
+The request must be answered within 30s with a 2xx status code, so that we evaluate the webhook call as successful. If the webhook does not respond within the timeout, there is **one** retry after 60s. If that retry fails again, the state is set to `FAILED` on all documents that should be transferred and the user will see the error "Die Unterlagen konnten nicht an den Produktanbieter übertragen werden. Versuche es bitte später erneut.". 
 
 We recommend that all steps necessary to transfer the shared proofs to your system are **asynchronous**, to ensure the timeout of 30s (as shown in overview).
 
