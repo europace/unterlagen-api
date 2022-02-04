@@ -1,38 +1,55 @@
 openapi: 3.0.0
 info:
-  title: Unterlagen Freigaben Webhook API
-  description: Api Beschreibung der Webhook API für Unterlagenfreigaben.
+  title: Unterlagen Push API
+  description: As loan provider you can be notified via webhook when there is a new shared proof for you.
   version: 1.0.0
+  termsOfService: 'https://docs.api.europace.de/terms/'
+  contact:
+    name: Europace AG
+    url: www.europace.de
+    email: helpdesk@europace2.de
 servers:
-  - url: https://pushnotifications.dokumente.europace2.de
+  - url: 'https://pushnotifications.dokumente.europace2.de'
 paths:
-  /hinterlegter-webhook-endpunkt:
+  /your-webhook-endpoint:
     post:
-      summary: Eine Nachricht veröffentlichen
-      description: "Platzhalter für die URL, die als Webhook registriert ist. Dieser Endpunkt wird im Fall einer Freigabe von uns aufgerufen und ist hier nur zur Dokumentation des Schemas mit aufgeführt. Der Request muss innerhalb von 30s abgegarbeitet werden und einen 2xx Statuscode zurück liefern. Dein Service ist dafür verantwortlich, den Status der übertragenen Unterlagen auf \"DELIVERED\" oder \"FAILED\" zu setzen."
+      summary: send notification
+      description: Placeholder for the URL that is registered as your webhook. This endpoint is called by us in the event of share a proof and is only included here to document the scheme. The request must be processed within 30s and return a 2xx status code. Your service is responsible for setting the status of the transferred documents to "DELIVERED" or "FAILED".
       operationId: pushMessage
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Message'
+            examples:
+              example-1:
+                value:
+                  eventTyp: FREIGABE
+                  datenkontext: ECHT_GESCHAEFT
+                  unterlagen:
+                    - unterlagenId: string
+                      metaDatenUrl: string
+                      statusUrl: string
+                  produktanbieterId: string
+                  antragsNummer: string
+                  externeAntragsNummer: string
       parameters:
         - in: header
           name: X-Europace-HMAC
           schema:
             type: string
-          description: SHA256 Signatur der Payload mit dem für den Webhook hinterlegten Secret
+          description: SHA256 signature of the payload with the secret stored for the webhook
         - in: header
           name: X-Europace-TraceId
           schema:
             type: string
-          description: Diese ID ist für Fehleranalysen und Logging sehr hilfreich. Bitte geben Sie diese bei Supportanfragen mit an.
+          description: ID for error analysis and logging. Please include this ID in your support requests.
       responses:
-        "200":
-          description: Nachricht erfolgreich entgegengenommen
+        '200':
+          description: Message successfully received
   /messages/unterlagenfreigabe/test:
     post:
-      summary: Einen Testpayload versenden
+      summary: Send a test payload
       operationId: testMessage
       requestBody:
         content:
@@ -46,10 +63,14 @@ paths:
                   type: string
               required:
                 - url
+            examples:
+              example-1:
+                value:
+                  url: string
+                  secret: string
       responses:
-        "200":
-          description: Es wird ein Testpayload an die URL gesendet
-
+        '200':
+          description: A test payload is sent to the URL
 components:
   schemas:
     Datenkontext:
@@ -58,12 +79,11 @@ components:
         - TEST_MODUS
         - ECHT_GESCHAEFT
       default: ECHT_GESCHAEFT
-
     EventTyp:
       type: string
       enum:
         - FREIGABE
-
+      description: ''
     Message:
       type: object
       properties:
@@ -76,7 +96,7 @@ components:
           items:
             $ref: '#/components/schemas/Unterlage'
         produktanbieterId:
-          description: Produktanbieterkennung bei Europace
+          description: identifier for loan provider
           type: string
         antragsNummer:
           type: string
@@ -88,12 +108,11 @@ components:
         - unterlagen
         - produktanbieterId
         - antragsNummer
-
     Unterlage:
       type: object
       properties:
         unterlagenId:
-          description: Id der freigegebenen Unterlage (siehe Unterlagen-API)
+          description: identifier of the shared proof (see Unterlagen API)
           type: string
         metaDatenUrl:
           type: string
@@ -103,3 +122,8 @@ components:
         - unterlagenId
         - metaDatenUrl
         - statusUrl
+      description: ''
+  securitySchemes:
+    access_token:
+      type: http
+      scheme: bearer

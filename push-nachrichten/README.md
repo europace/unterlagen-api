@@ -1,44 +1,111 @@
-# Pushnachrichten für Freigaben erhalten
-Als Produktanbieter kannst du dich per Webhook benachrichtigen lassen, sobald es eine neue Freigabe gibt.
+# Unterlagen Push API
 
-### Inhaltsverzeichnis
+As loan provider you can be notified via webhook when there is a new shared proof for you.
 
-- [Webhook registrieren](#webhook-registrieren)
-- [Webhook Aufruf](#webhook-aufruf)
-- [Besicherung](#besicherung)
-- [Retry-Mechanismus](#retry-mechanismus)
-- [API-Spezifikation](swagger.yaml)
+---- 
+![loanProvider](https://img.shields.io/badge/-loanProvider-lightblue)
+![mortgageLoan](https://img.shields.io/badge/-mortgageLoan-lightblue)
+![consumerLoan](https://img.shields.io/badge/-consumerLoan-lightblue)
 
-### Webhook registrieren
-Um einen Webhook zu registrieren, wende dich bitte an devsupport@europace2.de Wir benötigen dazu die folgenden Informationen: 
-1. Die URL deines Webhooks, welche aufgerufen werden soll, sobald es eine neue Freigabe gibt.
-2. Deine Produktanbieterkennung bei Europace
-3. Ggf. ein Secret (siehe [Besicherung](#besicherung))
-4. Ansprechpartner Kontaktinformation der Fachabteilung
+[![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://docs.api.europace.de/common/authentifizierung/)
+[![GitHub release](https://img.shields.io/github/v/release/europace/unterlagen-api)](https://github.com/europace/unterlagen-api/releases)
 
-### Webhook Aufruf
-Für jede erfolgte Freigabe wird die hinterlegte URL von uns aufgerufen. Die Definition des Schemas findest du hier: [swagger-definition](swagger.yaml).
+## Documentation
+[![YAML](https://img.shields.io/badge/OAS-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swaggerui-push.html)
+[![YAML](https://img.shields.io/badge/OAS-YAML-lightgrey)](https://raw.githubusercontent.com/europace/unterlagen-api/master/push-nachrichten/swagger.yaml)
 
-Die Nachricht muss innerhalb von 30s mit einem 2xx Status-Code beantwortet werden, damit wir den Webhook-Aufruf als erfolgreich werten. Um dies zu gewährleisten empfehlen wir alle Schritte die notwendig sind, um die freigegebenen Unterlagen in ihr System zu übertragen, asynchron gestalten. 
-Folgende Schritte sind aus unserer Sicht notwendig, für eine erfolgreiche Verarbeitung:
+### Use Cases
+- realtime experience for advisors to retrieve instantly shared proofs (no polling on apis)
 
-1. Login per Login API, siehe https://github.com/europace/login-api
-2. Abruf der Unterlage Metadaten, siehe `metadatenUrl` in der Nachricht
-3. Abruf der Binärdaten, siehe download link in den Metadaten
-4. In jedem Fall - Setzen des Status FAILED oder DELIVERED (siehe [hier](https://europace.github.io/unterlagen-api/docs/swggerui.html#/Freigabe/setFreigegebeneUnterlageStatus), andernfalls ist der Freigabeprozess für den Vertriebsmitarbeiter blockiert
+## Quick Start
+To help you test our APIs and your use case as quickly as possible, we've put together a [Postman Collection](https://docs.api.europace.de/common/quickstart/) for you.
 
-Zum Testen kann unser Test-Endpunkt unter https://pushnotifications.dokumente.europace2.de/messages/unterlagenfreigabe/test verwendet werden (Details siehe [swagger-definition](swagger.yaml))
+### Authentication
+Please use [![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](https://docs.api.europace.de/common/authentifizierung/authorization-api/) to get access to the API. The OAuth2 client requires the following scopes:
 
-#### Fehlerhandling
-Kann die Pushnachricht nicht zugestellt werden, wird dem Nutzer in der Unterlagenakte ein allgemeiner Fehler "Die Unterlagen konnten nicht an den Produktanbieter übertragen werden. Versuche es bitte später erneut." angezeigt. 
-Nach Möglichkeit sollte bei Fehlerszenarien auf Empängerseite aber immer der API Endpunkt zum setzen des Status mit FAILED aufgerufen werden, um dem Nutzer hilfreichere Fehlermeldungen anzuzeigen.
+| Scope                             | API Use case                      |
+|-----------------------------------|-----------------------------------|
+| `unterlagen:freigabe:lesen`       | as loan officer, retrieving the metadata and released documents for an application.|
+| `unterlagen:freigabe:schreiben`   | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).|
 
-### Besicherung
-Die Webhook-URL muss öffentlich erreichbar sein. Um dich vor Fremdaufrufen zu schützen, kannst du uns bei der Registrierung ein Secret übermitteln. Dieses verwenden wir, 
-um jede Nachricht per HMAC (SHA256) zu signieren. Die Signatur befindet sich im Header `X-Europace-HMAC` und ist Hex-encodiert.
+### Setup notification
+If you want to get notifications for your shared proofs as loan provider, we have to register your webhook-adress on europace. For registration please send an email to <a href="mailto:devsupport@europace2.de?subject=register unterlagen-push-api&body=Hello,%0D%0Aplease%20register%20a%20webhook%20for%20the%20Unterlagen-Push-API.%0D%0A%0D%0AWebhook-URI:%0D%0AproduktanbieterId%20or%20bank-name:%0D%0Asecret%20(API-KEY)%20(optional):%0D%0Atechnical%20contact-email-adress:%0D%0A%0D%0AThanks%20and%20best%20regards,">devsupport@europace2.de</a> with the following informations:
+1. your webhook-uri we can call for notification (public)
+2. your produktanbieterId or bank-name (we find the id for you)
+3. maybe a secret (api-key) to secure your endpoint ([Webhook protection](#webhookprotection))
+4. technical contact (email-adress)
 
-In Java könnte die Signatur beispielsweise mit folgenden Methoden überprüft werden:
+## Usecase overview 
+![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/push-nachrichten.puml&fmt=svg)
+
+## How to get a notification
+For each successful share, your webhook url is called by us. 
+
+```json
+{
+  "eventTyp": "FREIGABE",
+  "datenkontext": "ECHT_GESCHAEFT",
+  "unterlagen": [
+    {
+      "unterlagenId": "61abc3d2229a633915b486ff",
+      "metaDatenUrl": "https://api.europace2.de/v1/dokumente/freigabe/61abc3d2229a633915b486ff",
+      "statusUrl": "https://api.europace2.de/v1/dokumente/freigabe/61abc3d2229a633915b486ff/status"
+    },
+    {
+      "unterlagenId": "61fad3d1119a633915b48700",
+      "metaDatenUrl": "https://api.europace2.de/v1/dokumente/freigabe/61fad3d1119a633915b48700",
+      "statusUrl": "https://api.europace2.de/v1/dokumente/freigabe/61fad3d1119a633915b48700/status"
+    }
+  ],
+  "produktanbieterId": "DKB",
+  "antragsNummer": "BG2GAN/1/1",
+  "externeAntragsNummer": "2254454545455"
+}
 ```
+
+### Webhook timeout
+The request must be answered within 30s with a 2xx status code, so that we evaluate the webhook call as successful. If the webhook does not respond within the timeout, there is **one** retry after 60s. If that retry fails again, the state is set to `FAILED` on all documents that should be transferred and the user will see the error "Die Unterlagen konnten nicht an den Produktanbieter übertragen werden. Versuche es bitte später erneut.". 
+
+We recommend that all steps necessary to transfer the shared proofs to your system are **asynchronous**, to ensure the timeout of 30s (as shown in overview).
+
+### Webhook testing
+For testing, our test endpoint can be used at https://pushnotifications.dokumente.europace2.de/messages/unterlagenfreigabe/test 
+```http
+POST /messages/unterlagenfreigabe/test HTTP/1.1
+Host: pushnotifications.dokumente.europace2.de
+Authorization: Bearer ...access-token
+Content-Type: application/json
+Content-Length: 58
+
+{
+  "url": "your webhook uri",
+  "secret": "your secret"
+}
+```
+
+### Webhook protection (optional)
+Your webhook url must be public. To protect your endpoint send us a secret (API-Key) wich we will use to create a signature for the request-message and send it as header `X-Europace-HMAC` hex-encoded.
+
+_HMAC (SHA256)-Signature Example_:
+
+example-message:
+``` json
+{"eventTyp": "FREIGABE","datenkontext": "ECHT_GESCHAEFT","antragsNummer":"TR7VDV/1/1","externeAntragsNummer":"abc-123","produktanbieterId": "MUSTERBANK","unterlagen":[{"unterlagenId":"5ebba4f6c9e77c00019a6f54","metaDatenUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54","statusUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54/status"}]}
+```
+
+with example-secret:
+```
+habc
+```
+
+results in signature:
+```
+28D954E5A334A6BD94E0086E4B9AD5E3BC3281767B2481644C69CF81CD269180
+```
+
+#### Webhook signature check
+Example to check signature with java:
+```java
   static public byte[] calcHmacSha256(byte[] secretKey, byte[] message) {
     byte[] hmacSha256 = null;
     try {
@@ -60,22 +127,133 @@ In Java könnte die Signatur beispielsweise mit folgenden Methoden überprüft w
   }
 ```
 
-_HMAC (SHA256)-Signierung Beispiel_:
+## How to get shared proofs
+### step 1: get an access token
+see [Authentication](###Authentication)
 
-Die Nachricht:
+### step 2: loop all unterlagen from notification message
+You can receive every shared proof bei looping `unterlagen` and proccessing the following steps:
+#### step 2.1 get metadata
+example-request:
+```http
+GET /v1/dokumente/freigabe/61abc3d2229a633915b486ff HTTP/1.1
+Host: api.europace2.de
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer ...access token
 ```
-{"eventTyp": "FREIGABE","datenkontext": "ECHT_GESCHAEFT","antragsNummer":"TR7VDV/1/1","externeAntragsNummer":"abc-123","produktanbieterId": "MUSTERBANK","unterlagen":[{"unterlagenId":"5ebba4f6c9e77c00019a6f54","metaDatenUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54","statusUrl":"https://api.europace2.de/v1/dokumente/freigabe/5ebba4f6c9e77c00019a6f54/status"}]}
+example-response:
+``` json
+{
+    "id": "61abc3d2229a633915b486ff",
+    "antragsNummer": "BG2GAN/1/1",
+    "anzeigename": "Objektfotos (Finanzierungsobjekt - In der Aue 12)",
+    "filename": "Objektfotos_(Finanzierungsobjekt_-_In_der_Aue_12).pdf",
+    "size": 1770543,
+    "schluessel": "3ac4795df214d6be6cab8fa03b7...",
+    "freigabedatum": "2022-02-02T19:56:18.181+01:00",
+    "mediaType": "application/pdf",
+    "kategorie": "Objektfotos",
+    "bezug": {
+        "id": "immobilie:finanzierungsobjekt",
+        "typ": "Immobilie",
+        "name": "Finanzierungsobjekt - In der Aue 12",
+        "bezeichnung": "Finanzierungsobjekt - In der Aue 12"
+    },
+    "zuordnung": {
+        "kategorie": "Objektfotos",
+        "bezug": {
+            "id": "immobilie:finanzierungsobjekt",
+            "typ": "immobilie",
+            "name": "Finanzierungsobjekt - In der Aue 12"
+        }
+    },
+    "freigebender": {
+        "partnerId": "MKL58"
+    },
+    "abrufstatus": {
+        "status": "IN_PROGRESS",
+        "message": "Unterlage wurde für den Kreditbetrieb freigegeben."
+    },
+    "_links": {
+        "self": {
+            "href": "https://api.europace2.de/v1/dokumente/freigabe/61abc3d2229a633915b486ff",
+            "type": "application/json"
+        },
+        "download": {
+            "href": "https://api.europace2.de/v1/dokumente/freigabe/61abc3d2229a633915b486ff/content",
+            "type": "application/pdf"
+        },
+        "publicDownload": {
+            "href": "https://www.europace2.de/dokumentenverwaltung/download/?id=3ac4795df214d6be6cab8fa03b7a8...",
+            "type": "application/pdf"
+        },
+        "abrufstatus": {
+            "href": "https://api.europace2.de/v1/dokumente/freigabe/61abc3d2229a633915b486ff/status",
+            "type": "application/json"
+        }
+    }
+}
+```
+#### step 2.2 get binary document
+Use the `_links.download.href` from metadata to download the binary document.
+
+example-request:
+```http
+GET /v1/dokumente/freigabe/61abc3d2229a633915b486ff/content HTTP/1.1
+Host: api.europace2.de
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer ...access token
+```
+example-response:
+```
+binary data
 ```
 
-wird mit dem Secret:
+#### step 2.3 set receive state
+Use the `_links.abrufstatus.href` from metadata to set the receive state.
+
+example-request for successful download:
+```http
+POST /v1/dokumente/freigabe/61abc3d2229a633915b486ff/status HTTP/1.1
+Host: api.europace2.de
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer ...access token
+Content-Length: 94
+
+{
+  "status": "DELIVERED",
+  "message": "DKB hat Unterlage dankend erhalten."
+}
 ```
-habc
+example-response:
 ```
-signiert. Die korrekte Signatur ist:
-```
-28D954E5A334A6BD94E0086E4B9AD5E3BC3281767B2481644C69CF81CD269180
+201 state created
 ```
 
-### Retry-Mechanismus
-Wenn der Webhook innerhalb des gesetzten Timeouts nicht mit einem 2xx Statuscode antwortet, gibt es einen Retry nach 60s. Danach wird der 
-Status an allen Unterlagen, die übertragen werden sollten auf `FAILED` gesetzt
+example-request for failed download:
+```http
+POST /v1/dokumente/freigabe/61abc3d2229a633915b486ff/status HTTP/1.1
+Host: api.europace2.de
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer ...access token
+Content-Length: 94
+
+{
+  "status": "FAILED",
+  "message": "Das Dokument darf eine Größe von 10MB nicht überschreiten."
+}
+```
+example-response:
+```
+201 state created
+```
+
+## Support
+If you have any questions or problems, please contact helpdesk@europace2.de.
+
+## Terms of use
+The APIs are provided under the following [Terms of Use](https://docs.api.europace.de/terms/).
