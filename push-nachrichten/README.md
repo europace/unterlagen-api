@@ -36,7 +36,7 @@ If you want to get notifications for your shared proofs as loan provider, we hav
 4. technical contact (email-adress)
 
 ## Usecase overview 
-![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/push-nachrichten.puml&fmt=svg)
+![Dokument](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/pushoverview.puml&fmt=svg)
 
 ## How to get a notification
 For each successful share, your webhook url is called by us. 
