@@ -86,7 +86,7 @@ Content-Length: 58
 ### Webhook protection (optional)
 Your webhook url must be public. To protect your endpoint send us a secret (API-Key) wich we will use to create a signature for the request-message and send it as header `X-Europace-HMAC` hex-coded.
 
-_HMAC (SHA256)-Signierung Example_:
+_HMAC (SHA256)-Signature Example_:
 
 example-message:
 ``` json
