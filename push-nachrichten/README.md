@@ -98,7 +98,7 @@ with example-secret:
 habc
 ```
 
-results signature:
+results in signature:
 ```
 28D954E5A334A6BD94E0086E4B9AD5E3BC3281767B2481644C69CF81CD269180
 ```
