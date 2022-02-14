@@ -29,10 +29,10 @@ Please use [![authentication](https://img.shields.io/badge/Auth-OAuth2-green)](h
 | `unterlagen:freigabe:schreiben`   | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).|
 
 ### Setup notification
-If you want to get notifications for your shared proofs as loan provider, we have to register your webhook-adress on europace. For registration please send an email to <a href="mailto:devsupport@europace2.de?subject=register unterlagen-push-api&body=Hello,%0D%0Aplease%20register%20a%20webhook%20for%20the%20Unterlagen-Push-API.%0D%0A%0D%0AWebhook-URI:%0D%0AproduktanbieterId%20or%20bank-name:%0D%0Asecret%20(API-KEY)%20(optional):%0D%0Atechnical%20contact-email-adress:%0D%0A%0D%0AThanks%20and%20best%20regards,">devsupport@europace2.de</a> with the following informations:
+If you want to get notifications for your shared proofs as loan provider, we have to register your webhook-adress on europace. For registration please send an email to <a href="mailto:devsupport@europace2.de?subject=register unterlagen-push-api&body=Hello,%0D%0Aplease%20register%20a%20webhook%20for%20the%20Unterlagen-Push-API.%0D%0A%0D%0AWebhook-URI:%0D%0AproduktanbieterId%20or%20bank-name:%0D%0Asecret%20(optional):%0D%0Atechnical%20contact-email-adress:%0D%0A%0D%0AThanks%20and%20best%20regards,">devsupport@europace2.de</a> with the following informations:
 1. your webhook-uri we can call for notification (public)
 2. your produktanbieterId or bank-name (we find the id for you)
-3. maybe a secret (api-key) to secure your endpoint ([Webhook protection](#webhook-protection-optional))
+3. maybe a secret to secure your endpoint ([Webhook protection](#webhook-protection-optional))
 4. technical contact (email-adress)
 
 ## Usecase overview 
@@ -84,7 +84,7 @@ Content-Length: 58
 ```
 
 ### Webhook protection (optional)
-Your webhook url must be public. To protect your endpoint send us a secret (API-Key) wich we will use to create a signature for the request-message and send it as header `X-Europace-HMAC` hex-encoded.
+Your webhook url must be public. To protect your endpoint send us a secret (an own defined password) wich we will use to create a signature for the request-message and send it as header `X-Europace-HMAC` hex-encoded.
 
 _HMAC (SHA256)-Signature Example_:
 

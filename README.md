@@ -193,6 +193,10 @@ As follows you will get an overview of methods and model. For further details pl
 ### Categorization, assignments and preview images
 ![Sonstiges](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/Sonstiges.puml&fmt=svg)
 
+                
+### Push notifications / webhook
+As loan officer you maybe don't want to poll the API all the time to fetch all the shared documents. Instead you can implement a webhook to receive notifications for new shared documents. See here for further informations:
+[Unterlagen Push API](push-nachrichten/README.md)
 
 ## Table of categories
 
