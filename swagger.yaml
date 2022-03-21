@@ -832,7 +832,6 @@ paths:
             - unterlagen:unterlage:lesen
       tags:
         - Seiten
-  # this endpoint is currently under development and should not yet be used for productive operation
   /dokumente/anforderungen:
     get:
       summary: For BaufiSmart only. List of all document requirements received for a financing proposal. The result includes both the requirements of the product loan and the requirements of the advisor.
@@ -881,6 +880,49 @@ paths:
       security:
         - europace_oauth2:
             - unterlagen:unterlage:lesen
+      tags:
+        - Seiten
+  /dokumente/antrag/anforderungen:
+    get:
+      summary: For mortgage loans (BaufiSmart) only. List of all needed proof received for an application. The result includes the requirements of the bank for this application.
+      operationId: getAnforderungenByAntragsNummer
+      parameters:
+        - name: antragsNummer
+          in: query
+          description: unique identifier of an application
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unterlagenanforderung"
+        "400":
+          description: error in the input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: case not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - europace_oauth2:
+            - unterlagen:freigabe:lesen
       tags:
         - Seiten
   /dokumente/archiv:
