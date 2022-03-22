@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unterlagen API
   description: Europace API around uploaded documents and released proofs.
-  version: 2.0.16
+  version: 2.0.17
   termsOfService: https://docs.api.europace.de/terms/
 paths:
   /dokumente:
