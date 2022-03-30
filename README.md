@@ -196,7 +196,7 @@ As follows you will get an overview of methods and model. For further details pl
                 
 ### Push notifications / webhook
 As loan officer you maybe don't want to poll the API all the time to fetch all the shared documents. Instead you can implement a webhook to receive notifications for new shared documents. See here for further informations:
-[Unterlagen Push API](https://docs.api.europace.de/baufinanzierung/unterlagen/unterlagen-push-api/)
+[Unterlagen Push API](push-nachrichten/README.md)
 
 ## Table of categories
 
