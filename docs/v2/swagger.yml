@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: Upload API
+  description: Document Upload Api version 2
+  version: 2-Beta
+
+servers:
+  - url: https://ep-doc-wiser-uploader.eks.plattform-sdlc.ep.aws.it-hps.de
+    description: mtp
+  - url: https://ep-doc-wiser-uploader.eks.plattform-ps.ep.aws.it-hps.de
+    description: prod
+  - url: http://localhost:8080
+    description: local
+
+security:
+  - BearerAuth:
+      []
+
+paths:
+  /v2/documents:
+    post:
+      tags:
+        - Document Upload
+      summary: Upload a document
+      operationId: upload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadRequestViaUrl'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadRequestViaFile'
+      responses:
+        "201":
+          description: document uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+        "202":
+          description: upload document request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+
+components:
+  responses:
+    NotFound:
+      description: case id not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    UploadRequestViaFile:
+      type: object
+      properties:
+        file:
+          description: content of file
+          type: string
+          format: binary
+        caseId:
+          description: case id where the document is to add
+          type: string
+        displayName:
+          description: name to display on frontend
+          type: string
+        category:
+          description: manual assigned category
+          type: string
+      required:
+        - file
+        - caseId
+
+    UploadRequestViaUrl:
+      type: object
+      properties:
+        caseId:
+          type: string
+          example: A23WYC
+        url:
+          type: string
+          example: https://domain.com/image.png
+        displayName:
+          type: string
+          example: Mustermann ID
+        category:
+          type: string
+          description: if empty triggers the auto categorization
+          example: Ausweisdokument
+      required:
+        - caseId
+        - url
+        - displayName
+
+    UploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+
+    Metadata:
+      type: object
+      properties:
+        displayName:
+          type: string
+        category:
+          type: string
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
