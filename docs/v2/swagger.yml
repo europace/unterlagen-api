@@ -5,12 +5,10 @@ info:
   version: 2-Beta
 
 servers:
-  - url: https://ep-doc-wiser-uploader.eks.plattform-sdlc.ep.aws.it-hps.de
+  - url: https://api-mtp.europace2.de
     description: mtp
-  - url: https://ep-doc-wiser-uploader.eks.plattform-ps.ep.aws.it-hps.de
+  - url: https://api.europace2.de
     description: prod
-  - url: http://localhost:8080
-    description: local
 
 security:
   - BearerAuth:
@@ -32,24 +30,39 @@ paths:
             schema:
               $ref: '#/components/schemas/UploadRequestViaFile'
       responses:
-        "201":
-          description: document uploaded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UploadResponse'
         "202":
-          description: upload document request accepted
+          description: document accepted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadResponse'
         "400":
-          $ref: '#/components/responses/BadRequest'
-        "404":
-          $ref: '#/components/responses/NotFound'
-        "401":
-          $ref: '#/components/responses/Unauthorized'
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    example: 2023-07-12T12:07:07.400+00:00
+                    type: string
+                  message:
+                    example: Required parameter 'caseId' is not present.
+                    type: string
+
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    example: 2023-07-12T12:07:07.400+00:00
+                    type: string
+                  message:
+                    example: User is not authorized to access this resource with an explicit deny
+                    type: string
 
 
 components:
@@ -66,8 +79,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: unauthorized
+    Forbidden:
+      description: forbidden
       content:
         application/json:
           schema:
@@ -124,6 +137,7 @@ components:
       type: object
       properties:
         id:
+          example: 64ae9d0199c39b04e37f1816
           type: string
 
     Metadata:
@@ -137,10 +151,10 @@ components:
     Error:
       type: object
       properties:
-        code:
+        timestamp:
           type: string
         message:
           type: string
       required:
-        - code
+        - timestamp
         - message
