@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Upload API
   description: Document Upload Api version 2
-  version: 2-Beta
+  version: 0.0.1
 
 servers:
   - url: https://api-mtp.europace2.de
@@ -15,7 +15,7 @@ security:
       []
 
 paths:
-  /v2/documents:
+  /v2/dokumente:
     post:
       tags:
         - Document Upload
@@ -120,18 +120,17 @@ components:
           example: A23WYC
         url:
           type: string
-          example: https://domain.com/image.png
+          example: https://picsum.photos/595/842
         displayName:
           type: string
           example: Mustermann ID
         category:
           type: string
           description: if empty triggers the auto categorization
-          example: Ausweisdokument
+          example: Ausweis
       required:
         - caseId
         - url
-        - displayName
 
     UploadResponse:
       type: object
