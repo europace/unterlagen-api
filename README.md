@@ -5,15 +5,15 @@
 The Unterlagen API facilitates the transfer of customer documents to advisors and loan providers, supporting a range of
 financial products like mortgage loans and consumer loans. See also
 the [Helpcenter digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte)
-> Note: \
+> Note: 🚨\
 > Application documents such as the "Kreditentscheidunginformation" or the "Selbstauskunft" cannot be retrieved.
 > These documents are available at [Antraege API](https://docs.api.europace.de/baufinanzierung/antraege/antraege-api/).
 
 ## Key Features
 
-- Document upload and categorization for sales processes.
-- Release of documents to loan providers.
-- Retrieval of released documents by sales and loan providers.
+- Document upload and categorization for sales processes. 📤
+- Release of documents to loan providers. 🔓
+- Retrieval of released documents by sales and loan providers. 🔄
 
 ---- 
 ![advisor](https://img.shields.io/badge/-advisor-lightblue)
@@ -35,7 +35,7 @@ the [Helpcenter digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sec
 
 ## Authentication
 
-Use OAuth2 for API access ([Full details](https://docs.api.europace.de/common/authentifizierung/authorization-api/)).
+🔐 Use OAuth2 for API access ([Full details](https://docs.api.europace.de/common/authentifizierung/authorization-api/)).
 Required scopes:
 
 | Scope                            | API Use case                                                                                                                                                                                           |
@@ -49,6 +49,8 @@ Required scopes:
 | `unterlagen:freigabe:schreiben`  | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).                                                                                             |
 
 ## Document Upload via API V2
+
+🆕
 
 This API works async and returns immediately a documentId. The document status is visible
 in [Get Documents](#how-to-add-documents-to-a-case)
@@ -101,8 +103,8 @@ europace temporary cloud storage `/dokumente/transferspeicher` which create a pr
 
 #### How to use cloud storage (Tranferspeicher)
 
-⚠️ ** Notice: This endpoint is deprecated and will be removed in future versions. Please migrate
-to [V2 Upload](#document-upload-via-api-v2) as soon as possible.**
+> Note ⚠️: This endpoint is deprecated and will be removed in future versions. Please migrate
+> to [V2 Upload](#document-upload-via-api-v2) as soon as possible
 
 ##### Step 1: create presigned url
 
