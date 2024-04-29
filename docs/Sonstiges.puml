@@ -9,7 +9,7 @@ c -> api: GET /dokumente/{dokumentId}/preview (dokumentId, seite, [small|large])
 api --> c: 200 OK
 
 == get determine possible assignments (category, reference)  \n for case/application ==
-c -> api: GET /dokumente/zuordnungen (vorgangsNummer, antragsNummer)
+c -> api: GET /dokumente/moeglichezuordnungen (vorgangsNummer, antragsNummer)
 api --> c: 200 OK
 
 == Stay synchronous\determine current revisions of \n resources\the document and page resources keep a \n revision\has it changed, this can be a trigger for  \n resynchronization ==
