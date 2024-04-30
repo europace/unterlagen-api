@@ -1,19 +1,20 @@
-# Unterlagen API Documentation
+# Unterlagen API
 
 ## Overview
 
-The Unterlagen API facilitates the transfer of customer documents to advisors and loan providers, supporting a range of
-financial products like mortgage loans and consumer loans. See also
-the [Helpcenter digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sections/360004174293-Die-digitale-Unterlagenakte)
-> Note: 🚨\
-> Application documents such as the "Kreditentscheidunginformation" or the "Selbstauskunft" cannot be retrieved.
+The Unterlagen API facilitates the uploading of customer documents to the Europace Documents Repository (Unterlagenakte)
+and their subsequent transfer to banking partners. This API is compatible with both BaufiSmart and KreditSmart
+platforms.
+> ⚠️ Caution: Banks use the Documents Push API to access released documents.
+
+> ⚠️ Note: Documents like "Kreditentscheidunginformation" or the "Selbstauskunft" cannot be retrieved.
 > These documents are available at [Antraege API](https://docs.api.europace.de/baufinanzierung/antraege/antraege-api/).
 
-## Key Features
+## Usecases
 
-- Document upload and categorization for sales processes. 📤
-- Release of documents to loan providers. 🔓
-- Retrieval of released documents by sales and loan providers. 🔄
+Upload customer documents essential for credit assessments
+Modify categories and assignments for already uploaded documents
+Release documents to banking partners.
 
 ---- 
 ![advisor](https://img.shields.io/badge/-advisor-lightblue)
@@ -27,9 +28,8 @@ the [Helpcenter digitale Unterlagenakte](https://europace2.zendesk.com/hc/de/sec
 ## Open API / Swagger Documentation
 
 * [![Psotman](https://img.shields.io/badge/Postman-Collection-lightblue)](https://docs.api.europace.de/common/quickstart/)
-* [![V1 HTML](https://img.shields.io/badge/V1-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html)
-* [![V1 YAML](https://img.shields.io/badge/V1-YAML-lightgrey)](https://raw.githubusercontent.com/europace/unterlagen-api/master/swagger.yaml)
-* [![V2 YAML](https://img.shields.io/badge/V2-YAML-lightgrey)](https://github.com/europace/unterlagen-api/blob/master/docs/v2/swagger.yml)
+* [![V1 HTML](https://img.shields.io/badge/V1-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html) [![V1 YAML](https://img.shields.io/badge/V1-YAML-lightgrey)](https://raw.githubusercontent.com/europace/unterlagen-api/master/swagger.yaml)
+* [![V2 HTML](https://img.shields.io/badge/V2-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html?url=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/v2/swagger.yml) [![V2 YAML](https://img.shields.io/badge/V2-YAML-lightgrey)](https://github.com/europace/unterlagen-api/blob/master/docs/v2/swagger.yml)
 
 [//]: # (* [![V2 HTML]&#40;https://img.shields.io/badge/V2-HTML_Doc-lightblue&#41;]&#40;https://europace.github.io/unterlagen-api/docs/v2/swggerui.html&#41;)
 
@@ -50,8 +50,8 @@ Required scopes:
 
 ## Document Upload via API V2
 
-🆕
-
+V2 of our Unterlagen-API can be used to upload documents. This new version is easier to integrate and offers additional
+functions, such as adding a category when uploading.
 This API works async and returns immediately a documentId. The document status is visible
 in [Get Documents](#how-to-add-documents-to-a-case)
 
@@ -61,6 +61,9 @@ in [Get Documents](#how-to-add-documents-to-a-case)
 * `file`: The file to be uploaded. (_Supported types: pdf, jpg, png, tiff)_
 * `displayName`: \[Optional] The name to display on the frontend.
 * `category`: \[Optional] The document category _(See also [Categories](#table-of-categories))_
+* `assignmentId`: \[Optional] The assignment ID of a document _(The possible assignments and their ids can be requested via
+  the "[moeglicheZuordnungen](https://europace.github.io/unterlagen-api/docs/swggerui.html#/Seiten/getAvailableAssignments)"
+  end point.)_
 
 **Response**
 
