@@ -10,11 +10,11 @@ platforms.
 > ⚠️ Note: Documents like "Kreditentscheidunginformation" or the "Selbstauskunft" cannot be retrieved.
 > These documents are available at [Antraege API](https://docs.api.europace.de/baufinanzierung/antraege/antraege-api/).
 
-## Usecases
+## Use cases
 
-Upload customer documents essential for credit assessments
-Modify categories and assignments for already uploaded documents
-Release documents to banking partners.
+-  Upload customer documents that are essential for credit assessments
+-  Modify categories and assignments for already uploaded documents
+-  Release documents to banking partners
 
 ---- 
 ![advisor](https://img.shields.io/badge/-advisor-lightblue)
@@ -27,7 +27,7 @@ Release documents to banking partners.
 
 ## Open API / Swagger Documentation
 
-* [![Psotman](https://img.shields.io/badge/Postman-Collection-lightblue)](https://docs.api.europace.de/common/quickstart/)
+* [![Postman](https://img.shields.io/badge/Postman-Collection-lightblue)](https://docs.api.europace.de/common/quickstart/)
 * [![V1 HTML](https://img.shields.io/badge/V1-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html) [![V1 YAML](https://img.shields.io/badge/V1-YAML-lightgrey)](https://raw.githubusercontent.com/europace/unterlagen-api/master/swagger.yaml)
 * [![V2 HTML](https://img.shields.io/badge/V2-HTML_Doc-lightblue)](https://europace.github.io/unterlagen-api/docs/swggerui.html?url=https://raw.githubusercontent.com/europace/unterlagen-api/master/docs/v2/swagger.yml) [![V2 YAML](https://img.shields.io/badge/V2-YAML-lightgrey)](https://github.com/europace/unterlagen-api/blob/master/docs/v2/swagger.yml)
 
