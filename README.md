@@ -38,17 +38,18 @@ platforms.
 🔐 Use OAuth2 for API access ([Full details](https://docs.api.europace.de/common/authentifizierung/authorization-api/)).
 Required scopes:
 
-| Scope                            | API Use case                                                                                                                                                                                           |
-|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `unterlagen:dokument:lesen`      | as advisor, get metadata and uploaded document.                                                                                                                                                        |
-| `unterlagen:dokument:schreiben`  | as advisor, upload documents and start categorization. Categorization is mandatory to release categorized documents to loan providers. Furthermore, updating metadata and deleting uploaded documents. |
-| `unterlagen:unterlage:lesen`     | as advisor, get categorization information and the assignment information in the case. Get Unterlagenanforderungen (list of needed proofs).                                                            |
-| `unterlagen:unterlage:schreiben` | as advisor, changing the Unterlagenkategorie and assignment in the case (customer, mortgage, solution)                                                                                                 |
-| `unterlagen:unterlage:freigeben` | as advisor, share documents for an application                                                                                                                                                         |
-| `unterlagen:freigabe:lesen`      | as advisor and loan officer, retrieving the metadata and released documents for an application.                                                                                                        |
-| `unterlagen:freigabe:schreiben`  | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).                                                                                             |
+| Scope                            | API Use case                                                                                                                                                              |
+|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `unterlagen:dokument:lesen`      | as advisor, get metadata and uploaded document.                                                                                                                           |
+| `unterlagen:dokument:schreiben`  | as advisor, upload documents and start categorization. Categorization is mandatory to release categorized documents to loan providers. Furthermore and updating metadata. |
+| `unterlagen:unterlage:lesen`     | as advisor, get categorization information and the assignment information in the case. Get Unterlagenanforderungen (list of needed proofs).                               |
+| `unterlagen:unterlage:schreiben` | as advisor, changing the Unterlagenkategorie and assignment in the case (customer, mortgage, solution) and deleting documents                                             |
+| `unterlagen:unterlage:freigeben` | as advisor, share documents for an application                                                                                                                            |
+| `unterlagen:freigabe:lesen`      | as advisor and loan officer, retrieving the metadata and released documents for an application.                                                                           |
+| `unterlagen:freigabe:schreiben`  | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).                                                                |
 
 ## Document Upload via API V2
+_🏗️ Only works with BaufiSmart. KreditSmart will be supported soon._
 
 V2 of our Unterlagen-API can be used to upload documents. This new version is easier to integrate and offers additional
 functions, such as adding a category when uploading.
@@ -78,7 +79,8 @@ curl --location --request POST 'https://api.europace2.de/v2/dokumente' \
 --form 'file=@/path/to/file' \
 --form 'caseId=A23WYC' \
 --form 'displayName=Ausweis Mustermann' \
---form 'category=Ausweis'
+--form 'category=Ausweis' \
+--form 'assignmentId=7496f579-32c4-4a88-b5ae-9d99cd71727d'
 ```
 
 **URL Upload**
@@ -91,7 +93,8 @@ curl --location --request POST 'https://api.europace2.de/v2/dokumente' \
   "caseId": "A23WYC",
   "url": "https://picsum.photos/595/842",
   "displayName": "Ausweis Mustermann",
-  "category": "Ausweis"
+  "category": "Ausweis",
+  "assignmentId": "7496f579-32c4-4a88-b5ae-9d99cd71727d"
 }'
 ```
 
