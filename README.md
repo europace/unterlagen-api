@@ -49,7 +49,6 @@ Required scopes:
 | `unterlagen:freigabe:schreiben`  | as loan officer, after processing the notification of a new share, set the sharing state (Freigabestatus).                                                                |
 
 ## Document Upload via API V2
-_🏗️ Only works with BaufiSmart. KreditSmart will be supported soon._
 
 V2 of our Unterlagen-API can be used to upload documents. This new version is easier to integrate and offers additional
 functions, such as adding a category when uploading.
