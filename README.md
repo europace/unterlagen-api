@@ -108,7 +108,7 @@ europace temporary cloud storage `/dokumente/transferspeicher` which create a pr
 
 #### How to use cloud storage (Tranferspeicher)
 
-> Note ⚠️: This endpoint is deprecated and will be removed in future versions. Please migrate
+> Note ⚠️: This endpoint is deprecated and will be removed after 31.12.25. Please migrate
 > to [V2 Upload](#document-upload-via-api-v2) as soon as possible
 
 ##### Step 1: create presigned url
