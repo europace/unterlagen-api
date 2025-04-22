@@ -1,159 +1,253 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
-  title: Upload API
-  description: Document Upload Api version 2
-  version: 0.0.1
-
+  title: Document Uploader
+  description: Uploads and categorises documents
+  termsOfService: https://docs.api.europace.de/terms/
+  contact:
+    name: Europace Unterlagenakte Support
+    url: https://developer.europace.de
+    email: unterlagen@europace.de
+  version: 1.0.0
 servers:
-  - url: https://api-mtp.europace2.de
-    description: mtp
-  - url: https://api.europace2.de
-    description: prod
-
-security:
-  - BearerAuth:
-      []
-
+- url: https://mtp.europace2.de
+  description: PS
+- url: https://api-mtp.europace2.de
+  description: MTP
+tags:
+- name: Document Upload
+  description: Uploads and categorises documents to Unterlagenakte
+- name: Unterlagenakte
+  description: Unterlagenakte API
 paths:
   /v2/dokumente:
     post:
       tags:
-        - Document Upload
-      summary: Upload a document
+      - Document Upload
+      summary: Upload Document via URL
+      description: Uploads a document by providing a URL to the file.
       operationId: upload
       requestBody:
+        description: Upload request via URL
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UploadRequestViaUrl'
+              $ref: "#/components/schemas/UrlUploadRequest"
+        required: true
+      responses:
+        "200":
+          description: Document uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadResponse"
+        "400":
+          description: "Unsupported url protocol [INVALID]"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "404":
+          description: "Cannot find category [INVALID]"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "500":
+          description: Connection error to foreign host
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: Connection to foreign host lost
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /v2/dokumente/file:
+    post:
+      tags:
+      - Document Upload
+      summary: Upload Document via File
+      description: Uploads a document as multipart/form-data to the Unterlagenakte.
+        Also possible without /file suffix.
+      operationId: uploadFile
+      parameters:
+      - name: caseId
+        in: query
+        description: The case ID where the document is to be uploaded
+        required: true
+        schema:
+          type: string
+        example: 123ABC
+      - name: displayName
+        in: query
+        description: Display name of the document
+        required: false
+        schema:
+          type: string
+        example: my file
+      - name: category
+        in: query
+        description: Category assigned to the document
+        required: false
+        schema:
+          type: string
+        example: Ausweis
+      - name: assignmentId
+        in: query
+        description: Assignment ID for upload context
+        required: false
+        schema:
+          type: string
+        example: 886c8da8-cad6-4a9e-ac7c-fad54e4aff7c
+      - name: preview
+        in: query
+        description: Should a preview be generated?
+        required: false
+        schema:
+          type: boolean
+          default: true
+      requestBody:
+        content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UploadRequestViaFile'
+              required:
+              - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: The file to upload
+                  format: binary
       responses:
-        "202":
-          description: document accepted
+        "200":
+          description: Document uploaded successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadResponse'
+                $ref: "#/components/schemas/UploadResponse"
         "400":
-          description: bad request
+          description: "Unsupported url protocol [INVALID]"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  timestamp:
-                    example: 2023-07-12T12:07:07.400+00:00
-                    type: string
-                  message:
-                    example: Required parameter 'caseId' is not present.
-                    type: string
-
+                $ref: "#/components/schemas/ApiError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
         "403":
-          description: forbidden
+          description: Access denied
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  timestamp:
-                    example: 2023-07-12T12:07:07.400+00:00
-                    type: string
-                  message:
-                    example: User is not authorized to access this resource with an explicit deny
-                    type: string
-
-
+                $ref: "#/components/schemas/ApiError"
+        "404":
+          description: "Cannot find category [INVALID]"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "500":
+          description: Connection error to foreign host
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: Connection to foreign host lost
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
 components:
-  responses:
-    NotFound:
-      description: case id not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-
   schemas:
-    UploadRequestViaFile:
-      type: object
-      properties:
-        file:
-          description: content of file
-          type: string
-          format: binary
-        caseId:
-          description: case id where the document is to add
-          type: string
-        displayName:
-          description: name to display on frontend
-          type: string
-        category:
-          description: manual assigned category
-          type: string
+    ApiError:
       required:
-        - file
-        - caseId
-
-    UploadRequestViaUrl:
+      - message
+      - timestamp
+      - traceId
+      - utcTimestamp
       type: object
       properties:
-        caseId:
-          type: string
-          example: A23WYC
-        url:
-          type: string
-          example: https://picsum.photos/595/842
-        displayName:
-          type: string
-          example: Mustermann ID
-        category:
-          type: string
-          description: if empty triggers the auto categorization
-          example: Ausweis
-      required:
-        - caseId
-        - url
-
-    UploadResponse:
-      type: object
-      properties:
-        id:
-          example: 64ae9d0199c39b04e37f1816
-          type: string
-
-    Metadata:
-      type: object
-      properties:
-        displayName:
-          type: string
-        category:
-          type: string
-
-    Error:
-      type: object
-      properties:
-        timestamp:
-          type: string
+        details:
+          type: object
+          additionalProperties:
+            type: object
+          example: {}
         message:
           type: string
+          example: Invalid attribute
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          example: 363b7b15-30dd-42d5-aa59-9af1786ed1cf
+        utcTimestamp:
+          type: integer
+          format: int64
+          example: 1744302186082
+    UploadResponse:
       required:
-        - timestamp
-        - message
+      - caseId
+      - displayName
+      - fileName
+      - id
+      type: object
+      properties:
+        caseId:
+          type: string
+          example: 123ABC
+        displayName:
+          type: string
+          example: my file
+        fileName:
+          type: string
+          example: my_file.pdf
+        id:
+          type: string
+          example: 22bac2af-a559-432c-9601-969256996bd9
+    UrlUploadRequest:
+      required:
+      - caseId
+      - url
+      type: object
+      properties:
+        assignmentId:
+          type: string
+          example: 886c8da8-cad6-4a9e-ac7c-fad54e4aff7c
+        caseId:
+          minLength: 1
+          type: string
+          example: 123ABC
+        category:
+          type: string
+          example: Ausweis
+        displayName:
+          type: string
+          example: my file
+        filename:
+          type: string
+          example: my_file.pdf
+        preview:
+          type: boolean
+        url:
+          minLength: 1
+          type: string
+          example: https://picsum.photos/595/842
