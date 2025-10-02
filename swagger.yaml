@@ -1639,6 +1639,12 @@ components:
           description: optional - Can be specified for Baufismart cases. Id of the financing proposal for which the share is to be made.
             By entering this FinanzierungsvorschlagId, the share reference of the pages can change during the share, if the needed proofs expect pages with a different reference.
             For example, the FinanzierungsvorschlagId can be get from the [Vorgaenge-API](https://docs.api.europace.de/baufinanzierung/vorgaenge/vorgang-auslesen-api/).
+        externalAntragsNummer:
+          type: string
+          description: optional - Unique identifier of an application in the product provider system
+        antragsDokumentEnthalten:
+          type: boolean
+          description: optional - Is true if the application document should be included in the release
     #   is required, but has the same content as SeitenReferenz
     DokumentefreigabeSeiten:
       type: object
