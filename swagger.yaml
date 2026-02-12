@@ -1453,6 +1453,9 @@ components:
         verschluesselt:
           type: boolean
           description: with encryption
+        duplicated:
+          type: boolean
+          description: indicates if the document is a duplicate
         kategorisierungsStatus:
           $ref: "#/components/schemas/KategorisierungsStatus"
         _links:
