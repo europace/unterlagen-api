@@ -1,4 +1,4 @@
-Closes [DUCK-0000](https://europace.atlassian.net/browse/DUCK-0000)
+Closes [RTM-0000](https://europace.atlassian.net/browse/RTM-0000)
 
 ### Types of changes
 
