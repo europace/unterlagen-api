@@ -21,7 +21,7 @@ HELP
 
 # definitions
 
-# NEXUS_URL="http://nexus-beta.hypoport.local/nexus/content/repositories/apache-repo"
+# NEXUS_URL="https://nexus.shared.ep.aws.it-hps.de/nexus/content/repositories/apache-repo"
 NEXUS_URL="http://repo1.maven.org/maven2"
 #http://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.2.1/swagger-codegen-cli-2.2.1.jar
 
