@@ -6,7 +6,7 @@ info:
   termsOfService: 'https://docs.api.europace.de/terms/'
   contact:
     name: Europace AG
-    url: www.europace.de
+    url: https://www.europace.de
     email: helpdesk@europace2.de
 servers:
   - url: 'https://pushnotifications.dokumente.europace2.de'
