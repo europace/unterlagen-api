@@ -379,7 +379,7 @@ All categories can be set manually (if the Vorgang/Antrag requires a Unterlagen)
 
 ## Support
 
-If you have any questions or problems, please contact helpdesk@europace2.de.
+If you have any questions or problems, please contact devsupport@europace2.de.
 
 ## Terms of use
 
