@@ -92,17 +92,6 @@ paths:
         schema:
           type: string
         example: 123ABC
-      - name: displayName
-        in: query
-        description: >-
-          Maximum 200 Unicode code points before cleanup. Control characters and line/paragraph
-          separators are removed; other characters are preserved. Missing or blank names after
-          cleanup default to File_YYYY-MM-DD.
-        required: false
-        schema:
-          type: string
-          maxLength: 200
-        example: my file
       - name: category
         in: query
         description: Category assigned to the document
@@ -132,6 +121,14 @@ paths:
               - file
               type: object
               properties:
+                displayName:
+                  type: string
+                  maxLength: 200
+                  description: >-
+                    Maximum 200 Unicode code points before cleanup. Control characters and line/paragraph
+                    separators are removed; other characters are preserved. Missing or blank names after
+                    cleanup default to File_YYYY-MM-DD.
+                  example: my file
                 file:
                   type: string
                   description: The file to upload
