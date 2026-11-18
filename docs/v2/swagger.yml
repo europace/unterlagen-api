@@ -84,43 +84,27 @@ paths:
       description: Uploads a document as multipart/form-data to the Unterlagenakte.
         Also possible without /file suffix.
       operationId: uploadFile
-      parameters:
-      - name: caseId
-        in: query
-        description: The case ID where the document is to be uploaded
-        required: true
-        schema:
-          type: string
-        example: 123ABC
-      - name: category
-        in: query
-        description: Category assigned to the document
-        required: false
-        schema:
-          type: string
-        example: Ausweis
-      - name: assignmentId
-        in: query
-        description: Assignment ID for upload context
-        required: false
-        schema:
-          type: string
-        example: 886c8da8-cad6-4a9e-ac7c-fad54e4aff7c
-      - name: preview
-        in: query
-        description: Should a preview be generated?
-        required: false
-        schema:
-          type: boolean
-          default: true
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
               - file
+              - caseId
               type: object
               properties:
+                assignmentId:
+                  type: string
+                  description: Assignment ID for upload context
+                  example: 886c8da8-cad6-4a9e-ac7c-fad54e4aff7c
+                caseId:
+                  type: string
+                  description: The case ID where the document is to be uploaded
+                  example: 123ABC
+                category:
+                  type: string
+                  description: Category assigned to the document
+                  example: Ausweis
                 displayName:
                   type: string
                   maxLength: 200
@@ -133,6 +117,10 @@ paths:
                   type: string
                   description: The file to upload
                   format: binary
+                preview:
+                  type: boolean
+                  description: Should a preview be generated?
+                  default: true
       responses:
         "200":
           description: Document uploaded successfully
