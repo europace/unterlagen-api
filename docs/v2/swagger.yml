@@ -41,7 +41,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UploadResponse"
         "400":
-          description: "Unsupported url protocol [INVALID]"
+          description: Invalid upload request, including display names exceeding 200 Unicode code points.
           content:
             application/json:
               schema:
@@ -94,10 +94,14 @@ paths:
         example: 123ABC
       - name: displayName
         in: query
-        description: Display name of the document
+        description: >-
+          Maximum 200 Unicode code points before cleanup. Control characters and line/paragraph
+          separators are removed; other characters are preserved. Missing or blank names after
+          cleanup default to File_YYYY-MM-DD.
         required: false
         schema:
           type: string
+          maxLength: 200
         example: my file
       - name: category
         in: query
@@ -140,7 +144,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UploadResponse"
         "400":
-          description: "Unsupported url protocol [INVALID]"
+          description: Invalid upload request, including display names exceeding 200 Unicode code points.
           content:
             application/json:
               schema:
@@ -216,6 +220,8 @@ components:
           example: 123ABC
         displayName:
           type: string
+          maxLength: 200
+          description: Processed display name; defaults to File_YYYY-MM-DD for missing or blank input.
           example: my file
         fileName:
           type: string
@@ -241,6 +247,11 @@ components:
           example: Ausweis
         displayName:
           type: string
+          maxLength: 200
+          description: >-
+            Maximum 200 Unicode code points before cleanup. Control characters and line/paragraph
+            separators are removed; other characters are preserved. Missing or blank names after
+            cleanup default to File_YYYY-MM-DD.
           example: my file
         filename:
           type: string
