@@ -59,7 +59,9 @@ in [Get Documents](#how-to-add-documents-to-a-case)
 
 * `caseId`: The case ID where the document is to be added.
 * `file`: The file to be uploaded. (_Supported types: pdf, jpg, png, tiff)_
-* `displayName`: \[Optional] The name to display on the frontend.
+* `displayName`: \[Optional] Frontend display name for URL and multipart uploads. Maximum 200 Unicode code points
+  before cleanup; longer names return HTTP 400. Control characters and line/paragraph separators are removed;
+  other characters are preserved. Missing or blank names use the sanitized filename, or `File_YYYY-MM-DD` if unusable.
 * `category`: \[Optional] The document category _(See also [Categories](#table-of-categories))_
 * `assignmentId`: \[Optional] The assignment ID of a document _(The possible assignments and their ids can be requested via
   the "[moeglicheZuordnungen](https://europace.github.io/unterlagen-api/docs/swggerui.html#/Seiten/getAvailableAssignments)"
